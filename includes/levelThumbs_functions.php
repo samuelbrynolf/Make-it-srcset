@@ -22,8 +22,8 @@ $levelThumbs_filter_the_content = false){
         return;
     }
 
-    $levelThumbs_openImgTag = '<img src="'.$alphaImg_quart[0].'"'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' data-srcset':'srcset').'=';
-    $levelThumbs_srcSetValues = '"'.
+    $levelThumbs_openImgTag = '<img class="a-levelThumb_img'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' lazyload':'').'" src="'.$alphaImg_quart[0].'" alt="'.$title.'"'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' data-srcset':'srcset').'=';
+    $levelThumbs_srcSetValues =
         $echoImg[0].' '.$echoImg[1].'w, '.
         $deltaImg[0].' '.$deltaImg[1].'w, '.
         $charlieImg[0].' '.$charlieImg[1].'w, '.
@@ -32,18 +32,27 @@ $levelThumbs_filter_the_content = false){
         $alphaImg_half[0].' '.$alphaImg_half[1].'w, '.
         $alphaImg_third[0].' '.$alphaImg_third[1].'w, '.
         $alphaImg_quart[0].' '.$alphaImg_quart[1].'w"'.
-        ' sizes="(min-width: '.$echoImg[1].'px) '.$echo_vw.', (min-width: '.$deltaImg[1].'px) '.$delta_vw.', (min-width: '.$charlieImg[1].'px) '.$charlie_vw.', (min-width: '.$betaImg[1].'px) '.$beta_vw.', '. $alpha_vw.'" alt="'.$title.'"';
-    $levelThumbs_closeImgTag = ' class="a-levelThumb_img'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' lazyload':'').'"/>';
+        ' sizes="(min-width: '.$echoImg[1].'px) '.$echo_vw.', (min-width: '.$deltaImg[1].'px) '.$delta_vw.', (min-width: '.$charlieImg[1].'px) '.$charlie_vw.', (min-width: '.$betaImg[1].'px) '.$beta_vw.', '. $alpha_vw;
+    $levelThumbs_closeImgTag = '/>';
 
     if($levelThumbs_filter_the_content) {
         return $levelThumbs_srcSetValues;
     } else {
-        echo $levelThumbs_openImgTag . $levelThumbs_srcSetValues . $levelThumbs_closeImgTag;
+        echo $levelThumbs_openImgTag . '"'.$levelThumbs_srcSetValues.'"' . $levelThumbs_closeImgTag;
     }
 }
 
-function add_responsive_class($content){
+function DOMinnerHTML(DOMNode $element){
+    $innerHTML = "";
+    $children  = $element->childNodes;
 
+    foreach ($children as $child) {
+        $innerHTML .= $element->ownerDocument->saveHTML($child);
+    }
+    return $innerHTML;
+}
+
+function add_responsive_class($content){
     $content = mb_convert_encoding($content, 'HTML-ENTITIES', "UTF-8");
     $document = new DOMDocument();
     libxml_use_internal_errors(true);
@@ -51,18 +60,26 @@ function add_responsive_class($content){
 
     $imgs = $document->getElementsByTagName('img');
     foreach ($imgs as $img) {
-        // http://php.net/manual/en/function.intval.php
+        $levelThumbs_attachment_classes = $img->getAttribute('class');
+        $levelThumbs_attachment_id = preg_replace("/[^0-9]/","",$levelThumbs_attachment_classes);
+        $levelThumbs_srcSet_html = levelThumbs_srcset_image($levelThumbs_attachment_id, '1vw', '40vw', '1vw', '40vw', '1vw', true);
+
         $img -> removeAttribute("width");
         $img -> removeAttribute("height");
-        $levelThumbs_srcSet_html = levelThumbs_srcset_image('10', '1vw', '40vw', '1vw', '40vw', '1vw', true);
-        //$existing_class = $img->getAttribute('class');
-        $img->setAttribute("class", "lazyload");
-        //$img->setAttribute('class', "lazyload $existing_class");
-        //$img->setAttribute('data-srcset', 'http://localhost:8888/wp-content/uploads/2015/04/photo-1418225043143-90858d2301b4-1440x960.jpeg 1440w, http://localhost:8888/wp-content/uploads/2015/04/photo-1418225043143-90858d2301b4-1280x853.jpeg 1280w, http://localhost:8888/wp-content/uploads/2015/04/photo-1418225043143-90858d2301b4-1024x683.jpeg 1024w, http://localhost:8888/wp-content/uploads/2015/04/photo-1418225043143-90858d2301b4-768x512.jpeg 768w, http://localhost:8888/wp-content/uploads/2015/04/photo-1418225043143-90858d2301b4-480x320.jpeg 480w, http://localhost:8888/wp-content/uploads/2015/04/photo-1418225043143-90858d2301b4-160x107.jpeg 160w, http://localhost:8888/wp-content/uploads/2015/04/photo-1418225043143-90858d2301b4-110x73.jpeg 110w, http://localhost:8888/wp-content/uploads/2015/04/photo-1418225043143-90858d2301b4-80x53.jpeg 80w" sizes="(min-width: 1440px) 20vw, (min-width: 1280px) 33vw, (min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"');
-        $img->setAttribute("data-srcset", $levelThumbs_srcSet_html);
+        if(levelThumbs_get_boolean_options_value('lazyload')){
+            $img->setAttribute("class", "lazyload $levelThumbs_attachment_classes");
+            $img->setAttribute("data-srcset", $levelThumbs_srcSet_html);
+        } else {
+            $img->setAttribute("srcset", $levelThumbs_srcSet_html);
+        }
+
     }
 
-    $html = $document->saveHTML();
+    $html = '';
+    $body = $document->getElementsByTagName('body');
+    foreach($body as $e){
+        $html .= DOMinnerHTML($e);
+    }
     return $html;
 }
 add_filter('the_content', 'add_responsive_class');

@@ -27,7 +27,7 @@ class levelThumbs {
 	public function includes(){
 		require_once(levelThumbs_INCLUDES . 'levelThumbs_settings.php');
 		require_once(levelThumbs_INCLUDES . 'levelThumbs_init.php');
-		require_once(levelThumbs_INCLUDES . 'levelThumbs_template_tags.php');
+		require_once(levelThumbs_INCLUDES . 'levelThumbs_functions.php');
 	}
 
 	public function scripts(){
