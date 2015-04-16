@@ -42,17 +42,8 @@ $levelThumbs_filter_the_content = false){
     }
 }
 
-function DOMinnerHTML(DOMNode $element){
-    $innerHTML = "";
-    $children  = $element->childNodes;
-
-    foreach ($children as $child) {
-        $innerHTML .= $element->ownerDocument->saveHTML($child);
-    }
-    return $innerHTML;
-}
-
 function add_responsive_class($content){
+
     $content = mb_convert_encoding($content, 'HTML-ENTITIES', "UTF-8");
     $document = new DOMDocument();
     libxml_use_internal_errors(true);
@@ -75,12 +66,8 @@ function add_responsive_class($content){
 
     }
 
-    $html = '';
-    $body = $document->getElementsByTagName('body');
-    foreach($body as $e){
-        $html .= DOMinnerHTML($e);
-    }
-    return $html;
+    $levelThumbs_filtered_html = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $document->saveHTML()));
+    return $levelThumbs_filtered_html;
 }
 add_filter('the_content', 'add_responsive_class');
 
