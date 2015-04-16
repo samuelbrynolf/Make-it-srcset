@@ -53,6 +53,7 @@ function add_responsive_class($content){
     foreach ($imgs as $img) {
         $levelThumbs_attachment_classes = $img->getAttribute('class');
         $levelThumbs_attachment_id = preg_replace("/[^0-9]/","",$levelThumbs_attachment_classes);
+        //$levelThumbs_srcSet_html = htmlspecialchars(levelThumbs_srcset_image($levelThumbs_attachment_id, '1vw', '40vw', '1vw', '40vw', '1vw', true), ENT_QUOTES);
         $levelThumbs_srcSet_html = levelThumbs_srcset_image($levelThumbs_attachment_id, '1vw', '40vw', '1vw', '40vw', '1vw', true);
 
         $img -> removeAttribute("width");
