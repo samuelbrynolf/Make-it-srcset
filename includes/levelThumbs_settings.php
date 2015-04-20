@@ -16,7 +16,7 @@ function levelThumbs_plugin_menu($active_tab = '') { ?>
 		<?php settings_errors(); ?>
 
 		<form method="post" action="options.php">
-			<?php 
+			<?php
 			settings_fields('levelThumbs_plugin_options');
 			do_settings_sections('levelThumbs_plugin_options');
 			submit_button(); ?>
@@ -48,7 +48,7 @@ function levelThumbs_plugin_initialize_cpt_options() {
 		'levelThumbs_options_callback',
 		'levelThumbs_plugin_options'
 	);
-	
+
 	add_settings_field(
 		'beta_query',
 		'First Size/Breakpoint',
@@ -59,7 +59,7 @@ function levelThumbs_plugin_initialize_cpt_options() {
 			__( 'Default = 768px', 'levelThumbs' ),
 		)
 	);
-	
+
 	add_settings_field(
 		'charlie_query',
 		'Second Size/Breakpoint',
@@ -70,7 +70,7 @@ function levelThumbs_plugin_initialize_cpt_options() {
 			__( 'Default = 1024px', 'levelThumbs' ),
 		)
 	);
-	
+
 	add_settings_field(
 		'delta_query',
 		'Third Size/Breakpoint',
@@ -81,7 +81,7 @@ function levelThumbs_plugin_initialize_cpt_options() {
 			__( 'Default = 1280px', 'levelThumbs' ),
 		)
 	);
-	
+
 	add_settings_field(
 		'echo_query',
 		'Fourth Size/Breakpoint',
@@ -100,7 +100,7 @@ function levelThumbs_plugin_initialize_cpt_options() {
         'levelThumbs_plugin_options',
         'levelThumbs_settings_section',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Provide a wider support for custom template tags that uses Srcset, with Picturefill.', 'levelThumbs' ),
+            __( 'Provide a wider support for custom template tags that uses srcset, with Picturefill.', 'levelThumbs' ),
         )
     );
 
@@ -111,7 +111,7 @@ function levelThumbs_plugin_initialize_cpt_options() {
         'levelThumbs_plugin_options',
         'levelThumbs_settings_section',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload Srcset-images that are pulled by custom template tags.', 'levelThumbs' ),
+            __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload srcset-images that are pulled by custom template tags.', 'levelThumbs' ),
         )
     );
 
@@ -127,7 +127,7 @@ add_action( 'admin_init', 'levelThumbs_plugin_initialize_cpt_options' );
 //----------------------------------------------------------------------------------------------------------------------------------
 
 function levelThumbs_options_callback() {
-	echo '<p>' . __( 'Customize four new post thumbnail-sizes (widths) in pixel-values.<br/><strong>Tip:</strong> Match sizes with your mediaquery-breakpoints since the custom template tags brings Srcset to the table (pretty much what this plugin is about). <a href="#">What custom template tags are there?</a><br/><a href="#">Does this plugin add any other sizes?</a>', 'levelThumbs' ) . '</p>';
+	echo '<p>' . __( 'Customize four new post thumbnail-sizes (widths) in pixel-values.<br/><strong>Tip:</strong> Match sizes with your mediaquery-breakpoints since the custom template tags brings srcset to the table (pretty much what this plugin is about). <a href="#">What custom template tags are there?</a><br/><a href="#">Does this plugin add any other sizes?</a>', 'levelThumbs' ) . '</p>';
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------
