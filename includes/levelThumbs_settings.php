@@ -111,7 +111,7 @@ function levelThumbs_plugin_initialize_cpt_options() {
         'levelThumbs_plugin_options',
         'levelThumbs_settings_section',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload srcset-images that are pulled by custom template tags.', 'levelThumbs' ),
+            __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload any srcset-images.', 'levelThumbs' ),
         )
     );
 
