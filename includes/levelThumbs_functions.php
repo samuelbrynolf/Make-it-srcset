@@ -50,7 +50,7 @@ function levelThumbs_srcset_the_content_images($content){
     $document->loadHTML(utf8_decode($content));
 
     $imgs = $document->getElementsByTagName('img');
-    foreach ($imgs as $img) {
+    foreach($imgs as $img){
         $levelThumbs_attachment_classes = $img->getAttribute('class');
         $levelThumbs_attachment_id = preg_replace("/[^0-9]/","",$levelThumbs_attachment_classes);
         $levelThumbs_srcset_html = levelThumbs_srcset_image($levelThumbs_attachment_id, '1vw', '40vw', '1vw', '40vw', '1vw', true);
@@ -70,3 +70,18 @@ function levelThumbs_srcset_the_content_images($content){
     return $levelThumbs_filtered_html;
 }
 add_filter('the_content', 'levelThumbs_srcset_the_content_images');
+
+function custom_shortcode($atts){
+    extract(shortcode_atts(
+        array(
+            'image_id' => '',
+            'first_size' => '100vw',
+            'second_size' => '10vw',
+            'third_size' => '10vw',
+            'fourth_size' => '100vw',
+        ), $atts));
+
+    $levelThumbs_shortcode_srcset = levelThumbs_srcset_image($image_id, $first_size, $second_size, $third_size, $fourth_size);
+    return $levelThumbs_shortcode_srcset;
+}
+add_shortcode( 'test', 'custom_shortcode' );

@@ -21,7 +21,3 @@ function levelThumbs_display_image_size_names_muploader($sizes) {
     return $new_sizes;
 }
 add_filter('image_size_names_choose', 'levelThumbs_display_image_size_names_muploader', 11, 1);
-
-function register_shortcodes(){
-    add_shortcode('recent-posts', 'recent_posts_function');
-}
