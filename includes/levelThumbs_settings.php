@@ -31,21 +31,28 @@ function levelThumbs_plugin_default_options() {
 		'beta_query'  => '768',
 		'charlie_query'  => '1024',
 		'delta_query'  => '1280',
-		'echo_query'  => '1440'
+		'echo_query'  => '1440',
+        'first_size' => '100',
+        'second_size' => '100',
+        'third_size' => '100',
+        'fourth_size' => '100'
 	);
 	return apply_filters( 'levelThumbs_plugin_default_options', $defaults );
 }
 
 // -----------------------------------------------------------------------------------------------------------------------------
 
-function levelThumbs_plugin_initialize_cpt_options() {
+function levelThumbs_plugin_initialize_options() {
 	if( false == get_option( 'levelThumbs_plugin_options' ) ) {
-		add_option( 'levelThumbs_plugin_options', apply_filters( 'levelThumbs_plugin_default_options', levelThumbs_plugin_default_options() ) );
+		add_option( 'levelThumbs_plugin_options', apply_filters( 'levelThumbs_plugin_default_options', levelThumbs_plugin_default_options()) );
 	}
+
+    // Settings section for image-sizes and javascript enqueues
+
 	add_settings_section(
-		'levelThumbs_settings_section',
-		__( '', 'levelThumbs' ),
-		'levelThumbs_options_callback',
+		'levelThumbs_images_js',
+		__('Add new image sizes, toggle polyfill + lazyload support', 'levelThumbs'),
+		'levelThumbs_images_js_callback',
 		'levelThumbs_plugin_options'
 	);
 
@@ -54,9 +61,9 @@ function levelThumbs_plugin_initialize_cpt_options() {
 		'First Size/Breakpoint',
 		'levelThumbs_betaQuery_callback',
 		'levelThumbs_plugin_options',
-		'levelThumbs_settings_section',
+		'levelThumbs_images_js',
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Default = 768px', 'levelThumbs' ),
+			__('px', 'levelThumbs'),
 		)
 	);
 
@@ -65,9 +72,9 @@ function levelThumbs_plugin_initialize_cpt_options() {
 		'Second Size/Breakpoint',
 		'levelThumbs_charlieQuery_callback',
 		'levelThumbs_plugin_options',
-		'levelThumbs_settings_section',
+		'levelThumbs_images_js',
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Default = 1024px', 'levelThumbs' ),
+			__('px', 'levelThumbs'),
 		)
 	);
 
@@ -76,9 +83,9 @@ function levelThumbs_plugin_initialize_cpt_options() {
 		'Third Size/Breakpoint',
 		'levelThumbs_deltaQuery_callback',
 		'levelThumbs_plugin_options',
-		'levelThumbs_settings_section',
+		'levelThumbs_images_js',
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Default = 1280px', 'levelThumbs' ),
+			__('px', 'levelThumbs'),
 		)
 	);
 
@@ -87,9 +94,9 @@ function levelThumbs_plugin_initialize_cpt_options() {
 		'Fourth Size/Breakpoint',
 		'levelThumbs_echoQuery_callback',
 		'levelThumbs_plugin_options',
-		'levelThumbs_settings_section',
+		'levelThumbs_images_js',
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Default = 1440px', 'levelThumbs' ),
+			__('px', 'levelThumbs'),
 		)
 	);
 
@@ -98,7 +105,7 @@ function levelThumbs_plugin_initialize_cpt_options() {
         'Enqueue Picturefill.js',
         'levelThumbs_picturefill_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_settings_section',
+        'levelThumbs_images_js',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __( 'Provide a wider support for custom template tags that uses srcset, with Picturefill.', 'levelThumbs' ),
         )
@@ -109,9 +116,73 @@ function levelThumbs_plugin_initialize_cpt_options() {
         'Enable lazyload',
         'levelThumbs_lazyload_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_settings_section',
+        'levelThumbs_images_js',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload any srcset-images.', 'levelThumbs' ),
+        )
+    );
+
+    // Settings section for srcset-sizes and srcset-filter
+
+    add_settings_section(
+        'levelThumbs_sizes_filter',
+        __('Srcset sizes & filter the_content', 'levelThumbs'),
+        'levelThumbs_sizes_filter_callback',
+        'levelThumbs_plugin_options'
+    );
+
+    add_settings_field(
+        'first_size',
+        'Image width/first breakpoint',
+        'levelThumbs_srcsetsize_one_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_sizes_filter',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __('vw', 'levelThumbs'),
+        )
+    );
+
+    add_settings_field(
+        'second_size',
+        'Image width/second breakpoint',
+        'levelThumbs_srcsetsize_two_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_sizes_filter',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __('vw', 'levelThumbs'),
+        )
+    );
+
+    add_settings_field(
+        'third_size',
+        'Image width/third breakpoint',
+        'levelThumbs_srcsetsize_three_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_sizes_filter',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __('vw', 'levelThumbs'),
+        )
+    );
+
+    add_settings_field(
+        'fourth_size',
+        'Image width/fourth breakpoint',
+        'levelThumbs_srcsetsize_four_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_sizes_filter',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __('vw', 'levelThumbs'),
+        )
+    );
+
+    add_settings_field(
+        'srcset_filter',
+        'Enable srcset-filter for the_content()',
+        'levelThumbs_srcset_filter_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_sizes_filter',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __( 'Srcset all images used in wysiwyg-editor.', 'levelThumbs' ),
         )
     );
 
@@ -122,15 +193,20 @@ function levelThumbs_plugin_initialize_cpt_options() {
 	);
 }
 
-add_action( 'admin_init', 'levelThumbs_plugin_initialize_cpt_options' );
+add_action( 'admin_init', 'levelThumbs_plugin_initialize_options' );
 
-//----------------------------------------------------------------------------------------------------------------------------------
+// Sections callback functions ----------------------------------------------------------------------------------------------------------------------------------
 
-function levelThumbs_options_callback() {
+function levelThumbs_images_js_callback() {
 	echo '<p>' . __( 'Customize four new post thumbnail-sizes (widths) in pixel-values.<br/><strong>Tip:</strong> Match sizes with your mediaquery-breakpoints since the custom template tags brings srcset to the table (pretty much what this plugin is about). <a href="#">What custom template tags are there?</a><br/><a href="#">Does this plugin add any other sizes?</a>', 'levelThumbs' ) . '</p>';
 }
 
-//-----------------------------------------------------------------------------------------------------------------------------------
+function levelThumbs_sizes_filter_callback() {
+    echo '<p>' . __( 'Set default srcset-sizes. Toggle srcset-filter for images pulled by the media uploader.', 'levelThumbs' ) . '</p>';
+}
+
+
+// Settings callback functions -----------------------------------------------------------------------------------------------------------------------------------
 
 function levelThumbs_betaQuery_callback($args) {
 	$options = get_option( 'levelThumbs_plugin_options' );
@@ -174,6 +250,45 @@ function levelThumbs_lazyload_callback($args) {
     $options = get_option('levelThumbs_plugin_options');
     $html = '<input type="checkbox" id="lazyload" name="levelThumbs_plugin_options[lazyload]" value="1" ' . checked(1, isset($options['lazyload']) ? $options['lazyload'] : 0, false) . '/>';
     $html .= '<label for="lazyload">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcsetsize_one_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $first_size = $options['first_size'];
+    $html = '<input type="text" id="first_size" name="levelThumbs_plugin_options[first_size]" value="' . $first_size . '" />';
+    $html .= '<label for="first_size">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcsetsize_two_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $second_size = $options['second_size'];
+    $html = '<input type="text" id="second_size" name="levelThumbs_plugin_options[second_size]" value="' . $second_size . '" />';
+    $html .= '<label for="second_size">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcsetsize_three_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $third_size = $options['third_size'];
+    $html = '<input type="text" id="third_size" name="levelThumbs_plugin_options[third_size]" value="' . $third_size . '" />';
+    $html .= '<label for="third_size">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcsetsize_four_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $fourth_size = $options['fourth_size'];
+    $html = '<input type="text" id="fourth_size" name="levelThumbs_plugin_options[fourth_size]" value="' . $fourth_size . '" />';
+    $html .= '<label for="fourth_size">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcset_filter_callback($args) {
+    $options = get_option('levelThumbs_plugin_options');
+    $html = '<input type="checkbox" id="srcset_filter" name="levelThumbs_plugin_options[srcset_filter]" value="1" ' . checked(1, isset($options['srcset_filter']) ? $options['srcset_filter'] : 0, false) . '/>';
+    $html .= '<label for="srcset_filter">&nbsp;'  . $args[0] . '</label>';
     echo $html;
 }
 

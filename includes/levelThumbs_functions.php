@@ -1,4 +1,17 @@
-<?php function levelThumbs_srcset_image(
+<?php function levelThumbs_display_image_size_names_muploader($sizes) {
+    $new_sizes = array();
+    $added_sizes = get_intermediate_image_sizes();
+
+    foreach( $added_sizes as $key => $value) {
+        $new_sizes[$value] = $value;
+    }
+
+    $new_sizes = array_merge( $new_sizes, $sizes );
+    return $new_sizes;
+}
+
+
+function levelThumbs_srcset_image(
 $levelThumbs_attachment_id = '', // get_post_thumbnail_id($post->ID)
 $alpha_vw = '100vw',
 $beta_vw = '50vw',
@@ -69,9 +82,8 @@ function levelThumbs_srcset_the_content_images($content){
     $levelThumbs_filtered_html = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $document->saveHTML()));
     return $levelThumbs_filtered_html;
 }
-add_filter('the_content', 'levelThumbs_srcset_the_content_images');
 
-function custom_shortcode($atts){
+function levelThumbs_shortcode($atts){
     extract(shortcode_atts(
         array(
             'image_id' => '',
@@ -84,4 +96,4 @@ function custom_shortcode($atts){
     $levelThumbs_shortcode_srcset = levelThumbs_srcset_image($image_id, $first_size, $second_size, $third_size, $fourth_size);
     return $levelThumbs_shortcode_srcset;
 }
-add_shortcode( 'test', 'custom_shortcode' );
+add_shortcode( 'Srcset-image', 'levelThumbs_shortcode' );
