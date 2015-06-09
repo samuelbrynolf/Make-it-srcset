@@ -2,7 +2,7 @@
     $new_sizes = array();
     $added_sizes = get_intermediate_image_sizes();
 
-    foreach( $added_sizes as $key => $value) {
+    foreach($added_sizes as $key => $value) {
         $new_sizes[$value] = $value;
     }
 
@@ -12,13 +12,19 @@
 
 
 function levelThumbs_srcset_image(
-$levelThumbs_attachment_id = '', // get_post_thumbnail_id($post->ID)
-$alpha_vw = '100vw',
-$beta_vw = '50vw',
-$charlie_vw = '33vw',
-$delta_vw = '33vw',
-$echo_vw = '20vw',
+$levelThumbs_attachment_id = null, // get_post_thumbnail_id($post->ID)
+$alpha_vw = null,
+$beta_vw = null,
+$charlie_vw = null,
+$delta_vw = null,
+$echo_vw = null,
 $levelThumbs_filter_the_content = false){
+
+    $alpha_vw = (is_null($alpha_vw)) ? levelThumbs_get_options_value('first_size') : preg_replace('/[^0-9]+/', '', $alpha_vw);
+    $beta_vw = (is_null($beta_vw)) ? levelThumbs_get_options_value('second_size') : preg_replace('/[^0-9]+/', '', $beta_vw);
+    $charlie_vw = (is_null($charlie_vw)) ? levelThumbs_get_options_value('third_size') : preg_replace('/[^0-9]+/', '', $charlie_vw);
+    $delta_vw = (is_null($delta_vw)) ? levelThumbs_get_options_value('fourth_size') : preg_replace('/[^0-9]+/', '', $delta_vw);
+    $echo_vw = (is_null($echo_vw)) ? levelThumbs_get_options_value('fifth_size') : preg_replace('/[^0-9]+/', '', $echo_vw);
 
     if (is_numeric($levelThumbs_attachment_id) && isset($levelThumbs_attachment_id)) {
         $echoImg = wp_get_attachment_image_src($levelThumbs_attachment_id, 'echoImg');
@@ -45,7 +51,7 @@ $levelThumbs_filter_the_content = false){
         $alphaImg_half[0].' '.$alphaImg_half[1].'w, '.
         $alphaImg_third[0].' '.$alphaImg_third[1].'w, '.
         $alphaImg_quart[0].' '.$alphaImg_quart[1].'w';
-    $levelThumbs_srcsetSizes = '(min-width: '.$echoImg[1].'px) '.$echo_vw.', (min-width: '.$deltaImg[1].'px) '.$delta_vw.', (min-width: '.$charlieImg[1].'px) '.$charlie_vw.', (min-width: '.$betaImg[1].'px) '.$beta_vw.', '. $alpha_vw;
+    $levelThumbs_srcsetSizes = '(min-width: '.$echoImg[1].'px) '.$echo_vw.'vw, (min-width: '.$deltaImg[1].'px) '.$delta_vw.'vw, (min-width: '.$charlieImg[1].'px) '.$charlie_vw.'vw, (min-width: '.$betaImg[1].'px) '.$beta_vw.'vw, '. $alpha_vw.'vw';
     $levelThumbs_closeImgTag = '/>';
 
     if($levelThumbs_filter_the_content) {
@@ -68,15 +74,15 @@ function levelThumbs_srcset_the_content_images($content){
         $levelThumbs_attachment_id = preg_replace("/[^0-9]/","",$levelThumbs_attachment_classes);
         $levelThumbs_srcset_html = levelThumbs_srcset_image($levelThumbs_attachment_id, '1vw', '40vw', '1vw', '40vw', '1vw', true);
 
-        $img -> removeAttribute("width");
-        $img -> removeAttribute("height");
+        $img -> removeAttribute('width');
+        $img -> removeAttribute('height');
         if(levelThumbs_get_boolean_options_value('lazyload')){
-            $img->setAttribute("class", "lazyload $levelThumbs_attachment_classes");
-            $img->setAttribute("data-srcset", $levelThumbs_srcset_html[0]);
+            $img->setAttribute('class', 'lazyload $levelThumbs_attachment_classes');
+            $img->setAttribute('data-srcset', $levelThumbs_srcset_html[0]);
         } else {
-            $img->setAttribute("srcset", $levelThumbs_srcset_html[0]);
+            $img->setAttribute('srcset', $levelThumbs_srcset_html[0]);
         }
-        $img->setAttribute("sizes", $levelThumbs_srcset_html[1]);
+        $img->setAttribute('sizes', $levelThumbs_srcset_html[1]);
     }
 
     $levelThumbs_filtered_html = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $document->saveHTML()));
@@ -87,10 +93,10 @@ function levelThumbs_shortcode($atts){
     extract(shortcode_atts(
         array(
             'image_id' => '',
-            'first_size' => '100vw',
-            'second_size' => '10vw',
-            'third_size' => '10vw',
-            'fourth_size' => '100vw',
+            'first_size' => '100',
+            'second_size' => '10',
+            'third_size' => '10',
+            'fourth_size' => '100',
         ), $atts));
 
     $levelThumbs_shortcode_srcset = levelThumbs_srcset_image($image_id, $first_size, $second_size, $third_size, $fourth_size);

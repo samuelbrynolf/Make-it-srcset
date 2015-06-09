@@ -35,7 +35,8 @@ function levelThumbs_plugin_default_options() {
         'first_size' => '100',
         'second_size' => '100',
         'third_size' => '100',
-        'fourth_size' => '100'
+        'fourth_size' => '100',
+        'fifth_size' => '100'
 	);
 	return apply_filters( 'levelThumbs_plugin_default_options', $defaults );
 }
@@ -176,6 +177,17 @@ function levelThumbs_plugin_initialize_options() {
     );
 
     add_settings_field(
+        'fifth_size',
+        'Image width/fifth breakpoint',
+        'levelThumbs_srcsetsize_five_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_sizes_filter',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __('vw', 'levelThumbs'),
+        )
+    );
+
+    add_settings_field(
         'srcset_filter',
         'Enable srcset-filter for the_content()',
         'levelThumbs_srcset_filter_callback',
@@ -282,6 +294,14 @@ function levelThumbs_srcsetsize_four_callback($args) {
     $fourth_size = $options['fourth_size'];
     $html = '<input type="text" id="fourth_size" name="levelThumbs_plugin_options[fourth_size]" value="' . $fourth_size . '" />';
     $html .= '<label for="fourth_size">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcsetsize_five_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $fifth_size = $options['fifth_size'];
+    $html = '<input type="text" id="fifth_size" name="levelThumbs_plugin_options[fifth_size]" value="' . $fifth_size . '" />';
+    $html .= '<label for="fifth_size">&nbsp;'  . $args[0] . '</label>';
     echo $html;
 }
 
