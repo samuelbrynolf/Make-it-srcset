@@ -92,11 +92,11 @@ function levelThumbs_srcset_the_content_images($content){
 function levelThumbs_shortcode($atts){
     extract(shortcode_atts(
         array(
-            'image_id' => '',
-            'first_size' => '100',
-            'second_size' => '10',
-            'third_size' => '10',
-            'fourth_size' => '100',
+            'image_id' => null,
+            'first_size' => null,
+            'second_size' => null,
+            'third_size' => null,
+            'fourth_size' => null
         ), $atts));
 
     $levelThumbs_shortcode_srcset = levelThumbs_srcset_image($image_id, $first_size, $second_size, $third_size, $fourth_size);
