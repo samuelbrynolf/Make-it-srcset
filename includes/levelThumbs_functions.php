@@ -10,48 +10,55 @@
     return $new_sizes;
 }
 
-
 function levelThumbs_srcset_image(
 $levelThumbs_attachment_id = null, // get_post_thumbnail_id($post->ID)
-$alpha_vw = null,
-$beta_vw = null,
-$charlie_vw = null,
-$delta_vw = null,
-$echo_vw = null,
+$noMq_vw = null,
+$firstMq_vw = null,
+$secondMq_vw = null,
+$thirdMq_vw = null,
+$fourthMq_vw = null,
 $levelThumbs_filter_the_content = false){
 
-    $alpha_vw = (is_null($alpha_vw)) ? levelThumbs_get_options_value('first_size') : preg_replace('/[^0-9]+/', '', $alpha_vw);
-    $beta_vw = (is_null($beta_vw)) ? levelThumbs_get_options_value('second_size') : preg_replace('/[^0-9]+/', '', $beta_vw);
-    $charlie_vw = (is_null($charlie_vw)) ? levelThumbs_get_options_value('third_size') : preg_replace('/[^0-9]+/', '', $charlie_vw);
-    $delta_vw = (is_null($delta_vw)) ? levelThumbs_get_options_value('fourth_size') : preg_replace('/[^0-9]+/', '', $delta_vw);
-    $echo_vw = (is_null($echo_vw)) ? levelThumbs_get_options_value('fifth_size') : preg_replace('/[^0-9]+/', '', $echo_vw);
+    $noMq_vw = (is_null($noMq_vw)) ? levelThumbs_get_options_value('noMq_vw') : preg_replace('/[^0-9]+/', '', $noMq_vw);
+    $firstMq_vw = (is_null($firstMq_vw)) ? levelThumbs_get_options_value('firstMq_vw') : preg_replace('/[^0-9]+/', '', $firstMq_vw);
+    $secondMq_vw = (is_null($secondMq_vw)) ? levelThumbs_get_options_value('secondMq_vw') : preg_replace('/[^0-9]+/', '', $secondMq_vw);
+    $thirdMq_vw = (is_null($thirdMq_vw)) ? levelThumbs_get_options_value('thirdMq_vw') : preg_replace('/[^0-9]+/', '', $thirdMq_vw);
+    $fourthMq_vw = (is_null($fourthMq_vw)) ? levelThumbs_get_options_value('fourthMq_vw') : preg_replace('/[^0-9]+/', '', $fourthMq_vw);
 
     if (is_numeric($levelThumbs_attachment_id) && isset($levelThumbs_attachment_id)) {
-        $echoImg = wp_get_attachment_image_src($levelThumbs_attachment_id, 'echoImg');
-        $deltaImg = wp_get_attachment_image_src($levelThumbs_attachment_id, 'deltaImg');
-        $charlieImg = wp_get_attachment_image_src($levelThumbs_attachment_id, 'charlieImg');
-        $betaImg = wp_get_attachment_image_src($levelThumbs_attachment_id, 'betaImg');
-        $alphaImg = wp_get_attachment_image_src($levelThumbs_attachment_id, 'alphaImg');
-        $alphaImg_half = wp_get_attachment_image_src($levelThumbs_attachment_id, 'alphaImg_half');
-        $alphaImg_third = wp_get_attachment_image_src($levelThumbs_attachment_id, 'alphaImg_third');
-        $alphaImg_quart = wp_get_attachment_image_src($levelThumbs_attachment_id, 'alphaImg_quart');
+        $superlarge = wp_get_attachment_image_src($levelThumbs_attachment_id, 'superlarge');
+        $img_fourthMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_fourthMq');
+        $img_thirdMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_thirdMq');
+        $img_secondMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_secondMq');
+        $img_firstMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_firstMq');
+        $img_noMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq');
+        $img_noMq_half = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq_half');
+        $img_noMq_third = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq_third');
+        $img_placeholder = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_placeholder');
         $title = get_post(get_post_thumbnail_id())->post_title;
     } else {
         echo '<p>Oups! levelThumbs_srcset_image(); first passed value must be the ID of an attached image. No passed values? The function assumes you want the post featured image. Read up on <a href="#">Link</a></p>';
         return;
     }
 
-    $levelThumbs_openImgTag = '<img class="a-levelThumb_img'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' lazyload':'').'" src="'.$alphaImg_quart[0].'" alt="'.$title.'" '.(levelThumbs_get_boolean_options_value('lazyload') == '1'?'data-srcset':'srcset').'=';
+    if($img_placeholder[3] === true){
+        echo 'true';
+    } else {
+        echo 'false';
+    }
+
+    $levelThumbs_openImgTag = '<img class="a-levelThumb_img'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' lazyload':'').'" src="'.$img_placeholder[0].'" alt="'.$title.'" '.(levelThumbs_get_boolean_options_value('lazyload') == '1'?'data-srcset':'srcset').'=';
     $levelThumbs_srcsetImages =
-        $echoImg[0].' '.$echoImg[1].'w, '.
-        $deltaImg[0].' '.$deltaImg[1].'w, '.
-        $charlieImg[0].' '.$charlieImg[1].'w, '.
-        $betaImg[0].' '.$betaImg[1].'w, '.
-        $alphaImg[0].' '.$alphaImg[1].'w, '.
-        $alphaImg_half[0].' '.$alphaImg_half[1].'w, '.
-        $alphaImg_third[0].' '.$alphaImg_third[1].'w, '.
-        $alphaImg_quart[0].' '.$alphaImg_quart[1].'w';
-    $levelThumbs_srcsetSizes = '(min-width: '.$echoImg[1].'px) '.$echo_vw.'vw, (min-width: '.$deltaImg[1].'px) '.$delta_vw.'vw, (min-width: '.$charlieImg[1].'px) '.$charlie_vw.'vw, (min-width: '.$betaImg[1].'px) '.$beta_vw.'vw, '. $alpha_vw.'vw';
+        $superlarge[0].' '.$superlarge[1].'w, '.
+        $img_fourthMq[0].' '.$img_fourthMq[1].'w, '.
+        $img_thirdMq[0].' '.$img_thirdMq[1].'w, '.
+        $img_secondMq[0].' '.$img_secondMq[1].'w, '.
+        $img_firstMq[0].' '.$img_firstMq[1].'w, '.
+        $img_noMq[0].' '.$img_noMq[1].'w, '.
+        $img_noMq_half[0].' '.$img_noMq_half[1].'w, '.
+        $img_noMq_third[0].' '.$img_noMq_third[1].'w, '.
+        $img_placeholder[0].' '.$img_placeholder[1].'w';
+    $levelThumbs_srcsetSizes = '(min-width: '.$img_fourthMq[1].'px) '.$fourthMq_vw.'vw, (min-width: '.$img_thirdMq[1].'px) '.$thirdMq_vw.'vw, (min-width: '.$img_secondMq[1].'px) '.$secondMq_vw.'vw, (min-width: '.$img_firstMq[1].'px) '.$firstMq_vw.'vw, '. $noMq_vw.'vw';
     $levelThumbs_closeImgTag = '/>';
 
     if($levelThumbs_filter_the_content) {
@@ -68,21 +75,21 @@ function levelThumbs_srcset_the_content_images($content){
     libxml_use_internal_errors(true);
     $document->loadHTML(utf8_decode($content));
 
-    $imgs = $document->getElementsByTagName('img');
+    $imgs = $document->getElementsByTagName("img");
     foreach($imgs as $img){
-        $levelThumbs_attachment_classes = $img->getAttribute('class');
+        $levelThumbs_attachment_classes = $img->getAttribute("class");
         $levelThumbs_attachment_id = preg_replace("/[^0-9]/","",$levelThumbs_attachment_classes);
-        $levelThumbs_srcset_html = levelThumbs_srcset_image($levelThumbs_attachment_id, '1vw', '40vw', '1vw', '40vw', '1vw', true);
+        $levelThumbs_srcset_html = levelThumbs_srcset_image($levelThumbs_attachment_id, null, null, null, null, null, true);
 
-        $img -> removeAttribute('width');
-        $img -> removeAttribute('height');
+        $img -> removeAttribute("width");
+        $img -> removeAttribute("height");
         if(levelThumbs_get_boolean_options_value('lazyload')){
-            $img->setAttribute('class', 'lazyload $levelThumbs_attachment_classes');
-            $img->setAttribute('data-srcset', $levelThumbs_srcset_html[0]);
+            $img->setAttribute("class", "lazyload $levelThumbs_attachment_classes");
+            $img->setAttribute("data-srcset", $levelThumbs_srcset_html[0]);
         } else {
-            $img->setAttribute('srcset', $levelThumbs_srcset_html[0]);
+            $img->setAttribute("srcset", $levelThumbs_srcset_html[0]);
         }
-        $img->setAttribute('sizes', $levelThumbs_srcset_html[1]);
+        $img->setAttribute("sizes", $levelThumbs_srcset_html[1]);
     }
 
     $levelThumbs_filtered_html = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $document->saveHTML()));
@@ -93,13 +100,14 @@ function levelThumbs_shortcode($atts){
     extract(shortcode_atts(
         array(
             'image_id' => null,
-            'first_size' => null,
-            'second_size' => null,
-            'third_size' => null,
-            'fourth_size' => null
+            'noMq_size' => null,
+            'firstMq_size' => null,
+            'secondMq_size' => null,
+            'thirdMq_size' => null,
+            'fourthMq_size' => null
         ), $atts));
 
-    $levelThumbs_shortcode_srcset = levelThumbs_srcset_image($image_id, $first_size, $second_size, $third_size, $fourth_size);
+    $levelThumbs_shortcode_srcset = levelThumbs_srcset_image($image_id, $noMq_size, $firstMq_size, $secondMq_size, $thirdMq_size, $fourthMq_size);
     return $levelThumbs_shortcode_srcset;
 }
 add_shortcode( 'Srcset-image', 'levelThumbs_shortcode' );
