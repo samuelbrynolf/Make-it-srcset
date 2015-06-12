@@ -1,8 +1,4 @@
-<?php
-
-// change to vw_noMq & imgWidth_firstMq
-
-function levelThumbs_main_tab() {
+<?php function levelThumbs_main_tab() {
 	add_plugins_page(
 		'Level my postthumbs',
 		'Level my postthumbs',

@@ -1,16 +1,4 @@
-<?php function levelThumbs_display_image_size_names_muploader($sizes) {
-    $new_sizes = array();
-    $added_sizes = get_intermediate_image_sizes();
-
-    foreach($added_sizes as $key => $value) {
-        $new_sizes[$value] = $value;
-    }
-
-    $new_sizes = array_merge( $new_sizes, $sizes );
-    return $new_sizes;
-}
-
-function levelThumbs_srcset_image(
+<?php function levelThumbs_srcset_image(
 $levelThumbs_attachment_id = null, // get_post_thumbnail_id($post->ID)
 $srcsetSize_noMq = null,
 $srcsetSize_firstMq = null,
@@ -35,19 +23,14 @@ $levelThumbs_filter_the_content = false){
         $img_noMq_half = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq_half');
         $img_noMq_third = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq_third');
         $img_placeholder = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_placeholder');
+        $img_fallback_placeholder = wp_get_attachment_image_src($levelThumbs_attachment_id, 'thumbnail');
         $alt = get_post_meta($levelThumbs_attachment_id, '_wp_attachment_image_alt', true);
-        if($img_placeholder[3] === false) {
-            $img_fatscreen = wp_get_attachment_image_src($levelThumbs_attachment_id, 'full');
-            $img_defaultLarge = wp_get_attachment_image_src($levelThumbs_attachment_id, 'large');
-            $img_defaultMedium = wp_get_attachment_image_src($levelThumbs_attachment_id, 'medium');
-            $img_placeholder = wp_get_attachment_image_src($levelThumbs_attachment_id, 'thumbnail');
-        }
     } else {
         echo '<p>Oups! levelThumbs_srcset_image(); first passed value must be the ID of an attached image. No passed values? The function assumes you want the post featured image. Read up on <a href="#">Link</a></p>';
         return;
     }
 
-    $levelThumbs_openImgTag = '<img class="a-levelThumb_img'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' lazyload':'').'" src="'.$img_placeholder[0].'" alt="'.$alt.'" '.(levelThumbs_get_boolean_options_value('lazyload') == '1'?'data-srcset':'srcset').'=';
+    $levelThumbs_openImgTag = '<img class="a-levelThumb_img'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' lazyload':'').'" src="'.($img_placeholder[3] === true ? $img_placeholder[0] : $img_fallback_placeholder[0]).'" alt="'.$alt.'" '.(levelThumbs_get_boolean_options_value('lazyload') == '1'?'data-srcset':'srcset').'=';
     if($img_placeholder[3] === true) {
         $levelThumbs_srcsetImages =
             $img_fatscreen[0] . ' ' . $img_fatscreen[1] . 'w, ' .
@@ -60,11 +43,15 @@ $levelThumbs_filter_the_content = false){
             $img_noMq_third[0] . ' ' . $img_noMq_third[1] . 'w, ' .
             $img_placeholder[0] . ' ' . $img_placeholder[1] . 'w';
     } else {
+        $img_fatscreen = wp_get_attachment_image_src($levelThumbs_attachment_id, 'full');
+        $img_defaultLarge = wp_get_attachment_image_src($levelThumbs_attachment_id, 'large');
+        $img_defaultMedium = wp_get_attachment_image_src($levelThumbs_attachment_id, 'medium');
+
         $levelThumbs_srcsetImages =
             $img_fatscreen[0] . ' ' . $img_fatscreen[1] . 'w, ' .
             $img_defaultLarge[0] . ' ' . $img_defaultLarge[1] . 'w, ' .
             $img_defaultMedium[0] . ' ' . $img_defaultMedium[1] . 'w, ' .
-            $img_placeholder[0] . ' ' . $img_placeholder[1] . 'w';
+            $img_fallback_placeholder[0] . ' ' . $img_fallback_placeholder[1] . 'w';
     }
     $levelThumbs_srcsetSizes = '(min-width: '.$img_fourthMq[1].'px) '.$srcsetSize_fourthMq.'vw, (min-width: '.$img_thirdMq[1].'px) '.$srcsetSize_thirdMq.'vw, (min-width: '.$img_secondMq[1].'px) '.$srcsetSize_secondMq.'vw, (min-width: '.$img_firstMq[1].'px) '.$srcsetSize_firstMq.'vw, '. $srcsetSize_noMq.'vw';
     $levelThumbs_closeImgTag = '/>';
