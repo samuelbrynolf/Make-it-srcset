@@ -1,10 +1,10 @@
 <?php
 
-add_image_size('superlargeImg', levelThumbs_get_options_value('superlarge'));
-add_image_size('img_fourthMq', levelThumbs_get_options_value('imgSize_fourthMq'));
-add_image_size('img_thirdMq', levelThumbs_get_options_value('imgSize_thirdMq'));
-add_image_size('img_secondMq', levelThumbs_get_options_value('imgSize_secondMq'));
-add_image_size('img_firstMq', levelThumbs_get_options_value('imgSize_firstMq'));
+add_image_size('img_fatscreen', levelThumbs_get_options_value('imgWidth_fatscreen'));
+add_image_size('img_fourthMq', levelThumbs_get_options_value('imgWidth_fourthMq'));
+add_image_size('img_thirdMq', levelThumbs_get_options_value('imgWidth_thirdMq'));
+add_image_size('img_secondMq', levelThumbs_get_options_value('imgWidth_secondMq'));
+add_image_size('img_firstMq', levelThumbs_get_options_value('imgWidth_firstMq'));
 add_image_size('img_noMq', 480);
 add_image_size('img_noMq_half', 160);
 add_image_size('img_noMq_third', 110);
