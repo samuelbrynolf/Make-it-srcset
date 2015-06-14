@@ -19,9 +19,8 @@ $levelThumbs_filter_the_content = false){
         $img_thirdMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_thirdMq');
         $img_secondMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_secondMq');
         $img_firstMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_firstMq');
-        $img_noMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq');
-        $img_noMq_half = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq_half');
-        $img_noMq_third = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq_third');
+        $img_noMq_R = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq');
+        $img_noMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq_half');
         $img_placeholder = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_placeholder');
         $img_fallback_placeholder = wp_get_attachment_image_src($levelThumbs_attachment_id, 'thumbnail');
         $alt = get_post_meta($levelThumbs_attachment_id, '_wp_attachment_image_alt', true);
@@ -38,9 +37,8 @@ $levelThumbs_filter_the_content = false){
             $img_thirdMq[0] . ' ' . $img_thirdMq[1] . 'w, ' .
             $img_secondMq[0] . ' ' . $img_secondMq[1] . 'w, ' .
             $img_firstMq[0] . ' ' . $img_firstMq[1] . 'w, ' .
+            $img_noMq_R[0] . ' ' . $img_noMq_R[1] . 'w, ' .
             $img_noMq[0] . ' ' . $img_noMq[1] . 'w, ' .
-            $img_noMq_half[0] . ' ' . $img_noMq_half[1] . 'w, ' .
-            $img_noMq_third[0] . ' ' . $img_noMq_third[1] . 'w, ' .
             $img_placeholder[0] . ' ' . $img_placeholder[1] . 'w';
     } else {
         $img_fatscreen = wp_get_attachment_image_src($levelThumbs_attachment_id, 'full');

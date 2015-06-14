@@ -28,6 +28,8 @@ function levelThumbs_plugin_menu($active_tab = '') { ?>
 
 function levelThumbs_plugin_default_options() {
 	$defaults = array(
+        'imgWidth_noMq'  => '320',
+		'imgWidth_noMq_R'  => '480',
 		'imgWidth_firstMq'  => '768',
 		'imgWidth_secondMq'  => '1024',
 		'imgWidth_thirdMq'  => '1280',
@@ -45,25 +47,25 @@ function levelThumbs_plugin_default_options() {
 // -----------------------------------------------------------------------------------------------------------------------------
 
 function levelThumbs_plugin_initialize_options() {
-	if( false == get_option( 'levelThumbs_plugin_options' ) ) {
-		add_option( 'levelThumbs_plugin_options', apply_filters( 'levelThumbs_plugin_default_options', levelThumbs_plugin_default_options()) );
+	if(false == get_option('levelThumbs_plugin_options')) {
+		add_option('levelThumbs_plugin_options', apply_filters('levelThumbs_plugin_default_options', levelThumbs_plugin_default_options()));
 	}
 
-    // Settings section for image-sizes and javascript enqueues
+    // Settings section for mediaqueries -------------------------------------------------------------------------------------------------------------------------
 
 	add_settings_section(
-		'levelThumbs_images_js',
-		__('Add new image sizes, toggle polyfill + lazyload support', 'levelThumbs'),
-		'levelThumbs_images_js_callback',
+		'levelThumbs_mediaqueries',
+		__('Themes layout mediaqueries', 'levelThumbs'),
+		'levelThumbs_mediaqueries_callback',
 		'levelThumbs_plugin_options'
 	);
 
 	add_settings_field(
 		'imgWidth_firstMq',
-		'First Size (Smallest)',
+		'First breakpoint:',
 		'levelThumbs_imgSizeFirstMq_callback',
 		'levelThumbs_plugin_options',
-		'levelThumbs_images_js',
+		'levelThumbs_mediaqueries',
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
 			__('px', 'levelThumbs'),
 		)
@@ -71,10 +73,10 @@ function levelThumbs_plugin_initialize_options() {
 
 	add_settings_field(
 		'imgWidth_secondMq',
-		'Second Size',
+		'Second breakpoint:',
 		'levelThumbs_imgSizeSecondMq_callback',
 		'levelThumbs_plugin_options',
-		'levelThumbs_images_js',
+		'levelThumbs_mediaqueries',
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
 			__('px', 'levelThumbs'),
 		)
@@ -82,10 +84,10 @@ function levelThumbs_plugin_initialize_options() {
 
 	add_settings_field(
 		'imgWidth_thirdMq',
-		'Third Size',
+		'Third breakpoint:',
 		'levelThumbs_imgSizeThirdMq_callback',
 		'levelThumbs_plugin_options',
-		'levelThumbs_images_js',
+		'levelThumbs_mediaqueries',
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
 			__('px', 'levelThumbs'),
 		)
@@ -93,63 +95,72 @@ function levelThumbs_plugin_initialize_options() {
 
 	add_settings_field(
 		'imgWidth_fourthMq',
-		'Fourth Size',
+		'Fourth breakpoint:',
 		'levelThumbs_imgSizeFourthMq_callback',
 		'levelThumbs_plugin_options',
-		'levelThumbs_images_js',
+		'levelThumbs_mediaqueries',
 		array(        // The array of arguments to pass to the callback. In this case, just a description.
 			__('px', 'levelThumbs'),
 		)
 	);
 
+    // Settings section for image sizes -------------------------------------------------------------------------------------------------------------------------
+
+    add_settings_section(
+        'levelThumbs_imagewidths',
+        __('Image widths &mdash; not targeted by any mediaquery', 'levelThumbs'),
+        'levelThumbs_imagewidths_callback',
+        'levelThumbs_plugin_options'
+    );
+
     add_settings_field(
-        'imgWidth_fatscreen',
-        'Fifth Size (Largest)',
-        'levelThumbs_imgWidth_fatscreen_callback',
+        'imgWidth_noMq',
+        'Lores image width',
+        'levelThumbs_imgWidth_noMq_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_images_js',
+        'levelThumbs_imagewidths',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __('px', 'levelThumbs'),
         )
     );
 
     add_settings_field(
-        'picturefill',
-        'Enqueue Picturefill.js',
-        'levelThumbs_picturefill_callback',
+        'imgWidth_noMq_R',
+        'Hires/retina image width',
+        'levelThumbs_imgWidth_noMq_R_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_images_js',
+        'levelThumbs_imagewidths',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Provide a wider support for custom template tags that uses srcset, with Picturefill.', 'levelThumbs' ),
+            __('px', 'levelThumbs'),
         )
     );
 
     add_settings_field(
-        'lazyload',
-        'Enable lazyload',
-        'levelThumbs_lazyload_callback',
+        'imgWidth_fatscreen',
+        'Fatest targeted screensize:',
+        'levelThumbs_imgWidth_fatscreen_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_images_js',
+        'levelThumbs_imagewidths',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload any srcset-images.', 'levelThumbs' ),
+            __('px', 'levelThumbs'),
         )
     );
-
-    // Settings section for srcset-sizes and srcset-filter
+    
+    // Settings section for srcset-sizes -------------------------------------------------------------------------------------------------------------------------
 
     add_settings_section(
-        'levelThumbs_sizes_filter',
-        __('Srcset sizes & filter the_content', 'levelThumbs'),
-        'levelThumbs_sizes_filter_callback',
+        'levelThumbs_srcsetSizes',
+        __('Srcset size per mediaquery', 'levelThumbs'),
+        'levelThumbs_srcsetSizes_callback',
         'levelThumbs_plugin_options'
     );
 
     add_settings_field(
         'srcsetSize_noMq',
-        'Non-mediaqueried image size',
+        'Non-mq-targeted image size:',
         'levelThumbs_srcsetsize_one_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_sizes_filter',
+        'levelThumbs_srcsetSizes',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __('vw', 'levelThumbs'),
         )
@@ -157,10 +168,10 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'srcsetSize_firstMq',
-        'First breakpoint image size',
+        'First breakpoint &mdash; image size:',
         'levelThumbs_srcsetsize_two_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_sizes_filter',
+        'levelThumbs_srcsetSizes',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __('vw', 'levelThumbs'),
         )
@@ -168,10 +179,10 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'srcsetSize_secondMq',
-        'Second breakpoint image size',
+        'Second breakpoint &mdash; image size:',
         'levelThumbs_srcsetsize_three_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_sizes_filter',
+        'levelThumbs_srcsetSizes',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __('vw', 'levelThumbs'),
         )
@@ -179,10 +190,10 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'srcsetSize_thirdMq',
-        'Third breakpoint image size',
+        'Third breakpoint &mdash; image size:',
         'levelThumbs_srcsetsize_four_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_sizes_filter',
+        'levelThumbs_srcsetSizes',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __('vw', 'levelThumbs'),
         )
@@ -190,12 +201,32 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'srcsetSize_fourthMq',
-        'Fourth breakpoint image size',
+        'Fourth breakpoint &mdash; image size:',
         'levelThumbs_srcsetsize_five_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_sizes_filter',
+        'levelThumbs_srcsetSizes',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __('vw', 'levelThumbs'),
+        )
+    );
+
+    // Settings section for plusmenu -------------------------------------------------------------------------------------------------------------------------
+
+    add_settings_section(
+        'levelThumbs_plusmenu',
+        __('Srcset polyfill, Handle WYSIWYG editor images, Lazyload feature', 'levelThumbs'),
+        'levelThumbs_plusmenu_callback',
+        'levelThumbs_plugin_options'
+    );
+
+    add_settings_field(
+        'picturefill',
+        'Enqueue Picturefill.js',
+        'levelThumbs_picturefill_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_plusmenu',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __( 'Provide a wider support for custom template tags that uses srcset, with Picturefill.', 'levelThumbs' ),
         )
     );
 
@@ -204,9 +235,20 @@ function levelThumbs_plugin_initialize_options() {
         'Enable srcset-filter for the_content()',
         'levelThumbs_srcset_filter_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_sizes_filter',
+        'levelThumbs_plusmenu',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Srcset all images used in wysiwyg-editor.', 'levelThumbs' ),
+            __( 'Srcset all images set by WYSIWYG editor.', 'levelThumbs' ),
+        )
+    );
+
+    add_settings_field(
+        'lazyload',
+        'Enable lazyload',
+        'levelThumbs_lazyload_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_plusmenu',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload all srcset-images.', 'levelThumbs' ),
         )
     );
 
@@ -221,16 +263,40 @@ add_action( 'admin_init', 'levelThumbs_plugin_initialize_options' );
 
 // Sections callback functions ----------------------------------------------------------------------------------------------------------------------------------
 
-function levelThumbs_images_js_callback() {
-	echo '<p>' . __( 'Customize four new post thumbnail-sizes (widths) in pixel-values.<br/><strong>Tip:</strong> Match sizes with your mediaquery-breakpoints since the custom template tags brings srcset to the table (pretty much what this plugin is about). <a href="#">What custom template tags are there?</a><br/><a href="#">Does this plugin add any other sizes?</a>', 'levelThumbs' ) . '</p>';
+function levelThumbs_mediaqueries_callback() {
+	echo '<p>' . __( 'Set four min-width mediaqueries for your themes layout, in ascending order. If you are using fewer media queries &mdash; enter common screensizes (higher than your final breakpoint) to fill the blanks.', 'levelThumbs' ) . '</p>';
 }
 
-function levelThumbs_sizes_filter_callback() {
-    echo '<p>' . __( 'Set default srcset-sizes. Toggle srcset-filter for images pulled by the media uploader.', 'levelThumbs' ) . '</p>';
+function levelThumbs_imagewidths_callback() {
+    echo '<p>' . __( 'Set hires/lores image widths for your layouts smallest screen (aka images NOT targeted by any min-widht-mediaquery). Also, enter the width for your fatest targeted screen.', 'levelThumbs' ) . '</p>';
+}
+
+function levelThumbs_srcsetSizes_callback() {
+    echo '<p>' . __( 'Pair relative image sizes to your (min-width-) mediaqueries &mdash; or common screensizes if you are using fewer mediaqueries. ', 'levelThumbs' ) . '</p>';
+}
+
+function levelThumbs_plusmenu_callback() {
+    echo '<p>' . __( 'Picturefill and Lazysizes are excellent resources, included in this plugin. You might want to check for later versions though, than those included in this plugin.', 'levelThumbs' ) . '</p>';
 }
 
 
 // Settings callback functions -----------------------------------------------------------------------------------------------------------------------------------
+
+function levelThumbs_imgWidth_noMq_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $imgWidth_noMq = $options['imgWidth_noMq'];
+    $html = '<input type="text" id="imgWidth_noMq" name="levelThumbs_plugin_options[imgWidth_noMq]" value="' . $imgWidth_noMq . '" />';
+    $html .= '<label for="imgWidth_noMq">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_imgWidth_noMq_R_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $imgWidth_noMq_R = $options['imgWidth_noMq_R'];
+    $html = '<input type="text" id="imgWidth_noMq_R" name="levelThumbs_plugin_options[imgWidth_noMq_R]" value="' . $imgWidth_noMq_R . '" />';
+    $html .= '<label for="imgWidth_noMq_R">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
 
 function levelThumbs_imgSizeFirstMq_callback($args) {
 	$options = get_option( 'levelThumbs_plugin_options' );

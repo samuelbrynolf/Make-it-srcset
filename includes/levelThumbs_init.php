@@ -9,9 +9,8 @@
         add_image_size('img_thirdMq', levelThumbs_get_options_value('imgWidth_thirdMq'));
         add_image_size('img_secondMq', levelThumbs_get_options_value('imgWidth_secondMq'));
         add_image_size('img_firstMq', levelThumbs_get_options_value('imgWidth_firstMq'));
-        add_image_size('img_noMq', 480);
-        add_image_size('img_noMq_half', 160);
-        add_image_size('img_noMq_third', 110);
+        add_image_size('img_noMq_R', levelThumbs_get_options_value('imgWidth_noMq_R'));
+        add_image_size('img_noMq', levelThumbs_get_options_value('imgWidth_noMq'));
         add_image_size('img_placeholder', 80);
     }
 }
