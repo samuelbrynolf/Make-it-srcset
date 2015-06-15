@@ -77,7 +77,7 @@ function levelThumbs_srcset_the_content_images($content){
         $img -> removeAttribute("width");
         $img -> removeAttribute("height");
         if(levelThumbs_get_boolean_options_value('lazyload')){
-            $img->setAttribute("class", "lazyload $levelThumbs_attachment_classes");
+            $img->setAttribute("class", "lazyload a-levelThumb_img $levelThumbs_attachment_classes");
             $img->setAttribute("data-srcset", $levelThumbs_srcset_html[0]);
         } else {
             $img->setAttribute("srcset", $levelThumbs_srcset_html[0]);
