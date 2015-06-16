@@ -29,7 +29,9 @@ $levelThumbs_filter_the_content = false){
         return;
     }
 
-    $levelThumbs_openImgTag = '<img class="a-levelThumb_img'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' lazyload':'').'" src="'.($img_placeholder[3] === true ? $img_placeholder[0] : $img_fallback_placeholder[0]).'" alt="'.$alt.'" '.(levelThumbs_get_boolean_options_value('lazyload') == '1'?'data-srcset':'srcset').'=';
+    // src="'.($img_placeholder[3] === true ? $img_placeholder[0] : $img_fallback_placeholder[0]).'"
+
+    $levelThumbs_openImgTag = '<img class="a-levelThumb_img'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' lazyload':'').'" alt="'.$alt.'" '.(levelThumbs_get_boolean_options_value('lazyload') == '1'?'data-srcset':'srcset').'=';
     if($img_placeholder[3] === true) {
         $levelThumbs_srcsetImages =
             $img_fatscreen[0] . ' ' . $img_fatscreen[1] . 'w, ' .
