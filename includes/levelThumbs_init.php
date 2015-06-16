@@ -17,7 +17,7 @@
 
 add_action('after_setup_theme', 'levelThumbs_imgInit');
 
-if(levelThumbs_get_boolean_options_value('srcset_filter') == '1') {
+if(levelThumbs_get_boolean_options_value('srcset_filter')) {
 
     function levelThumbs_placeholderOption($sizes) {
         return array_merge( $sizes, array(
