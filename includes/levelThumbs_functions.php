@@ -29,8 +29,8 @@ $levelThumbs_filter_the_content = false){
         return;
     }
 
-    $levelThumbs_openImgTag = '<img class="a-levelThumb_img'.(levelThumbs_get_boolean_options_value('lazyload') == '1'?' lazyload':'').'" src="'.($img_placeholder[3] === true ? $img_placeholder[0] : $img_fallback_placeholder[0]).'" alt="'.$alt.'" '.(levelThumbs_get_boolean_options_value('lazyload') == '1'?'data-srcset':'srcset').'=';
-    if($img_placeholder[3] === true) {
+    $levelThumbs_openImgTag = '<img class="a-levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_boolean_options_value('lazyload') ? ' lazyload':'').'"'.($alt ? ' alt="'.$alt.'"' : '').(levelThumbs_get_boolean_options_value('lazyload') ? ' data-srcset':' srcset').'=';
+    if($img_placeholder[3]) {
         $levelThumbs_srcsetImages =
             $img_fatscreen[0] . ' ' . $img_fatscreen[1] . 'w, ' .
             $img_fourthMq[0] . ' ' . $img_fourthMq[1] . 'w, ' .
@@ -53,12 +53,13 @@ $levelThumbs_filter_the_content = false){
     }
     $levelThumbs_srcsetSizes = '(min-width: '.$img_fourthMq[1].'px) '.$srcsetSize_fourthMq.'vw, (min-width: '.$img_thirdMq[1].'px) '.$srcsetSize_thirdMq.'vw, (min-width: '.$img_secondMq[1].'px) '.$srcsetSize_secondMq.'vw, (min-width: '.$img_firstMq[1].'px) '.$srcsetSize_firstMq.'vw, '. $srcsetSize_noMq.'vw';
     $levelThumbs_closeImgTag = '/>';
+    $levelThumbs_noscriptTag = '<noscript><img class="a-levelThumb_img levelThumb_nojs" src="'.($img_placeholder[3] ? $img_secondMq[0] : $img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
     if($levelThumbs_filter_the_content) {
         $levelThumbs_srcsetAttributes = array($levelThumbs_srcsetImages, $levelThumbs_srcsetSizes);
         return $levelThumbs_srcsetAttributes;
     } else {
-        echo $levelThumbs_openImgTag.'"'.$levelThumbs_srcsetImages.'" sizes="'.$levelThumbs_srcsetSizes.'"'.$levelThumbs_closeImgTag;
+        echo $levelThumbs_openImgTag.'"'.$levelThumbs_srcsetImages.'" sizes="'.$levelThumbs_srcsetSizes.'"'.$levelThumbs_closeImgTag.$levelThumbs_noscriptTag;
     }
 }
 
@@ -80,6 +81,7 @@ function levelThumbs_srcset_the_content_images($content){
             $img->setAttribute("class", "lazyload a-levelThumb_img $levelThumbs_attachment_classes");
             $img->setAttribute("data-srcset", $levelThumbs_srcset_html[0]);
         } else {
+            $img->setAttribute("class", "a-levelThumb_img $levelThumbs_attachment_classes");
             $img->setAttribute("srcset", $levelThumbs_srcset_html[0]);
         }
         $img->setAttribute("sizes", $levelThumbs_srcset_html[1]);
