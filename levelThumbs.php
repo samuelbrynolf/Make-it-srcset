@@ -26,17 +26,16 @@ class levelThumbs {
 
 	public function includes(){
 		require_once(levelThumbs_INCLUDES . 'levelThumbs_settings.php');
-		require_once(levelThumbs_INCLUDES . 'levelThumbs_init.php');
 		require_once(levelThumbs_INCLUDES . 'levelThumbs_functions.php');
 	}
 
 	public function scripts(){
 		function levelThumbs_scripts(){
-            if(levelThumbs_get_boolean_options_value('picturefill')) {
+            if(levelThumbs_get_option_boolean('picturefill')) {
                 wp_enqueue_script('picturefill', plugins_url('/js/picturefill.min.js', __FILE__), array(), null, true);
             }
 
-            if(levelThumbs_get_boolean_options_value('lazyload')) {
+            if(levelThumbs_get_option_boolean('lazyload')) {
                 wp_enqueue_script('lazysizes', plugins_url('/js/lazysizes.min.js', __FILE__), array(), null, true);
             }
 		}

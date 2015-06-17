@@ -39,7 +39,8 @@ function levelThumbs_plugin_default_options() {
         'srcsetSize_firstMq' => '100',
         'srcsetSize_secondMq' => '100',
         'srcsetSize_thirdMq' => '100',
-        'srcsetSize_fourthMq' => '100'
+        'srcsetSize_fourthMq' => '100',
+        'wysiwyg' => 'Do not srcset them'
 	);
 	return apply_filters( 'levelThumbs_plugin_default_options', $defaults );
 }
@@ -210,12 +211,34 @@ function levelThumbs_plugin_initialize_options() {
         )
     );
 
-    // Settings section for plusmenu -------------------------------------------------------------------------------------------------------------------------
+    // Settings section for images pulled by WYSIWYG-editor
 
     add_settings_section(
-        'levelThumbs_plusmenu',
-        __('Srcset polyfill, Handle WYSIWYG editor images, Lazyload feature', 'levelThumbs'),
-        'levelThumbs_plusmenu_callback',
+        'levelThumbs_wysiwyg',
+        __('Handle images pulled by the WYSIWYG-editor', 'levelThumbs'),
+        'levelThumbs_wysiwyg_callback',
+        'levelThumbs_plugin_options'
+    );
+
+    add_settings_field(
+        'wysiwyg',
+        'How do you want to handle images pulled by the WYSIWYG-editor?',
+        'levelThumbs_srcset_filter_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_wysiwyg',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            'wysiwyg_passive' => 'Do not srcset them',
+            'filter_the_content' => 'Filter',
+            'shortcode' => 'Shortcode'
+        )
+    );
+
+    // Settings section for JS-libraries -------------------------------------------------------------------------------------------------------------------------
+
+    add_settings_section(
+        'levelThumbs_jslib',
+        __('Javascript: Polyfill & Lazyload', 'levelThumbs'),
+        'levelThumbs_jslib_callback',
         'levelThumbs_plugin_options'
     );
 
@@ -224,20 +247,9 @@ function levelThumbs_plugin_initialize_options() {
         'Enqueue Picturefill.js',
         'levelThumbs_picturefill_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_plusmenu',
+        'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __( 'Provide a wider support for custom template tags that uses srcset, with Picturefill.', 'levelThumbs' ),
-        )
-    );
-
-    add_settings_field(
-        'srcset_filter',
-        'Enable srcset-filter for the_content()',
-        'levelThumbs_srcset_filter_callback',
-        'levelThumbs_plugin_options',
-        'levelThumbs_plusmenu',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Srcset all images set by WYSIWYG editor.', 'levelThumbs' ),
         )
     );
 
@@ -246,7 +258,7 @@ function levelThumbs_plugin_initialize_options() {
         'Enable lazyload',
         'levelThumbs_lazyload_callback',
         'levelThumbs_plugin_options',
-        'levelThumbs_plusmenu',
+        'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload all srcset-images.', 'levelThumbs' ),
         )
@@ -275,33 +287,23 @@ function levelThumbs_srcsetSizes_callback() {
     echo '<p>' . __( 'Pair relative image sizes to your (min-width-) mediaqueries &mdash; or common screensizes if you are using fewer mediaqueries. ', 'levelThumbs' ) . '</p>';
 }
 
-function levelThumbs_plusmenu_callback() {
-    echo '<p>' . __( 'Picturefill and Lazysizes are excellent resources, included in this plugin. You might want to check for later versions though, than those included in this plugin.', 'levelThumbs' ) . '</p>';
+function levelThumbs_wysiwyg_callback() {
+    echo '<p>' . __( '<strong>Filter the_content():</strong> Handles all inline images according to default settings above. <br/><strong>Shortcode:</strong> Maximum flexibility with unique srcses widths for each image. Defaults to settings above.', 'levelThumbs' ) . '</p>';
+}
+
+function levelThumbs_jslib_callback() {
+    echo '<p>' . __( '<em>There might be later versions of the provided resources Enqueue and dequeue.</em>', 'levelThumbs' ) . '</p>';
 }
 
 
 // Settings callback functions -----------------------------------------------------------------------------------------------------------------------------------
 
-function levelThumbs_imgWidth_noMq_callback($args) {
-    $options = get_option( 'levelThumbs_plugin_options' );
-    $imgWidth_noMq = $options['imgWidth_noMq'];
-    $html = '<input type="text" id="imgWidth_noMq" name="levelThumbs_plugin_options[imgWidth_noMq]" value="' . $imgWidth_noMq . '" />';
-    $html .= '<label for="imgWidth_noMq">&nbsp;'  . $args[0] . '</label>';
-    echo $html;
-}
-
-function levelThumbs_imgWidth_noMq_R_callback($args) {
-    $options = get_option( 'levelThumbs_plugin_options' );
-    $imgWidth_noMq_R = $options['imgWidth_noMq_R'];
-    $html = '<input type="text" id="imgWidth_noMq_R" name="levelThumbs_plugin_options[imgWidth_noMq_R]" value="' . $imgWidth_noMq_R . '" />';
-    $html .= '<label for="imgWidth_noMq_R">&nbsp;'  . $args[0] . '</label>';
-    echo $html;
-}
+// Mediaqueries
 
 function levelThumbs_imgSizeFirstMq_callback($args) {
 	$options = get_option( 'levelThumbs_plugin_options' );
 	$betaQuery = $options['imgWidth_firstMq'];
-	$html = '<input type="text" id="imgWidth_firstMq" name="levelThumbs_plugin_options[imgWidth_firstMq]" value="' . $betaQuery . '" />';
+	$html = '<input type="text" id="imgWidth_firstMq" name="levelThumbs_plugin_options[imgWidth_firstMq]" value="' . preg_replace('/[^0-9]+/', '', $betaQuery ) . '" />';
 	$html .= '<label for="imgWidth_firstMq">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
@@ -309,7 +311,7 @@ function levelThumbs_imgSizeFirstMq_callback($args) {
 function levelThumbs_imgSizeSecondMq_callback($args) {
 	$options = get_option( 'levelThumbs_plugin_options' );
 	$charlieQuery = $options['imgWidth_secondMq'];
-	$html = '<input type="text" id="imgWidth_secondMq" name="levelThumbs_plugin_options[imgWidth_secondMq]" value="' . $charlieQuery . '" />';
+	$html = '<input type="text" id="imgWidth_secondMq" name="levelThumbs_plugin_options[imgWidth_secondMq]" value="' . preg_replace('/[^0-9]+/', '', $charlieQuery ) . '" />';
 	$html .= '<label for="imgWidth_secondMq">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
@@ -317,7 +319,7 @@ function levelThumbs_imgSizeSecondMq_callback($args) {
 function levelThumbs_imgSizeThirdMq_callback($args) {
 	$options = get_option( 'levelThumbs_plugin_options' );
 	$deltaQuery = $options['imgWidth_thirdMq'];
-	$html = '<input type="text" id="imgWidth_thirdMq" name="levelThumbs_plugin_options[imgWidth_thirdMq]" value="' . $deltaQuery . '" />';
+	$html = '<input type="text" id="imgWidth_thirdMq" name="levelThumbs_plugin_options[imgWidth_thirdMq]" value="' . preg_replace('/[^0-9]+/', '', $deltaQuery ) . '" />';
 	$html .= '<label for="imgWidth_thirdMq">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
 }
@@ -325,18 +327,90 @@ function levelThumbs_imgSizeThirdMq_callback($args) {
 function levelThumbs_imgSizeFourthMq_callback($args) {
 	$options = get_option( 'levelThumbs_plugin_options' );
 	$echoQuery = $options['imgWidth_fourthMq'];
-	$html = '<input type="text" id="imgWidth_fourthMq" name="levelThumbs_plugin_options[imgWidth_fourthMq]" value="' . $echoQuery . '" />';
+	$html = '<input type="text" id="imgWidth_fourthMq" name="levelThumbs_plugin_options[imgWidth_fourthMq]" value="' . preg_replace('/[^0-9]+/', '', $echoQuery ) . '" />';
 	$html .= '<label for="imgWidth_fourthMq">&nbsp;'  . $args[0] . '</label>';
 	echo $html;
+}
+
+function levelThumbs_imgWidth_noMq_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $imgWidth_noMq = $options['imgWidth_noMq'];
+    $html = '<input type="text" id="imgWidth_noMq" name="levelThumbs_plugin_options[imgWidth_noMq]" value="' . preg_replace('/[^0-9]+/', '', $imgWidth_noMq ) . '" />';
+    $html .= '<label for="imgWidth_noMq">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+// Non MQ-dependent image sizes
+
+function levelThumbs_imgWidth_noMq_R_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $imgWidth_noMq_R = $options['imgWidth_noMq_R'];
+    $html = '<input type="text" id="imgWidth_noMq_R" name="levelThumbs_plugin_options[imgWidth_noMq_R]" value="' . preg_replace('/[^0-9]+/', '', $imgWidth_noMq_R ) . '" />';
+    $html .= '<label for="imgWidth_noMq_R">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
 }
 
 function levelThumbs_imgWidth_fatscreen_callback($args) {
     $options = get_option( 'levelThumbs_plugin_options' );
     $imgWidth_fatscreen = $options['imgWidth_fatscreen'];
-    $html = '<input type="text" id="imgWidth_fatscreen" name="levelThumbs_plugin_options[imgWidth_fatscreen]" value="' . $imgWidth_fatscreen . '" />';
+    $html = '<input type="text" id="imgWidth_fatscreen" name="levelThumbs_plugin_options[imgWidth_fatscreen]" value="' . preg_replace('/[^0-9]+/', '', $imgWidth_fatscreen ) . '" />';
     $html .= '<label for="imgWidth_fatscreen">&nbsp;'  . $args[0] . '</label>';
     echo $html;
 }
+
+// Srcset sizes
+
+function levelThumbs_srcsetsize_one_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $srcsetSize_noMq = $options['srcsetSize_noMq'];
+    $html = '<input type="text" id="srcsetSize_noMq" name="levelThumbs_plugin_options[srcsetSize_noMq]" value="' . preg_replace('/[^0-9]+/', '', $srcsetSize_noMq ) . '" />';
+    $html .= '<label for="srcsetSize_noMq">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcsetsize_two_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $srcsetSize_firstMq = $options['srcsetSize_firstMq'];
+    $html = '<input type="text" id="srcsetSize_firstMq" name="levelThumbs_plugin_options[srcsetSize_firstMq]" value="' . preg_replace('/[^0-9]+/', '', $srcsetSize_firstMq ) . '" />';
+    $html .= '<label for="srcsetSize_firstMq">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcsetsize_three_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $srcsetSize_secondMq = $options['srcsetSize_secondMq'];
+    $html = '<input type="text" id="srcsetSize_secondMq" name="levelThumbs_plugin_options[srcsetSize_secondMq]" value="' . preg_replace('/[^0-9]+/', '', $srcsetSize_secondMq ) . '" />';
+    $html .= '<label for="srcsetSize_secondMq">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcsetsize_four_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $srcsetSize_thirdMq = $options['srcsetSize_thirdMq'];
+    $html = '<input type="text" id="srcsetSize_thirdMq" name="levelThumbs_plugin_options[srcsetSize_thirdMq]" value="' . preg_replace('/[^0-9]+/', '', $srcsetSize_thirdMq ) . '" />';
+    $html .= '<label for="srcsetSize_thirdMq">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_srcsetsize_five_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    $srcsetSize_fourthMq = $options['srcsetSize_fourthMq'];
+    $html = '<input type="text" id="srcsetSize_fourthMq" name="levelThumbs_plugin_options[srcsetSize_fourthMq]" value="' . preg_replace('/[^0-9]+/', '', $srcsetSize_fourthMq ) . '" />';
+    $html .= '<label for="srcsetSize_fourthMq">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+// Images pulled by WYSIWYG-editor
+
+function levelThumbs_srcset_filter_callback($args) {
+    $options = get_option( 'levelThumbs_plugin_options' );
+    foreach($args as $arg) {
+        $html = '<label><input '.checked( $options['wysiwyg'], $arg, 0 ).' value="'.$arg.'" name="levelThumbs_plugin_options[wysiwyg]" type="radio" /> '.$arg.'</label><br />';
+        echo $html;
+    }
+}
+
+// JS-libraries
 
 function levelThumbs_picturefill_callback($args) {
     $options = get_option('levelThumbs_plugin_options');
@@ -352,72 +426,25 @@ function levelThumbs_lazyload_callback($args) {
     echo $html;
 }
 
-function levelThumbs_srcsetsize_one_callback($args) {
-    $options = get_option( 'levelThumbs_plugin_options' );
-    $srcsetSize_noMq = $options['srcsetSize_noMq'];
-    $html = '<input type="text" id="srcsetSize_noMq" name="levelThumbs_plugin_options[srcsetSize_noMq]" value="' . $srcsetSize_noMq . '" />';
-    $html .= '<label for="srcsetSize_noMq">&nbsp;'  . $args[0] . '</label>';
-    echo $html;
-}
-
-function levelThumbs_srcsetsize_two_callback($args) {
-    $options = get_option( 'levelThumbs_plugin_options' );
-    $srcsetSize_firstMq = $options['srcsetSize_firstMq'];
-    $html = '<input type="text" id="srcsetSize_firstMq" name="levelThumbs_plugin_options[srcsetSize_firstMq]" value="' . $srcsetSize_firstMq . '" />';
-    $html .= '<label for="srcsetSize_firstMq">&nbsp;'  . $args[0] . '</label>';
-    echo $html;
-}
-
-function levelThumbs_srcsetsize_three_callback($args) {
-    $options = get_option( 'levelThumbs_plugin_options' );
-    $srcsetSize_secondMq = $options['srcsetSize_secondMq'];
-    $html = '<input type="text" id="srcsetSize_secondMq" name="levelThumbs_plugin_options[srcsetSize_secondMq]" value="' . $srcsetSize_secondMq . '" />';
-    $html .= '<label for="srcsetSize_secondMq">&nbsp;'  . $args[0] . '</label>';
-    echo $html;
-}
-
-function levelThumbs_srcsetsize_four_callback($args) {
-    $options = get_option( 'levelThumbs_plugin_options' );
-    $srcsetSize_thirdMq = $options['srcsetSize_thirdMq'];
-    $html = '<input type="text" id="srcsetSize_thirdMq" name="levelThumbs_plugin_options[srcsetSize_thirdMq]" value="' . $srcsetSize_thirdMq . '" />';
-    $html .= '<label for="srcsetSize_thirdMq">&nbsp;'  . $args[0] . '</label>';
-    echo $html;
-}
-
-function levelThumbs_srcsetsize_five_callback($args) {
-    $options = get_option( 'levelThumbs_plugin_options' );
-    $srcsetSize_fourthMq = $options['srcsetSize_fourthMq'];
-    $html = '<input type="text" id="srcsetSize_fourthMq" name="levelThumbs_plugin_options[srcsetSize_fourthMq]" value="' . $srcsetSize_fourthMq . '" />';
-    $html .= '<label for="srcsetSize_fourthMq">&nbsp;'  . $args[0] . '</label>';
-    echo $html;
-}
-
-function levelThumbs_srcset_filter_callback($args) {
-    $options = get_option('levelThumbs_plugin_options');
-    $html = '<input type="checkbox" id="srcset_filter" name="levelThumbs_plugin_options[srcset_filter]" value="1" ' . checked(1, isset($options['srcset_filter']) ? $options['srcset_filter'] : 0, false) . '/>';
-    $html .= '<label for="srcset_filter">&nbsp;'  . $args[0] . '</label>';
-    echo $html;
-}
-
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 function validate_sanitize_input($input) {
 	$output = array();
 	foreach($input as $key => $value){
 		if(isset($input[$key])){
-			$output[$key] = preg_replace('/[^0-9]+/', '', $input[ $key ] );
+			// $output[$key] = preg_replace('/[^0-9]+/', '', $input[ $key ] );
+			$output[$key] = strip_tags( stripslashes( $input[ $key ] ) );
 		}
 	}
 	return apply_filters('validate_sanitize_input', $output, $input);
 }
 
-function levelThumbs_get_options_value($fieldID){
-	$options = get_option('levelThumbs_plugin_options');
-	return $value = sanitize_key($options[$fieldID]);
+function levelThumbs_get_option_string($fieldID){
+    $options = get_option('levelThumbs_plugin_options');
+    return $value = sanitize_key($options[$fieldID]);
 }
 
-function levelThumbs_get_boolean_options_value($fieldID){
+function levelThumbs_get_option_boolean($fieldID){
     $options = get_option('levelThumbs_plugin_options');
-    $value = isset($options[$fieldID]) && intval($options[$fieldID]);
-    return $value;
+    return $value = isset($options[$fieldID]) && intval($options[$fieldID]);
 }
