@@ -31,6 +31,7 @@ $srcsetSize_firstMq = null,
 $srcsetSize_secondMq = null,
 $srcsetSize_thirdMq = null,
 $srcsetSize_fourthMq = null,
+$cssClass = null,
 $levelThumbs_filter_the_content = false){
 
     // Vars: Set srcset sizes
@@ -40,8 +41,8 @@ $levelThumbs_filter_the_content = false){
     $srcsetSize_thirdMq = (is_null($srcsetSize_thirdMq)) ? levelThumbs_get_option_string('srcsetSize_thirdMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_thirdMq);
     $srcsetSize_fourthMq = (is_null($srcsetSize_fourthMq)) ? levelThumbs_get_option_string('srcsetSize_fourthMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_fourthMq);
 
-    // Vars: Set imageformats if there is an attachment ID passed, if not give a link to documentation
-    if (is_numeric($levelThumbs_attachment_id) && isset($levelThumbs_attachment_id)) {
+    // Vars: Set imageformats IF there is an attachment ID passed as an integer and if that attachment is an image. If not give a link to documentation
+    if (is_numeric($levelThumbs_attachment_id) && isset($levelThumbs_attachment_id) && wp_attachment_is_image($levelThumbs_attachment_id)) {
         $img_fatscreen = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_fatscreen');
         $img_fourthMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_fourthMq');
         $img_thirdMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_thirdMq');
@@ -56,7 +57,7 @@ $levelThumbs_filter_the_content = false){
     }
 
     // Build needed html-strings: Open img tag
-    $levelThumbs_openImgTag = '<img class="a-levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_option_boolean('lazyload') ? ' lazyload':'').'"'.($alt ? ' alt="'.$alt.'"' : '').(levelThumbs_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
+    $levelThumbs_openImgTag = '<img class="a-levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_option_boolean('lazyload') ? ' lazyload' : '').(is_null($cssClass) ? '' : ' '.$cssClass).'"'.($alt ? ' alt="'.$alt.'"' : '').(levelThumbs_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
     if($img_noMq[3]) {
 
@@ -129,7 +130,7 @@ function levelThumbs_srcset_the_content_images($content){
         // Loop each image in new DOMDocument. Save wp-standard classes, attachment ID to get needed srcset strings. Save those strings.
         $levelThumbs_attachment_classes = $img->getAttribute("class");
         $levelThumbs_attachment_id = preg_replace("/[^0-9]/","",$levelThumbs_attachment_classes);
-        $levelThumbs_srcset_html = levelThumbs_srcset_image($levelThumbs_attachment_id, null, null, null, null, null, true);
+        $levelThumbs_srcset_html = levelThumbs_srcset_image($levelThumbs_attachment_id, null, null, null, null, null, null, true);
 
         // Manipulate images with classes and set srcset-attributes
         $img -> removeAttribute("width");
@@ -162,13 +163,14 @@ function levelThumbs_shortcode($atts){
     extract(shortcode_atts(
         array(
             'image_id' => null,
-            'sc_srcsetSize_noMq' => null,
-            'sc_srcsetSize_firstMq' => null,
-            'sc_srcsetSize_secondMq' => null,
-            'sc_srcsetSize_thirdMq' => null,
-            'sc_srcsetSize_fourthMq' => null
+            'srcsetSize_noMq' => null,
+            'srcsetSize_firstMq' => null,
+            'srcsetSize_secondMq' => null,
+            'srcsetSize_thirdMq' => null,
+            'srcsetSize_fourthMq' => null,
+            'cssClass' => null
         ), $atts));
 
-    $levelThumbs_shortcode_srcset = levelThumbs_srcset_image($image_id, $sc_srcsetSize_noMq, $sc_srcsetSize_firstMq, $sc_srcsetSize_secondMq, $sc_srcsetSize_thirdMq, $sc_srcsetSize_fourthMq);
-    return $levelThumbs_shortcode_srcset;
+    $levelThumbs_shortcode = levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $cssClass);
+    return $levelThumbs_shortcode;
 }

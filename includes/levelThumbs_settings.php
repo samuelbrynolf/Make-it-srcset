@@ -227,7 +227,7 @@ function levelThumbs_plugin_initialize_options() {
         'levelThumbs_plugin_options',
         'levelThumbs_wysiwyg',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            'wysiwyg_passive' => 'Do not srcset them',
+            'wysiwyg_passive' => 'Do NOT srcset them',
             'filter_the_content' => 'Filter',
             'shortcode' => 'Shortcode'
         )
