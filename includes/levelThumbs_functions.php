@@ -107,9 +107,7 @@ $levelThumbs_filter_the_content = false){
 
 // Filter the_content with add_filter ------------------------------------------------------------------
 
-if(levelThumbs_get_option_string('wysiwyg') == 'filter') {
-    add_filter('the_content', 'levelThumbs_srcset_the_content_images');
-}
+add_filter('the_content', 'levelThumbs_srcset_the_content_images');
 
 function levelThumbs_srcset_the_content_images($content){
 
@@ -155,9 +153,8 @@ function levelThumbs_srcset_the_content_images($content){
 
 // Shortcode ------------------------------------------------------------------
 
-if(levelThumbs_get_option_string('wysiwyg') == 'shortcode') {
-    add_shortcode('Srcset-image', 'levelThumbs_shortcode');
-}
+
+add_shortcode('Srcset-image', 'levelThumbs_shortcode');
 
 function levelThumbs_shortcode($atts){
     extract(shortcode_atts(
@@ -171,6 +168,10 @@ function levelThumbs_shortcode($atts){
             'css_class' => null
         ), $atts));
 
-    $levelThumbs_shortcode = levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $css_class);
+    ob_start();
+        levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $css_class);
+        $levelThumbs_shortcode=ob_get_contents();;
+    ob_end_clean();
+
     return $levelThumbs_shortcode;
 }
