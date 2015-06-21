@@ -223,7 +223,7 @@ function levelThumbs_plugin_initialize_options() {
     add_settings_field(
         'wysiwyg',
         'How do you want to handle images pulled by the WYSIWYG-editor?',
-        'levelThumbs_srcset_filter_callback',
+        'levelThumbs_srcset_wysiwyg_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_wysiwyg',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
@@ -402,7 +402,7 @@ function levelThumbs_srcsetsize_five_callback($args) {
 
 // Images pulled by WYSIWYG-editor
 
-function levelThumbs_srcset_filter_callback($args) {
+function levelThumbs_srcset_wysiwyg_callback($args) {
     $options = get_option( 'levelThumbs_plugin_options' );
     foreach($args as $arg) {
         $html = '<label><input '.checked( $options['wysiwyg'], $arg, 0 ).' value="'.$arg.'" name="levelThumbs_plugin_options[wysiwyg]" type="radio" /> '.$arg.'</label><br />';

@@ -153,7 +153,6 @@ function levelThumbs_srcset_the_content_images($content){
 
 // Shortcode ------------------------------------------------------------------
 
-
 add_shortcode('Srcset-image', 'levelThumbs_shortcode');
 
 function levelThumbs_shortcode($atts){
@@ -167,6 +166,8 @@ function levelThumbs_shortcode($atts){
             'srcsetSize_fourthMq' => null,
             'css_class' => null
         ), $atts));
+
+    // https://wordpress.org/support/topic/plugin-called-via-shortcode-appears-at-the-wrong-place-on-post?replies=5
 
     ob_start();
         levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $css_class);
