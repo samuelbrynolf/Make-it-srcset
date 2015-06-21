@@ -92,7 +92,7 @@ $levelThumbs_filter_the_content = false){
     $levelThumbs_closeImgTag = '/>';
 
     // Build needed html-strings: Fallback img in noscript-tag
-    $levelThumbs_noscriptTag = '<noscript><img class="a-levelThumb_img levelThumb_nojs" src="'.($img_noMq[3] ? $img_secondMq[0] : $img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
+    $levelThumbs_noscriptTag = '<noscript><img class="a-levelThumb_img levelThumb_nojs'.(is_null($cssClass) ? '' : ' '.$cssClass).'" src="'.($img_noMq[3] ? $img_secondMq[0] : $img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
     // Give two outputs for this function (add_filter for the_content only needs srcset specific attributes)
     if($levelThumbs_filter_the_content) {
@@ -136,10 +136,10 @@ function levelThumbs_srcset_the_content_images($content){
         $img -> removeAttribute("width");
         $img -> removeAttribute("height");
         if(levelThumbs_get_option_boolean('lazyload')){
-            $img->setAttribute("class", "lazyload a-levelThumb_img $levelThumbs_attachment_classes");
+            $img->setAttribute("class", "lazyload a-levelThumb_img levelThumb_filtered $levelThumbs_attachment_classes");
             $img->setAttribute("data-srcset", $levelThumbs_srcset_html[0]);
         } else {
-            $img->setAttribute("class", "a-levelThumb_img $levelThumbs_attachment_classes");
+            $img->setAttribute("class", "a-levelThumb_img levelThumb_filtered $levelThumbs_attachment_classes");
             $img->setAttribute("srcset", $levelThumbs_srcset_html[0]);
         }
         $img->setAttribute("sizes", $levelThumbs_srcset_html[1]);
@@ -168,9 +168,9 @@ function levelThumbs_shortcode($atts){
             'srcsetSize_secondMq' => null,
             'srcsetSize_thirdMq' => null,
             'srcsetSize_fourthMq' => null,
-            'cssClass' => null
+            'css_class' => null
         ), $atts));
 
-    $levelThumbs_shortcode = levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $cssClass);
+    $levelThumbs_shortcode = levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $css_class);
     return $levelThumbs_shortcode;
 }
