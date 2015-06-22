@@ -426,6 +426,8 @@ function levelThumbs_lazyload_callback($args) {
     echo $html;
 }
 
+
+
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 function validate_sanitize_input($input) {

@@ -176,3 +176,14 @@ function levelThumbs_shortcode($atts){
 
     return $levelThumbs_shortcode;
 }
+
+
+
+// Prevent doubled images for browsers that support Srcset but have javascript turned off --------------------------
+
+add_action('wp_head','levelThumbs_nojs_style');
+
+function levelThumbs_nojs_style(){
+    $output="<style> .no-js .a-levelThumb_img.levelThumb_omitSrc{ display: none;} </style>";
+    echo $output;
+}
