@@ -116,7 +116,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'imgWidth_noMq',
-        'Lores image width',
+        'Lores image width:',
         'levelThumbs_imgWidth_noMq_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_imagewidths',
@@ -127,7 +127,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'imgWidth_noMq_R',
-        'Hires/retina image width',
+        'Hires/retina image width:',
         'levelThumbs_imgWidth_noMq_R_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_imagewidths',
@@ -221,15 +221,24 @@ function levelThumbs_plugin_initialize_options() {
     );
 
     add_settings_field(
-        'wysiwyg',
-        'How do you want to handle images pulled by the WYSIWYG-editor?',
-        'levelThumbs_srcset_wysiwyg_callback',
+        'contentFilter',
+        'Enable filter:',
+        'levelThumbs_contentFilter_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_wysiwyg',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            'wysiwyg_passive' => 'Do NOT srcset them',
-            'filter_the_content' => 'Filter',
-            'shortcode' => 'Shortcode'
+            __( 'Filter expl', 'levelThumbs' ),
+        )
+    );
+
+    add_settings_field(
+        'shortcode',
+        'Enable shortcode:',
+        'levelThumbs_shortcode_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_wysiwyg',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __( 'Shortcode expl', 'levelThumbs' ),
         )
     );
 
@@ -244,7 +253,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'picturefill',
-        'Enqueue Picturefill.js',
+        'Enqueue Picturefill:',
         'levelThumbs_picturefill_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -255,7 +264,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'lazyload',
-        'Enable lazyload',
+        'Enable lazyload:',
         'levelThumbs_lazyload_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -263,6 +272,28 @@ function levelThumbs_plugin_initialize_options() {
             __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload all srcset-images.', 'levelThumbs' ),
         )
     );
+
+    // Settings section for Styles -------------------------------------------------------------------------------------------------------------------------
+
+    add_settings_section(
+        'levelThumbs_styles',
+        __('Styles', 'levelThumbs'),
+        'levelThumbs_styles_callback',
+        'levelThumbs_plugin_options'
+    );
+
+    add_settings_field(
+        'prevDupl',
+        'Chrome style:',
+        'levelThumbs_prevDupl_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_styles',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __( 'explanation', 'levelThumbs' ),
+        )
+    );
+
+    // Register and sanitize -------------------------------------------------------------------------------------------------------------------------
 
 	register_setting(
 		'levelThumbs_plugin_options',
@@ -293,6 +324,10 @@ function levelThumbs_wysiwyg_callback() {
 
 function levelThumbs_jslib_callback() {
     echo '<p>' . __( '<em>There might be later versions of the provided resources Enqueue and dequeue.</em>', 'levelThumbs' ) . '</p>';
+}
+
+function levelThumbs_styles_callback() {
+    echo '<p>' . __( 'Stylehandler', 'levelThumbs' ) . '</p>';
 }
 
 
@@ -402,12 +437,18 @@ function levelThumbs_srcsetsize_five_callback($args) {
 
 // Images pulled by WYSIWYG-editor
 
-function levelThumbs_srcset_wysiwyg_callback($args) {
-    $options = get_option( 'levelThumbs_plugin_options' );
-    foreach($args as $arg) {
-        $html = '<label><input '.checked( $options['wysiwyg'], $arg, 0 ).' value="'.$arg.'" name="levelThumbs_plugin_options[wysiwyg]" type="radio" /> '.$arg.'</label><br />';
-        echo $html;
-    }
+function levelThumbs_contentFilter_callback($args) {
+    $options = get_option('levelThumbs_plugin_options');
+    $html = '<input type="checkbox" id="contentFilter" name="levelThumbs_plugin_options[contentFilter]" value="1" ' . checked(1, isset($options['contentFilter']) ? $options['contentFilter'] : 0, false) . '/>';
+    $html .= '<label for="contentFilter">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+function levelThumbs_shortcode_callback($args) {
+    $options = get_option('levelThumbs_plugin_options');
+    $html = '<input type="checkbox" id="shortcode" name="levelThumbs_plugin_options[shortcode]" value="1" ' . checked(1, isset($options['shortcode']) ? $options['shortcode'] : 0, false) . '/>';
+    $html .= '<label for="shortcode">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
 }
 
 // JS-libraries
@@ -423,6 +464,15 @@ function levelThumbs_lazyload_callback($args) {
     $options = get_option('levelThumbs_plugin_options');
     $html = '<input type="checkbox" id="lazyload" name="levelThumbs_plugin_options[lazyload]" value="1" ' . checked(1, isset($options['lazyload']) ? $options['lazyload'] : 0, false) . '/>';
     $html .= '<label for="lazyload">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
+}
+
+// Styles
+
+function levelThumbs_prevDupl_callback($args) {
+    $options = get_option('levelThumbs_plugin_options');
+    $html = '<input type="checkbox" id="prevDupl" name="levelThumbs_plugin_options[prevDupl]" value="1" ' . checked(1, isset($options['prevDupl']) ? $options['prevDupl'] : 0, false) . '/>';
+    $html .= '<label for="prevDupl">&nbsp;'  . $args[0] . '</label>';
     echo $html;
 }
 
