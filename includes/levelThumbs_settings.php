@@ -40,7 +40,9 @@ function levelThumbs_plugin_default_options() {
         'srcsetSize_secondMq' => '100',
         'srcsetSize_thirdMq' => '100',
         'srcsetSize_fourthMq' => '100',
-        'wysiwyg' => 'Do not srcset them'
+        'wysiwyg' => 'Do not srcset them',
+        'userpathPolyfill' => '',
+        'userpathLazyload' => ''
 	);
 	return apply_filters( 'levelThumbs_plugin_default_options', $defaults );
 }
@@ -263,6 +265,17 @@ function levelThumbs_plugin_initialize_options() {
     );
 
     add_settings_field(
+        'userpathPolyfill',
+        'New polyfill:',
+        'levelThumbs_userpathPolyfill_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_jslib',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __( 'Descr relative path.', 'levelThumbs' ),
+        )
+    );
+
+    add_settings_field(
         'lazyload',
         'Enable lazyload:',
         'levelThumbs_lazyload_callback',
@@ -270,6 +283,17 @@ function levelThumbs_plugin_initialize_options() {
         'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
             __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload all srcset-images.', 'levelThumbs' ),
+        )
+    );
+
+    add_settings_field(
+        'userpathLazyload',
+        'Enqueue new lazyload js:',
+        'levelThumbs_userpathLazyload_callback',
+        'levelThumbs_plugin_options',
+        'levelThumbs_jslib',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __( 'Descr relative path', 'levelThumbs' ),
         )
     );
 
@@ -460,11 +484,43 @@ function levelThumbs_picturefill_callback($args) {
     echo $html;
 }
 
+function levelThumbs_userpathPolyfill_callback() {
+
+    // First, we read the social options collection
+    $options = get_option('levelThumbs_plugin_options');
+
+    // Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
+    $url = '';
+    if(isset($options['userpathPolyfill'])) {
+        $url = $options['userpathPolyfill'];
+    } // end if
+
+    // Render the output
+    echo '<input type="text" id="userpathPolyfill" name="levelThumbs_plugin_options[userpathPolyfill]" value="' . $options['userpathPolyfill'] . '" />';
+
+}
+
 function levelThumbs_lazyload_callback($args) {
     $options = get_option('levelThumbs_plugin_options');
     $html = '<input type="checkbox" id="lazyload" name="levelThumbs_plugin_options[lazyload]" value="1" ' . checked(1, isset($options['lazyload']) ? $options['lazyload'] : 0, false) . '/>';
     $html .= '<label for="lazyload">&nbsp;'  . $args[0] . '</label>';
     echo $html;
+}
+
+function levelThumbs_userpathLazyload_callback() {
+
+    // First, we read the social options collection
+    $options = get_option('levelThumbs_plugin_options');
+
+    // Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
+    $url = '';
+    if( isset( $options['userpathLazyload'] ) ) {
+        $url = $options['userpathLazyload'];
+    } // end if
+
+    // Render the output
+    echo '<input type="text" id="userpathLazyload" name="levelThumbs_plugin_options[userpathLazyload]" value="' . $options['userpathLazyload'] . '" />';
+
 }
 
 // Styles
