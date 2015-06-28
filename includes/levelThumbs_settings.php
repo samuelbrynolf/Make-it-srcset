@@ -255,7 +255,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'picturefill',
-        'Enqueue Picturefill:',
+        'Enable Picturefill v2.3.1:',
         'levelThumbs_picturefill_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -266,7 +266,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'userpathPolyfill',
-        'New polyfill:',
+        'Replace Picturefill version:',
         'levelThumbs_userpathPolyfill_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -277,7 +277,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'lazyload',
-        'Enable lazyload:',
+        'Enable Lazyload v1.1.3:',
         'levelThumbs_lazyload_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -288,7 +288,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'userpathLazyload',
-        'Enqueue new lazyload js:',
+        'Replace Lazyload version:',
         'levelThumbs_userpathLazyload_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -484,7 +484,7 @@ function levelThumbs_picturefill_callback($args) {
     echo $html;
 }
 
-function levelThumbs_userpathPolyfill_callback() {
+function levelThumbs_userpathPolyfill_callback($args) {
 
     // First, we read the social options collection
     $options = get_option('levelThumbs_plugin_options');
@@ -496,8 +496,9 @@ function levelThumbs_userpathPolyfill_callback() {
     } // end if
 
     // Render the output
-    echo '<input type="text" id="userpathPolyfill" name="levelThumbs_plugin_options[userpathPolyfill]" value="' . $options['userpathPolyfill'] . '" />';
-
+    $html = '<input type="text" id="userpathPolyfill" name="levelThumbs_plugin_options[userpathPolyfill]" value="' . $options['userpathPolyfill'] . '" />';
+    $html .= '<label for="userpathPolyfill">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
 }
 
 function levelThumbs_lazyload_callback($args) {
@@ -507,7 +508,7 @@ function levelThumbs_lazyload_callback($args) {
     echo $html;
 }
 
-function levelThumbs_userpathLazyload_callback() {
+function levelThumbs_userpathLazyload_callback($args) {
 
     // First, we read the social options collection
     $options = get_option('levelThumbs_plugin_options');
@@ -519,8 +520,9 @@ function levelThumbs_userpathLazyload_callback() {
     } // end if
 
     // Render the output
-    echo '<input type="text" id="userpathLazyload" name="levelThumbs_plugin_options[userpathLazyload]" value="' . $options['userpathLazyload'] . '" />';
-
+    $html = '<input type="text" id="userpathLazyload" name="levelThumbs_plugin_options[userpathLazyload]" value="' . $options['userpathLazyload'] . '" />';
+    $html .= '<label for="userpathLazyload">&nbsp;'  . $args[0] . '</label>';
+    echo $html;
 }
 
 // Styles
