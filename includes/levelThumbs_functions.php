@@ -1,5 +1,20 @@
 <?php
 
+// Add async attributes to js-files ------------------------------------------------------------------
+
+function add_async_forscript($url){
+    if (strpos($url, '#asyncload')===false)
+        return $url;
+    else if (is_admin())
+        return str_replace('#asyncload', '', $url);
+    else
+        return str_replace('#asyncload', '', $url)."' async='async";
+}
+
+if(levelThumbs_get_option_boolean('picturefill') || levelThumbs_get_option_boolean('lazyload')) {
+    add_filter('clean_url', 'add_async_forscript', 11, 1);
+}
+
 // Add needed image formats ------------------------------------------------------------------
 
 function levelThumbs_imgInit() {
@@ -51,13 +66,15 @@ $levelThumbs_filter_the_content = false){
         $img_noMq_R = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq');
         $img_noMq = wp_get_attachment_image_src($levelThumbs_attachment_id, 'img_noMq_half');
         $alt = get_post_meta($levelThumbs_attachment_id, '_wp_attachment_image_alt', true);
+        $filename = get_post_meta($levelThumbs_attachment_id, '_wp_attached_file', true);
+
     } else {
         echo '<p>Hi! levelThumbs_srcset_image() / [Srcset-image] - shortcode needs the attachment ID for the image you want to show. Read up on <a href="#">Link</a></p>';
         return;
     }
 
     // Build needed html-strings: Open img tag
-    $levelThumbs_openImgTag = '<img class="a-levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_option_boolean('lazyload') ? ' lazyload' : '').(is_null($cssClass) ? '' : ' '.$cssClass).'"'.($alt ? ' alt="'.$alt.'"' : '').(levelThumbs_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
+    $levelThumbs_openImgTag = '<img class="a-levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_option_boolean('lazyload') ? ' lazyload' : '').(is_null($cssClass) ? '' : ' '.$cssClass).'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(levelThumbs_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
     if($img_noMq[3]) {
 
