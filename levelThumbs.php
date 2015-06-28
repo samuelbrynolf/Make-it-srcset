@@ -31,12 +31,16 @@ class levelThumbs {
 
 	public function scripts(){
 		function levelThumbs_scripts(){
-            if(levelThumbs_get_option_boolean('picturefill')) {
-                wp_enqueue_script('picturefill', plugins_url('/js/picturefill.min.js#asyncload', __FILE__), array(), null, false);
-            }
+            if(levelThumbs_get_option_boolean('picturefill') && levelThumbs_get_option_boolean('lazyload')){
+                wp_enqueue_script('levelThumbsBundled', plugins_url('/js/bundled.min.js#asyncload', __FILE__), array(), null, false);
+            } else {
+                if(levelThumbs_get_option_boolean('picturefill')) {
+                    wp_enqueue_script('picturefill', plugins_url('/js/picturefill.min.js#asyncload', __FILE__), array(), null, false);
+                }
 
-            if(levelThumbs_get_option_boolean('lazyload')) {
-                wp_enqueue_script('lazysizes', plugins_url('/js/lazysizes.min.js#asyncload', __FILE__), array(), null, false);
+                if(levelThumbs_get_option_boolean('lazyload')) {
+                    wp_enqueue_script('lazysizes', plugins_url('/js/lazysizes.min.js#asyncload', __FILE__), array(), null, false);
+                }
             }
 		}
 		add_action('wp_enqueue_scripts', 'levelThumbs_scripts');
