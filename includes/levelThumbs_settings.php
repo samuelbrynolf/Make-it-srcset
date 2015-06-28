@@ -255,7 +255,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'picturefill',
-        'Enable Picturefill v2.3.1:',
+        'Enable polyfill:',
         'levelThumbs_picturefill_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -266,18 +266,18 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'userpathPolyfill',
-        'Replace Picturefill version:',
+        'Replace Picturefill v2.3.1:',
         'levelThumbs_userpathPolyfill_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Descr relative path.', 'levelThumbs' ),
+            __( 'Set custom path to replace Picturefill v2.3.1 with a later version.', 'levelThumbs' ),
         )
     );
 
     add_settings_field(
         'lazyload',
-        'Enable Lazyload v1.1.3:',
+        'Enable Lazyloading:',
         'levelThumbs_lazyload_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -288,12 +288,12 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'userpathLazyload',
-        'Replace Lazyload version:',
+        'Replace Lazysizes v1.1.3:',
         'levelThumbs_userpathLazyload_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Descr relative path', 'levelThumbs' ),
+            __( 'Set custom path to replace Lazysizes v1.1.3 with a later version.', 'levelThumbs' ),
         )
     );
 
@@ -496,7 +496,7 @@ function levelThumbs_userpathPolyfill_callback($args) {
     } // end if
 
     // Render the output
-    $html = '<input type="text" id="userpathPolyfill" name="levelThumbs_plugin_options[userpathPolyfill]" value="' . $options['userpathPolyfill'] . '" />';
+    $html = '<input type="text" id="userpathPolyfill" placeholder="http://" name="levelThumbs_plugin_options[userpathPolyfill]" value="' . $options['userpathPolyfill'] . '" />';
     $html .= '<label for="userpathPolyfill">&nbsp;'  . $args[0] . '</label>';
     echo $html;
 }
@@ -520,7 +520,7 @@ function levelThumbs_userpathLazyload_callback($args) {
     } // end if
 
     // Render the output
-    $html = '<input type="text" id="userpathLazyload" name="levelThumbs_plugin_options[userpathLazyload]" value="' . $options['userpathLazyload'] . '" />';
+    $html = '<input type="text" id="userpathLazyload" placeholder="http://" name="levelThumbs_plugin_options[userpathLazyload]" value="' . $options['userpathLazyload'] . '" />';
     $html .= '<label for="userpathLazyload">&nbsp;'  . $args[0] . '</label>';
     echo $html;
 }
