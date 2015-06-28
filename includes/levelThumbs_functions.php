@@ -2,6 +2,10 @@
 
 // Add async attributes to js-files ------------------------------------------------------------------
 
+if(levelThumbs_get_option_boolean('picturefill') || levelThumbs_get_option_boolean('lazyload')) {
+    add_filter('clean_url', 'add_async_forscript', 11, 1);
+}
+
 function add_async_forscript($url){
     if (strpos($url, '#asyncload')===false)
         return $url;
@@ -11,9 +15,7 @@ function add_async_forscript($url){
         return str_replace('#asyncload', '', $url)."' async='async";
 }
 
-if(levelThumbs_get_option_boolean('picturefill') || levelThumbs_get_option_boolean('lazyload')) {
-    add_filter('clean_url', 'add_async_forscript', 11, 1);
-}
+
 
 // Add needed image formats ------------------------------------------------------------------
 
@@ -124,7 +126,9 @@ $levelThumbs_filter_the_content = false){
 
 // Filter the_content with add_filter ------------------------------------------------------------------
 
-add_filter('the_content', 'levelThumbs_srcset_the_content_images');
+if(levelThumbs_get_option_boolean('contentFilter')){
+    add_filter('the_content', 'levelThumbs_srcset_the_content_images');
+}
 
 function levelThumbs_srcset_the_content_images($content){
 
@@ -191,7 +195,11 @@ function levelThumbs_shortcode($atts){
         $levelThumbs_shortcode=ob_get_contents();;
     ob_end_clean();
 
-    return $levelThumbs_shortcode;
+    if(levelThumbs_get_option_boolean('shortcode')) {
+        return $levelThumbs_shortcode;
+    } else {
+        return;
+    }
 }
 
 
