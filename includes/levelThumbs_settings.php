@@ -255,12 +255,12 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'picturefill',
-        'Enable polyfill:',
+        'Enable srcset-polyfill:',
         'levelThumbs_picturefill_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Provide a wider support for custom template tags that uses srcset, with Picturefill.', 'levelThumbs' ),
+            __( 'Provide a wider support for custom template tags that uses srcset, with Picturefill v2.3.1.', 'levelThumbs' ),
         )
     );
 
@@ -271,7 +271,7 @@ function levelThumbs_plugin_initialize_options() {
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Set custom path to replace Picturefill v2.3.1 with a later version.', 'levelThumbs' ),
+            __( 'Replace Picturefill v2.3.1 with a later version (Set full path).', 'levelThumbs' ),
         )
     );
 
@@ -282,7 +282,7 @@ function levelThumbs_plugin_initialize_options() {
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Activate and enqueue <a href="#">Lazysizes</a> to lazyload all srcset-images.', 'levelThumbs' ),
+            __( 'Activate and enqueue <a href="#">Lazysizes</a> v1.1.3 to lazyload all srcset-images.', 'levelThumbs' ),
         )
     );
 
@@ -293,7 +293,7 @@ function levelThumbs_plugin_initialize_options() {
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
-            __( 'Set custom path to replace Lazysizes v1.1.3 with a later version.', 'levelThumbs' ),
+            __( 'Replace Lazysizes v1.1.3 with a later version (Set full path).', 'levelThumbs' ),
         )
     );
 

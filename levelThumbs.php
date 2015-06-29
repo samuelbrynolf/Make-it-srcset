@@ -31,18 +31,37 @@ class levelThumbs {
 
 	public function scripts(){
 		function levelThumbs_scripts(){
-            if(levelThumbs_get_option_boolean('picturefill') && levelThumbs_get_option_boolean('lazyload')){
+
+            // If user want all built in scripts, enqueue a bundled version...
+            if(levelThumbs_get_option_boolean('picturefill') && levelThumbs_get_option_boolean('lazyload') && !levelThumbs_get_option_string('userpathPolyfill') && !levelThumbs_get_option_string('userpathLazyload')) {
                 wp_enqueue_script('levelThumbsBundled', plugins_url('/js/bundled.min.js#asyncload', __FILE__), array(), null, false);
             } else {
-                if(levelThumbs_get_option_boolean('picturefill')) {
-                    wp_enqueue_script('picturefill', plugins_url('/js/picturefill.min.js#asyncload', __FILE__), array(), null, false);
-                }
 
-                if(levelThumbs_get_option_boolean('lazyload')) {
-                    wp_enqueue_script('lazysizes', plugins_url('/js/lazysizes.min.js#asyncload', __FILE__), array(), null, false);
-                }
-            }
-		}
+                // ...if not, check if they want picturefill...
+                if(levelThumbs_get_option_boolean('picturefill')){
+                    // ...yes? do they want their own / updated version?
+                    if(levelThumbs_get_option_string('userpathPolyfill')){
+                        // enqueue new poly path
+                    } else {
+                        // ... no? Run built in picurefill
+                        wp_enqueue_script('picturefill', plugins_url('/js/picturefill.min.js#asyncload', __FILE__), array(), null, false);
+                    }
+                } // end polyfill conditional
+
+                // ...if not, check if they want to lazyload...
+                if(levelThumbs_get_option_boolean('lazyload')){
+                    // ...yes? do they want their own / updated version?
+                    if(levelThumbs_get_option_string('userpathLazyload')){
+                        // enqueue new lazyversion path
+                    } else {
+                        // ... no? Run built in picurefill
+                        wp_enqueue_script('lazysizes', plugins_url('/js/lazysizes.min.js#asyncload', __FILE__), array(), null, false);
+                    }
+                } // end lazyolad conditional
+
+            } // end conditional for bundled vs custom paths
+
+        }
 		add_action('wp_enqueue_scripts', 'levelThumbs_scripts');
 	}
 }
