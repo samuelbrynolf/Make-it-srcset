@@ -83,6 +83,7 @@ $levelThumbs_filter_the_content = false){
             $img_firstMq[0] . ' ' . $img_firstMq[1] . 'w, ' .
             $img_noMq_R[0] . ' ' . $img_noMq_R[1] . 'w, ' .
             $img_noMq[0] . ' ' . $img_noMq[1] . 'w';
+        
     } else {
 
         // Attachment has not needed imageformats (aka uploaded before plugin was active) - use built in wp-formats
@@ -191,7 +192,7 @@ function levelThumbs_shortcode($atts){
 
     if(levelThumbs_get_option_boolean('shortcode')) {
         return $levelThumbs_shortcode;
-    } else {}
+    }
 }
 
 
