@@ -19,13 +19,13 @@ function levelThumbs_imgInit() {
     }
 
     if (function_exists('add_image_size')) {
-        add_image_size('img_fatscreen', levelThumbs_get_option_string('imgWidth_fatscreen'));
-        add_image_size('img_fourthMq', levelThumbs_get_option_string('imgWidth_fourthMq'));
-        add_image_size('img_thirdMq', levelThumbs_get_option_string('imgWidth_thirdMq'));
-        add_image_size('img_secondMq', levelThumbs_get_option_string('imgWidth_secondMq'));
-        add_image_size('img_firstMq', levelThumbs_get_option_string('imgWidth_firstMq'));
-        add_image_size('img_noMq_R', levelThumbs_get_option_string('imgWidth_noMq_R'));
-        add_image_size('img_noMq', levelThumbs_get_option_string('imgWidth_noMq'));
+        add_image_size('img_fatscreen', levelThumbs_get_option_integer('imgWidth_fatscreen'));
+        add_image_size('img_fourthMq', levelThumbs_get_option_integer('imgWidth_fourthMq'));
+        add_image_size('img_thirdMq', levelThumbs_get_option_integer('imgWidth_thirdMq'));
+        add_image_size('img_secondMq', levelThumbs_get_option_integer('imgWidth_secondMq'));
+        add_image_size('img_firstMq', levelThumbs_get_option_integer('imgWidth_firstMq'));
+        add_image_size('img_noMq_R', levelThumbs_get_option_integer('imgWidth_noMq_R'));
+        add_image_size('img_noMq', levelThumbs_get_option_integer('imgWidth_noMq'));
     }
 }
 
@@ -46,11 +46,11 @@ $cssClass = null,
 $levelThumbs_filter_the_content = false){
 
     // Vars: Set srcset sizes
-    $srcsetSize_noMq = (is_null($srcsetSize_noMq)) ? levelThumbs_get_option_string('srcsetSize_noMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_noMq);
-    $srcsetSize_firstMq = (is_null($srcsetSize_firstMq)) ? levelThumbs_get_option_string('srcsetSize_firstMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_firstMq);
-    $srcsetSize_secondMq = (is_null($srcsetSize_secondMq)) ? levelThumbs_get_option_string('srcsetSize_secondMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_secondMq);
-    $srcsetSize_thirdMq = (is_null($srcsetSize_thirdMq)) ? levelThumbs_get_option_string('srcsetSize_thirdMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_thirdMq);
-    $srcsetSize_fourthMq = (is_null($srcsetSize_fourthMq)) ? levelThumbs_get_option_string('srcsetSize_fourthMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_fourthMq);
+    $srcsetSize_noMq = (is_null($srcsetSize_noMq)) ? levelThumbs_get_option_integer('srcsetSize_noMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_noMq);
+    $srcsetSize_firstMq = (is_null($srcsetSize_firstMq)) ? levelThumbs_get_option_integer('srcsetSize_firstMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_firstMq);
+    $srcsetSize_secondMq = (is_null($srcsetSize_secondMq)) ? levelThumbs_get_option_integer('srcsetSize_secondMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_secondMq);
+    $srcsetSize_thirdMq = (is_null($srcsetSize_thirdMq)) ? levelThumbs_get_option_integer('srcsetSize_thirdMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_thirdMq);
+    $srcsetSize_fourthMq = (is_null($srcsetSize_fourthMq)) ? levelThumbs_get_option_integer('srcsetSize_fourthMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_fourthMq);
 
     // Vars: Set imageformats IF there is an attachment ID passed as an integer and if that attachment is an image. If not give a link to documentation
     if (is_numeric($levelThumbs_attachment_id) && isset($levelThumbs_attachment_id) && wp_attachment_is_image($levelThumbs_attachment_id)) {

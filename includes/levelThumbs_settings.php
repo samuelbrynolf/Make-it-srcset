@@ -548,9 +548,9 @@ function validate_sanitize_input($input) {
 	return apply_filters('validate_sanitize_input', $output, $input);
 }
 
-function levelThumbs_get_option_string($fieldID){
+function levelThumbs_get_option_integer($fieldID){
     $options = get_option('levelThumbs_plugin_options');
-    return $value = sanitize_key($options[$fieldID]);
+    return $value = preg_replace('/[^0-9]+/', '', $options[$fieldID]);
 }
 
 function levelThumbs_get_option_boolean($fieldID){
