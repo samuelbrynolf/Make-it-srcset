@@ -41,7 +41,7 @@ function levelThumbs_plugin_default_options() {
         'srcsetSize_thirdMq' => '100',
         'srcsetSize_fourthMq' => '100',
         'wysiwyg' => 'Do not srcset them',
-        'userpathPolyfill' => '',
+        'userpathPicturefill' => '',
         'userpathLazyload' => ''
 	);
 	return apply_filters( 'levelThumbs_plugin_default_options', $defaults );
@@ -248,14 +248,14 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_section(
         'levelThumbs_jslib',
-        __('Javascript: Polyfill & Lazyload', 'levelThumbs'),
+        __('Javascript: Picturefill & Lazyload', 'levelThumbs'),
         'levelThumbs_jslib_callback',
         'levelThumbs_plugin_options'
     );
 
     add_settings_field(
         'picturefill',
-        'Enable srcset-polyfill:',
+        'Enable Picturefill:',
         'levelThumbs_picturefill_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -265,9 +265,9 @@ function levelThumbs_plugin_initialize_options() {
     );
 
     add_settings_field(
-        'userpathPolyfill',
+        'userpathPicturefill',
         'Replace Picturefill v2.3.1:',
-        'levelThumbs_userpathPolyfill_callback',
+        'levelThumbs_userpathPicturefill_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
         array(        // The array of arguments to pass to the callback. In this case, just a description.
@@ -277,7 +277,7 @@ function levelThumbs_plugin_initialize_options() {
 
     add_settings_field(
         'lazyload',
-        'Enable Lazyloading:',
+        'Enable Lazysizes:',
         'levelThumbs_lazyload_callback',
         'levelThumbs_plugin_options',
         'levelThumbs_jslib',
@@ -484,20 +484,20 @@ function levelThumbs_picturefill_callback($args) {
     echo $html;
 }
 
-function levelThumbs_userpathPolyfill_callback($args) {
+function levelThumbs_userpathPicturefill_callback($args) {
 
     // First, we read the social options collection
     $options = get_option('levelThumbs_plugin_options');
 
     // Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
-    $url = '';
-    if(isset($options['userpathPolyfill'])) {
-        $url = $options['userpathPolyfill'];
-    } // end if
+    //$url = '';
+    //if(isset($options['userpathPicturefill'])) {
+    //    $url = $options['userpathPicturefill'];
+    //} // end if
 
     // Render the output
-    $html = '<input type="text" id="userpathPolyfill" placeholder="http://" name="levelThumbs_plugin_options[userpathPolyfill]" value="' . $options['userpathPolyfill'] . '" />';
-    $html .= '<label for="userpathPolyfill">&nbsp;'  . $args[0] . '</label>';
+    $html = '<input type="text" id="userpathPicturefill" placeholder="http://" name="levelThumbs_plugin_options[userpathPicturefill]" value="' . esc_url_raw($options['userpathPicturefill']) . '" />';
+    $html .= '<label for="userpathPicturefill">&nbsp;'  . $args[0] . '</label>';
     echo $html;
 }
 
@@ -514,13 +514,13 @@ function levelThumbs_userpathLazyload_callback($args) {
     $options = get_option('levelThumbs_plugin_options');
 
     // Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
-    $url = '';
-    if( isset( $options['userpathLazyload'] ) ) {
-        $url = $options['userpathLazyload'];
-    } // end if
+    // $url = '';
+    // if( isset( $options['userpathLazyload'] ) ) {
+    //    $url = $options['userpathLazyload'];
+    //} // end if
 
     // Render the output
-    $html = '<input type="text" id="userpathLazyload" placeholder="http://" name="levelThumbs_plugin_options[userpathLazyload]" value="' . $options['userpathLazyload'] . '" />';
+    $html = '<input type="text" id="userpathLazyload" placeholder="http://" name="levelThumbs_plugin_options[userpathLazyload]" value="' . esc_url_raw($options['userpathLazyload']) . '" />';
     $html .= '<label for="userpathLazyload">&nbsp;'  . $args[0] . '</label>';
     echo $html;
 }
@@ -542,8 +542,7 @@ function validate_sanitize_input($input) {
 	$output = array();
 	foreach($input as $key => $value){
 		if(isset($input[$key])){
-			// $output[$key] = preg_replace('/[^0-9]+/', '', $input[ $key ] );
-			$output[$key] = strip_tags( stripslashes( $input[ $key ] ) );
+			$output[$key] = strip_tags(stripslashes($input[$key]));
 		}
 	}
 	return apply_filters('validate_sanitize_input', $output, $input);
@@ -557,4 +556,9 @@ function levelThumbs_get_option_string($fieldID){
 function levelThumbs_get_option_boolean($fieldID){
     $options = get_option('levelThumbs_plugin_options');
     return $value = isset($options[$fieldID]) && intval($options[$fieldID]);
+}
+
+function levelThumbs_get_option_url($fieldID){
+    $options = get_option('levelThumbs_plugin_options');
+    return $value = esc_url_raw($options[$fieldID]);
 }

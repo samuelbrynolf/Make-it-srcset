@@ -2,20 +2,14 @@
 
 // Add async attributes to js-files ------------------------------------------------------------------
 
-if(levelThumbs_get_option_boolean('picturefill') || levelThumbs_get_option_boolean('lazyload')) {
-    add_filter('clean_url', 'add_async_forscript', 11, 1);
-}
-
-function add_async_forscript($url){
-    if (strpos($url, '#asyncload')===false)
+function levelThumbs_async_forscript($url){
+    if (strpos($url, '#levelThumbsAsyncload')===false)
         return $url;
     else if (is_admin())
-        return str_replace('#asyncload', '', $url);
+        return str_replace('#levelThumbsAsyncload', '', $url);
     else
-        return str_replace('#asyncload', '', $url)."' async='async";
+        return str_replace('#levelThumbsAsyncload', '', $url)."' async='async";
 }
-
-
 
 // Add needed image formats ------------------------------------------------------------------
 
@@ -197,9 +191,7 @@ function levelThumbs_shortcode($atts){
 
     if(levelThumbs_get_option_boolean('shortcode')) {
         return $levelThumbs_shortcode;
-    } else {
-        return;
-    }
+    } else {}
 }
 
 
