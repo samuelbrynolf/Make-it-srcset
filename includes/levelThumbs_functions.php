@@ -70,15 +70,18 @@ $levelThumbs_filter_the_content = false){
         return;
     }
 
-    // Build needed html-strings: Open parent container tag (if figcaption exists make it a figure-element)
+    // Var: Css-classes for img parent element
+    $parent_css_class = (is_null($cssClass) ? '' : ' '.$cssClass);
+
+    // Var: Parent container tag (if figcaption exists make it a figure-element)
     if(is_null($figcaption)){
-        $levelThumbs_containerTag = '<div class="levelThumb_container levelThumb_div">';
+        $levelThumbs_containerTag = '<div class="levelThumb_container levelThumb_div'.$parent_css_class.'">';
     } else {
-        $levelThumbs_containerTag = '<figure class="levelThumb_container levelThumb_figure">';
+        $levelThumbs_containerTag = '<figure class="levelThumb_container levelThumb_figure'.$parent_css_class.'">';
     }
 
-    // Build needed html-strings: Open img tag
-    $levelThumbs_imgTag = '<img class="levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_option_boolean('lazyload') ? ' lazyload' : '').(is_null($cssClass) ? '' : ' '.$cssClass).'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(levelThumbs_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
+    // Var: Img tag
+    $levelThumbs_imgTag = '<img class="levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_option_boolean('lazyload') ? ' lazyload' : '').'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(levelThumbs_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
     if($img_noMq[3]) {
 
@@ -107,23 +110,23 @@ $levelThumbs_filter_the_content = false){
             $img_defaultThumb[0] . ' ' . $img_defaultThumb[1] . 'w';
     }
 
-    // Build needed html-strings: Srcset-sizes and mediaqueries
+    // Var: Srcset-sizes and Srcset-mediaqueries
     $levelThumbs_srcsetSizes = '(min-width: '.$img_fourthMq[1].'px) '.$srcsetSize_fourthMq.'vw, (min-width: '.$img_thirdMq[1].'px) '.$srcsetSize_thirdMq.'vw, (min-width: '.$img_secondMq[1].'px) '.$srcsetSize_secondMq.'vw, (min-width: '.$img_firstMq[1].'px) '.$srcsetSize_firstMq.'vw, '. $srcsetSize_noMq.'vw';
 
-    // Build needed html-strings: Close img
+    // Var: Endtag img
     $levelThumbs_closeImgTag = '/>';
 
-    // Build needed html-strings: Fallback img in noscript-tag
+    // Var: Fallback img in noscript-tag
     $levelThumbs_noscriptTag = '<noscript><img class="levelThumb_img levelThumb_nojs'.(is_null($cssClass) ? '' : ' '.$cssClass).'" src="'.($img_noMq[3] ? $img_secondMq[0] : $img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
-    // Build needed html-strings: Open parent container tag (if figcaption exists make it a figure-element)
+    // Var: Figcaption
     if(is_null($figcaption)) {
         $levelThumbs_figcaptionTag = '';
     } else {
         $levelThumbs_figcaptionTag = '<figcaption class="levelThumb_figcaption">'.$figcaption.'</figcaption>';
     }
 
-    // Build needed html-strings: Close parent container
+    // Var: Endtag parent container
     if(is_null($figcaption)) {
         $levelThumbs_closeImgContainer = '</div>';
     } else {
@@ -202,14 +205,14 @@ function levelThumbs_shortcode($atts){
             'srcsetSize_secondMq' => null,
             'srcsetSize_thirdMq' => null,
             'srcsetSize_fourthMq' => null,
-            'css_class' => null,
+            'parent_css_class' => null,
             'figcaption' => null
         ), $atts));
 
     // https://wordpress.org/support/topic/plugin-called-via-shortcode-appears-at-the-wrong-place-on-post?replies=5
 
     ob_start();
-        levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $css_class, $figcaption);
+        levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $parent_css_class, $figcaption);
         $levelThumbs_shortcode=ob_get_contents();;
     ob_end_clean();
 
