@@ -117,7 +117,7 @@ $levelThumbs_filter_the_content = false){
     $levelThumbs_closeImgTag = '/>';
 
     // Var: Fallback img in noscript-tag
-    $levelThumbs_noscriptTag = '<noscript><img class="levelThumb_img levelThumb_nojs'.(is_null($cssClass) ? '' : ' '.$cssClass).'" src="'.($img_noMq[3] ? $img_secondMq[0] : $img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
+    $levelThumbs_noscriptTag = '<noscript><img class="levelThumb_img levelThumb_nojs" src="'.($img_noMq[3] ? $img_secondMq[0] : $img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
     // Var: Figcaption
     if(is_null($figcaption)) {
