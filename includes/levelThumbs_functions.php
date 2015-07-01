@@ -43,6 +43,7 @@ $srcsetSize_secondMq = null,
 $srcsetSize_thirdMq = null,
 $srcsetSize_fourthMq = null,
 $cssClass = null,
+$figcaption = null,
 $levelThumbs_filter_the_content = false){
 
     // Vars: Set srcset sizes
@@ -69,6 +70,13 @@ $levelThumbs_filter_the_content = false){
         return;
     }
 
+    // Build needed html-strings: Open parent container tag (if figcaption exists make it a figure-element)
+    if(is_null($figcaption)){
+        $levelThumbs_parentContainer = '<div class="m-levelThumb_parentContainer">';
+    } else {
+        $levelThumbs_parentContainer = '<figure class="m-levelThumb_parentContainer">';
+    }
+
     // Build needed html-strings: Open img tag
     $levelThumbs_openImgTag = '<img class="a-levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_option_boolean('lazyload') ? ' lazyload' : '').(is_null($cssClass) ? '' : ' '.$cssClass).'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(levelThumbs_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
@@ -83,7 +91,7 @@ $levelThumbs_filter_the_content = false){
             $img_firstMq[0] . ' ' . $img_firstMq[1] . 'w, ' .
             $img_noMq_R[0] . ' ' . $img_noMq_R[1] . 'w, ' .
             $img_noMq[0] . ' ' . $img_noMq[1] . 'w';
-        
+
     } else {
 
         // Attachment has not needed imageformats (aka uploaded before plugin was active) - use built in wp-formats
@@ -108,12 +116,19 @@ $levelThumbs_filter_the_content = false){
     // Build needed html-strings: Fallback img in noscript-tag
     $levelThumbs_noscriptTag = '<noscript><img class="a-levelThumb_img levelThumb_nojs'.(is_null($cssClass) ? '' : ' '.$cssClass).'" src="'.($img_noMq[3] ? $img_secondMq[0] : $img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
+    // Build needed html-strings: Close parent container
+    if(is_null($figcaption)) {
+        $levelThumbs_closeParentContainer = '</div>';
+    } else {
+        $levelThumbs_closeParentContainer = '</figure>';
+    }
+
     // Give two outputs for this function (add_filter for the_content only needs srcset specific attributes)
     if($levelThumbs_filter_the_content) {
         $levelThumbs_srcsetAttributes = array($levelThumbs_srcsetImages, $levelThumbs_srcsetSizes);
         return $levelThumbs_srcsetAttributes;
     } else {
-        echo $levelThumbs_openImgTag.'"'.$levelThumbs_srcsetImages.'" sizes="'.$levelThumbs_srcsetSizes.'"'.$levelThumbs_closeImgTag.$levelThumbs_noscriptTag;
+        echo $levelThumbs_parentContainer.$levelThumbs_openImgTag.'"'.$levelThumbs_srcsetImages.'" sizes="'.$levelThumbs_srcsetSizes.'"'.$levelThumbs_closeImgTag.$levelThumbs_noscriptTag.$levelThumbs_closeParentContainer;
     }
 }
 
@@ -180,13 +195,14 @@ function levelThumbs_shortcode($atts){
             'srcsetSize_secondMq' => null,
             'srcsetSize_thirdMq' => null,
             'srcsetSize_fourthMq' => null,
-            'css_class' => null
+            'css_class' => null,
+            'figcaption' => null
         ), $atts));
 
     // https://wordpress.org/support/topic/plugin-called-via-shortcode-appears-at-the-wrong-place-on-post?replies=5
 
     ob_start();
-        levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $css_class);
+        levelThumbs_srcset_image($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $css_class, $figcaption);
         $levelThumbs_shortcode=ob_get_contents();;
     ob_end_clean();
 
