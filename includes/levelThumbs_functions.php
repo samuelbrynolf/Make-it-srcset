@@ -72,13 +72,13 @@ $levelThumbs_filter_the_content = false){
 
     // Build needed html-strings: Open parent container tag (if figcaption exists make it a figure-element)
     if(is_null($figcaption)){
-        $levelThumbs_parentContainer = '<div class="m-levelThumb_parentContainer">';
+        $levelThumbs_containerTag = '<div class="levelThumb_container levelThumb_div">';
     } else {
-        $levelThumbs_parentContainer = '<figure class="m-levelThumb_parentContainer">';
+        $levelThumbs_containerTag = '<figure class="levelThumb_container levelThumb_figure">';
     }
 
     // Build needed html-strings: Open img tag
-    $levelThumbs_openImgTag = '<img class="a-levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_option_boolean('lazyload') ? ' lazyload' : '').(is_null($cssClass) ? '' : ' '.$cssClass).'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(levelThumbs_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
+    $levelThumbs_imgTag = '<img class="levelThumb_img levelThumb_omitSrc'.(levelThumbs_get_option_boolean('lazyload') ? ' lazyload' : '').(is_null($cssClass) ? '' : ' '.$cssClass).'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(levelThumbs_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
     if($img_noMq[3]) {
 
@@ -114,13 +114,20 @@ $levelThumbs_filter_the_content = false){
     $levelThumbs_closeImgTag = '/>';
 
     // Build needed html-strings: Fallback img in noscript-tag
-    $levelThumbs_noscriptTag = '<noscript><img class="a-levelThumb_img levelThumb_nojs'.(is_null($cssClass) ? '' : ' '.$cssClass).'" src="'.($img_noMq[3] ? $img_secondMq[0] : $img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
+    $levelThumbs_noscriptTag = '<noscript><img class="levelThumb_img levelThumb_nojs'.(is_null($cssClass) ? '' : ' '.$cssClass).'" src="'.($img_noMq[3] ? $img_secondMq[0] : $img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
+
+    // Build needed html-strings: Open parent container tag (if figcaption exists make it a figure-element)
+    if(is_null($figcaption)) {
+        $levelThumbs_figcaptionTag = '';
+    } else {
+        $levelThumbs_figcaptionTag = '<figcaption class="levelThumb_figcaption">'.$figcaption.'</figcaption>';
+    }
 
     // Build needed html-strings: Close parent container
     if(is_null($figcaption)) {
-        $levelThumbs_closeParentContainer = '</div>';
+        $levelThumbs_closeImgContainer = '</div>';
     } else {
-        $levelThumbs_closeParentContainer = '</figure>';
+        $levelThumbs_closeImgContainer = '</figure>';
     }
 
     // Give two outputs for this function (add_filter for the_content only needs srcset specific attributes)
@@ -128,7 +135,7 @@ $levelThumbs_filter_the_content = false){
         $levelThumbs_srcsetAttributes = array($levelThumbs_srcsetImages, $levelThumbs_srcsetSizes);
         return $levelThumbs_srcsetAttributes;
     } else {
-        echo $levelThumbs_parentContainer.$levelThumbs_openImgTag.'"'.$levelThumbs_srcsetImages.'" sizes="'.$levelThumbs_srcsetSizes.'"'.$levelThumbs_closeImgTag.$levelThumbs_noscriptTag.$levelThumbs_closeParentContainer;
+        echo $levelThumbs_containerTag.$levelThumbs_imgTag.'"'.$levelThumbs_srcsetImages.'" sizes="'.$levelThumbs_srcsetSizes.'"'.$levelThumbs_closeImgTag.$levelThumbs_noscriptTag.$levelThumbs_figcaptionTag.$levelThumbs_closeImgContainer;
     }
 }
 
@@ -165,10 +172,10 @@ function levelThumbs_srcset_the_content_images($content){
         $img -> removeAttribute("width");
         $img -> removeAttribute("height");
         if(levelThumbs_get_option_boolean('lazyload')){
-            $img->setAttribute("class", "lazyload a-levelThumb_img levelThumb_filtered $levelThumbs_attachment_classes");
+            $img->setAttribute("class", "lazyload levelThumb_img levelThumb_filtered $levelThumbs_attachment_classes");
             $img->setAttribute("data-srcset", $levelThumbs_srcset_html[0]);
         } else {
-            $img->setAttribute("class", "a-levelThumb_img levelThumb_filtered $levelThumbs_attachment_classes");
+            $img->setAttribute("class", "levelThumb_img levelThumb_filtered $levelThumbs_attachment_classes");
             $img->setAttribute("srcset", $levelThumbs_srcset_html[0]);
         }
         $img->setAttribute("sizes", $levelThumbs_srcset_html[1]);
@@ -220,6 +227,6 @@ if(levelThumbs_get_option_boolean('prevDupl')){
 }
 
 function levelThumbs_nojs_style(){
-    $output="<style> .no-js .a-levelThumb_img.levelThumb_omitSrc{ display: none;} </style>";
+    $output="<style> .no-js .levelThumb_img.levelThumb_omitSrc{ display: none;} </style>";
     echo $output;
 }
