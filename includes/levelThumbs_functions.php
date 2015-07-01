@@ -70,7 +70,7 @@ $levelThumbs_filter_the_content = false){
         return;
     }
 
-    // Var: Css-classes for img parent element
+    // Var: Css-classes for srcset parent element
     $parent_css_class = (is_null($cssClass) ? '' : ' '.$cssClass);
 
     // Var: Parent container tag (if figcaption exists make it a figure-element)
@@ -85,7 +85,7 @@ $levelThumbs_filter_the_content = false){
 
     if($img_noMq[3]) {
 
-        // Attachment has needed imageformats - use them
+        // Do attachment has needed imageformats? Use them
         $levelThumbs_srcsetImages =
             $img_fatscreen[0] . ' ' . $img_fatscreen[1] . 'w, ' .
             $img_fourthMq[0] . ' ' . $img_fourthMq[1] . 'w, ' .
@@ -133,11 +133,13 @@ $levelThumbs_filter_the_content = false){
         $levelThumbs_closeImgContainer = '</figure>';
     }
 
-    // Give two outputs for this function (add_filter for the_content only needs srcset specific attributes)
+    // BUILD HTML
     if($levelThumbs_filter_the_content) {
+        // Return only srcset attributes in array needed by the_content filter
         $levelThumbs_srcsetAttributes = array($levelThumbs_srcsetImages, $levelThumbs_srcsetSizes);
         return $levelThumbs_srcsetAttributes;
     } else {
+        // Build HTML for template tag and shortcode
         echo $levelThumbs_containerTag.$levelThumbs_imgTag.'"'.$levelThumbs_srcsetImages.'" sizes="'.$levelThumbs_srcsetSizes.'"'.$levelThumbs_closeImgTag.$levelThumbs_noscriptTag.$levelThumbs_figcaptionTag.$levelThumbs_closeImgContainer;
     }
 }
