@@ -159,7 +159,7 @@ function levelThumbs_srcset_the_content_images($content){
         // Loop each image in new DOMDocument. Save wp-standard classes, attachment ID to get needed srcset strings. Save those strings.
         $levelThumbs_attachment_classes = $img->getAttribute("class");
         $levelThumbs_attachment_id = preg_replace("/[^0-9]/","",$levelThumbs_attachment_classes);
-        $levelThumbs_srcset_html = levelThumbs_srcset_image($levelThumbs_attachment_id, null, null, null, null, null, null, true);
+        $levelThumbs_srcset_html = levelThumbs_srcset_image($levelThumbs_attachment_id, null, null, null, null, null, null, null, true);
 
         // Manipulate images with classes and set srcset-attributes
         $img -> removeAttribute("width");
