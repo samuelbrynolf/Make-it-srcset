@@ -212,7 +212,7 @@ function mis_plugin_initialize_options() {
         )
     );
 
-    // Settings section for images pulled by WYSIWYG-editor
+    // Settings section for images pulled by WYSIWYG-editor -------------------------------------------------------------------------------------------------------------------------
 
     add_settings_section(
         'mis_wysiwyg',
