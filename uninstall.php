@@ -1,6 +1,4 @@
-<?php if(!defined('WP_UNINSTALL_PLUGIN')) {
-    exit();
-}
+<?php if(!defined('WP_UNINSTALL_PLUGIN')) { exit(); }
 
 // Delete options for mediaqueries -------------------------------------------------------------------------------------------------------------------------
 delete_option('mis_imgWidth_firstMq');
