@@ -478,7 +478,7 @@ function mis_shortcode_callback($args) {
 
 function mis_picturefill_callback($args) {
     $options = get_option('mis_plugin_options');
-    $html = '<input type="checkbox" id="mis_picturefill" name="mis_plugin_options[mis_picturefill]" value="1" ' . checked(1, isset($options['mis_picturefill']) ? $options['mis_picturefill'] : 0, false) . '/>';
+    $html = '<input type="checkbox" id="mis_picturefill" name="mis_plugin_options[mis_picturefill]" value="0" ' . checked(0, isset($options['mis_picturefill']) ? $options['mis_picturefill'] : 1, false) . '/>';
     $html .= '<label for="mis_picturefill">&nbsp;'  . $args[0] . '</label>';
     echo $html;
 }
