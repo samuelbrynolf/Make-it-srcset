@@ -60,8 +60,8 @@ $mis_filter_the_content = false){
         $mis_imgSize_thirdMq = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_thirdMq');
         $mis_imgSize_secondMq = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_secondMq');
         $mis_imgSize_firstMq = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_firstMq');
-        $mis_imgSize_noMq_R = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_noMq');
-        $mis_imgSize_noMq = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_noMq_half');
+        $mis_imgSize_noMq_R = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_noMq_R');
+        $mis_imgSize_noMq = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_noMq');
         $alt = get_post_meta($mis_attachment_id, '_wp_attachment_image_alt', true);
         $filename = get_post_meta($mis_attachment_id, '_wp_attached_file', true);
 
