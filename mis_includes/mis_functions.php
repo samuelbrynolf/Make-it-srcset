@@ -146,6 +146,18 @@ $mis_filter_the_content = false){
 
 
 
+// Remove image dimensions ------------------------------------------------------------------
+
+add_filter( 'post_thumbnail_html', 'remove_width_attribute', 10 );
+add_filter( 'image_send_to_editor', 'remove_width_attribute', 10 );
+
+function remove_width_attribute( $html ) {
+    $html = preg_replace( '/(width|height)="\d*"\s/', "", $html );
+    return $html;
+}
+
+
+
 // Filter the_content with add_filter ------------------------------------------------------------------
 
 if(mis_get_option_boolean('mis_contentFilter')){
