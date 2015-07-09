@@ -199,7 +199,12 @@ function mis_wysiwyg_filter($content){
 
 // Shortcode ------------------------------------------------------------------
 
-add_shortcode('Srcset-image', 'mis_shortcode');
+if(mis_get_option_boolean('mis_shortcode')) {
+    add_shortcode('Srcset-image', 'mis_shortcode');
+    add_filter('image_send_to_editor', 'mis_mlib_shortcode_gen', 10, 9);
+} else {
+    add_shortcode( 'Srcset-image', '__return_false' );
+}
 
 function mis_shortcode($atts){
     extract(shortcode_atts(
@@ -221,9 +226,12 @@ function mis_shortcode($atts){
         $mis_shortcode = ob_get_contents();
     ob_end_clean();
 
-    if(mis_get_option_boolean('mis_shortcode')) {
-        return $mis_shortcode;
-    }
+    return $mis_shortcode;
+}
+
+// Generate shortcode from media uploader, to editor
+function mis_mlib_shortcode_gen($html, $id, $caption, $title, $align, $url) {
+    return "[Srcset-image image_id='$id']";
 }
 
 
