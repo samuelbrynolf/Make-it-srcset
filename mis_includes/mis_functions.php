@@ -47,11 +47,11 @@ $figcaption = null,
 $mis_filter_the_content = false){
 
     // Vars: Set srcset sizes
-    $srcsetSize_noMq = (is_null($srcsetSize_noMq)) ? mis_get_option_integer('mis_srcsetSize_noMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_noMq);
-    $srcsetSize_firstMq = (is_null($srcsetSize_firstMq)) ? mis_get_option_integer('mis_srcsetSize_firstMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_firstMq);
-    $srcsetSize_secondMq = (is_null($srcsetSize_secondMq)) ? mis_get_option_integer('mis_srcsetSize_secondMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_secondMq);
-    $srcsetSize_thirdMq = (is_null($srcsetSize_thirdMq)) ? mis_get_option_integer('mis_srcsetSize_thirdMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_thirdMq);
-    $srcsetSize_fourthMq = (is_null($srcsetSize_fourthMq)) ? mis_get_option_integer('mis_srcsetSize_fourthMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_fourthMq);
+    $srcsetSize_noMq = (is_null($srcsetSize_noMq) || empty($srcsetSize_noMq)) ? mis_get_option_integer('mis_srcsetSize_noMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_noMq);
+    $srcsetSize_firstMq = (is_null($srcsetSize_firstMq) || empty($srcsetSize_firstMq)) ? mis_get_option_integer('mis_srcsetSize_firstMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_firstMq);
+    $srcsetSize_secondMq = (is_null($srcsetSize_secondMq) || empty($srcsetSize_secondMq)) ? mis_get_option_integer('mis_srcsetSize_secondMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_secondMq);
+    $srcsetSize_thirdMq = (is_null($srcsetSize_thirdMq) || empty($srcsetSize_thirdMq)) ? mis_get_option_integer('mis_srcsetSize_thirdMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_thirdMq);
+    $srcsetSize_fourthMq = (is_null($srcsetSize_fourthMq) || empty($srcsetSize_fourthMq)) ? mis_get_option_integer('mis_srcsetSize_fourthMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_fourthMq);
 
     // Vars: Set imageformats IF there is an attachment ID passed as an integer and if that attachment is an image. If not give a link to documentation
     if (is_numeric($mis_attachment_id) && isset($mis_attachment_id) && wp_attachment_is_image($mis_attachment_id)) {
@@ -71,10 +71,10 @@ $mis_filter_the_content = false){
     }
 
     // Var: Css-classes for srcset parent element
-    $mis_imgParent_cssClass = (is_null($cssClass) ? '' : ' '.$cssClass);
+    $mis_imgParent_cssClass = (is_null($cssClass) || empty($cssClass) ? '' : ' '.$cssClass);
 
     // Var: Parent container tag (if figcaption exists make it a figure-element)
-    if(is_null($figcaption)){
+    if(is_null($figcaption) || empty($figcaption)){
         $mis_containerTag = '<div class="levelThumb_container levelThumb_div'.$mis_imgParent_cssClass.'">';
     } else {
         $mis_containerTag = '<figure class="levelThumb_container levelThumb_figure'.$mis_imgParent_cssClass.'">';
@@ -120,14 +120,14 @@ $mis_filter_the_content = false){
     $mis_noscriptTag = '<noscript><img class="levelThumb_img levelThumb_nojs" src="'.($mis_imgSize_noMq[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
     // Var: Figcaption
-    if(is_null($figcaption)) {
+    if(is_null($figcaption) || empty($figcaption)) {
         $mis_figcaptionTag = '';
     } else {
         $mis_figcaptionTag = '<figcaption class="levelThumb_figcaption">'.$figcaption.'</figcaption>';
     }
 
     // Var: Endtag parent container
-    if(is_null($figcaption)) {
+    if(is_null($figcaption) || empty($figcaption)) {
         $mis_closeImgContainer = '</div>';
     } else {
         $mis_closeImgContainer = '</figure>';
@@ -231,7 +231,7 @@ function mis_shortcode($atts){
 
 // Generate shortcode from media uploader, to editor
 function mis_mlib_shortcode_gen($html, $id, $caption, $title, $align, $url) {
-    return "[Srcset-image image_id='$id']";
+    return "[Srcset-image image_id='$id' parent_css_class='' figcaption='']";
 }
 
 
