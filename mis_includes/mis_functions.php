@@ -146,18 +146,6 @@ $mis_filter_the_content = false){
 
 
 
-// Remove image dimensions ------------------------------------------------------------------
-
-add_filter( 'post_thumbnail_html', 'remove_width_attribute', 10 );
-add_filter( 'image_send_to_editor', 'remove_width_attribute', 10 );
-
-function remove_width_attribute( $html ) {
-    $html = preg_replace( '/(width|height)="\d*"\s/', "", $html );
-    return $html;
-}
-
-
-
 // Filter the_content with add_filter ------------------------------------------------------------------
 
 if(mis_get_option_boolean('mis_contentFilter')){
@@ -183,19 +171,23 @@ function mis_wysiwyg_filter($content){
         // Loop each image in new DOMDocument. Save wp-standard classes, attachment ID to get needed srcset strings. Save those strings.
         $mis_attachment_classes = $img->getAttribute("class");
         $mis_attachment_id = preg_replace("/[^0-9]/","",$mis_attachment_classes);
-        $mis_srcset_attr_array = makeitSrcset($mis_attachment_id, null, null, null, null, null, null, null, true);
 
-        // Manipulate images with classes and set srcset-attributes
-        $img -> removeAttribute("width");
-        $img -> removeAttribute("height");
-        if(mis_get_option_boolean('lazyload')){
-            $img->setAttribute("class", "lazyload levelThumb_img levelThumb_filtered $mis_attachment_classes");
-            $img->setAttribute("data-srcset", $mis_srcset_attr_array[0]);
-        } else {
-            $img->setAttribute("class", "levelThumb_img levelThumb_filtered $mis_attachment_classes");
-            $img->setAttribute("srcset", $mis_srcset_attr_array[0]);
+        // Make sure fetched ID is an attachement-ID
+        if(wp_attachment_is_image($mis_attachment_id) || !empty($mis_attachment_id)){
+            $mis_srcset_attr_array = makeitSrcset($mis_attachment_id, null, null, null, null, null, null, null, true);
+
+            // Manipulate images with classes and set srcset-attributes
+            $img -> removeAttribute("width");
+            $img -> removeAttribute("height");
+            if(mis_get_option_boolean('lazyload')){
+                $img->setAttribute("class", "lazyload levelThumb_img levelThumb_filtered $mis_attachment_classes");
+                $img->setAttribute("data-srcset", $mis_srcset_attr_array[0]);
+            } else {
+                $img->setAttribute("class", "levelThumb_img levelThumb_filtered $mis_attachment_classes");
+                $img->setAttribute("srcset", $mis_srcset_attr_array[0]);
+            }
+            $img->setAttribute("sizes", $mis_srcset_attr_array[1]);
         }
-        $img->setAttribute("sizes", $mis_srcset_attr_array[1]);
     }
 
     // No need for additional html / body-tags (quick and dirty preg_replace). Save it and set it as document
