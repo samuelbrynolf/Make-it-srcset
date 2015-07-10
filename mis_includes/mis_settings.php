@@ -12,7 +12,7 @@ add_action('admin_menu', 'mis_main_tab');
 function mis_plugin_menu() { ?>
 	<div class="wrap">
 		<div id="icon-plugins" class="icon32"></div>
-		<h2><?php _e('Make it Srcset — Settings', 'makeitsrcset'); ?></h2>
+		<h2><?php _e('Make it Srcset', 'makeitsrcset'); ?></h2>
 		<?php settings_errors(); ?>
 
 		<form method="post" action="options.php">
@@ -57,7 +57,7 @@ function mis_plugin_initialize_options() {
 
 	add_settings_section(
 		'mis_mediaqueries',
-		__('Themes layout mediaqueries', 'makeitsrcset'),
+		__('Specify srcset mediaqueries', 'makeitsrcset'),
 		'mis_mediaqueries_callback',
 		'mis_plugin_options'
 	);
@@ -110,14 +110,14 @@ function mis_plugin_initialize_options() {
 
     add_settings_section(
         'mis_imagewidths',
-        __('Image widths &mdash; not targeted by any mediaquery', 'makeitsrcset'),
+        __('Target screen extremes', 'makeitsrcset'),
         'mis_imagewidths_callback',
         'mis_plugin_options'
     );
 
     add_settings_field(
         'mis_imgWidth_noMq',
-        'Lores image width:',
+        'Smallest screen: Size (x-axis):',
         'mis_imgWidth_noMq_callback',
         'mis_plugin_options',
         'mis_imagewidths',
@@ -128,7 +128,7 @@ function mis_plugin_initialize_options() {
 
     add_settings_field(
         'mis_imgWidth_noMq_R',
-        'Hires/retina image width:',
+        'Smallest screen: Hires dpi:',
         'mis_imgWidth_noMq_R_callback',
         'mis_plugin_options',
         'mis_imagewidths',
@@ -139,7 +139,7 @@ function mis_plugin_initialize_options() {
 
     add_settings_field(
         'mis_imgWidth_fatscreen',
-        'Fatest targeted screensize:',
+        'Fatest screen: Size (x-axis):',
         'mis_imgWidth_fatscreen_callback',
         'mis_plugin_options',
         'mis_imagewidths',
@@ -330,11 +330,11 @@ add_action( 'admin_init', 'mis_plugin_initialize_options' );
 // Sections callback functions ----------------------------------------------------------------------------------------------------------------------------------
 
 function mis_mediaqueries_callback() {
-	echo '<p>' . __( 'Set four min-width mediaqueries for your themes layout, in ascending order. If you are using fewer media queries &mdash; enter common screensizes (higher than your final breakpoint) to fill the blanks.', 'makeitsrcset' ) . '</p>';
+	echo '<p>' . __( '<strong>Make it Srcset</strong> uses four min-width mediaqueries within the sizes-attribute for each image. Add your default values in ascending order.<br/><strong>Tip:</strong> Use the same breakpoints as your themes layout do. If you are using fewer media queries in your layout than four &mdash; enter common screensizes (higher than your final breakpoint) to fill the blanks.', 'makeitsrcset' ) . '</p>';
 }
 
 function mis_imagewidths_callback() {
-    echo '<p>' . __( 'Set hires/lores image widths for your layouts smallest screen (aka images NOT targeted by any min-widht-mediaquery). Also, enter the width for your fatest targeted screen.', 'makeitsrcset' ) . '</p>';
+    echo '<p>' . __( '<strong>Aka:</strong> What are the needs in pixels for your smallest / fatests screens?<br/><em>Size</em> refers the physical size of the screen.<br/><em>Hires dpi</em> refers resolution such as retina display.<br/><strong>Example:</strong> The iPhone 4 screen has a width of 320px but its dpi is 640px since it is a retina.', 'makeitsrcset' ) . '</p>';
 }
 
 function mis_srcsetSizes_callback() {
