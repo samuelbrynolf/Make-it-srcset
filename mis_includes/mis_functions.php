@@ -26,6 +26,7 @@ function mis_imageInit() {
         add_image_size('mis_imgSize_firstMq', mis_get_option_integer('mis_imgWidth_firstMq'));
         add_image_size('mis_imgSize_noMq_R', mis_get_option_integer('mis_imgWidth_noMq_R'));
         add_image_size('mis_imgSize_noMq', mis_get_option_integer('mis_imgWidth_noMq'));
+        add_image_size('mis_imgSize_xs', 160);
     }
 }
 
@@ -62,6 +63,7 @@ $mis_filter_the_content = false){
         $mis_imgSize_firstMq = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_firstMq');
         $mis_imgSize_noMq_R = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_noMq_R');
         $mis_imgSize_noMq = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_noMq');
+        $mis_imgSize_xs = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_xs');
         $alt = get_post_meta($mis_attachment_id, '_wp_attachment_image_alt', true);
         $filename = get_post_meta($mis_attachment_id, '_wp_attached_file', true);
 
@@ -83,7 +85,7 @@ $mis_filter_the_content = false){
     // Var: Img tag
     $mis_imgTag = '<img class="levelThumb_img levelThumb_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
-    if($mis_imgSize_noMq[3]) {
+    if($mis_imgSize_xs[3]) {
 
         // Do attachment has needed imageformats? Use them
         $mis_srcsetImages =
@@ -93,7 +95,8 @@ $mis_filter_the_content = false){
             $mis_imgSize_secondMq[0] . ' ' . $mis_imgSize_secondMq[1] . 'w, ' .
             $mis_imgSize_firstMq[0] . ' ' . $mis_imgSize_firstMq[1] . 'w, ' .
             $mis_imgSize_noMq_R[0] . ' ' . $mis_imgSize_noMq_R[1] . 'w, ' .
-            $mis_imgSize_noMq[0] . ' ' . $mis_imgSize_noMq[1] . 'w';
+            $mis_imgSize_noMq[0] . ' ' . $mis_imgSize_noMq[1] . 'w, ' .
+            $mis_imgSize_xs[0] . ' ' . $mis_imgSize_xs[1] . 'w';
 
     } else {
 
@@ -117,7 +120,7 @@ $mis_filter_the_content = false){
     $mis_closeImgTag = '/>';
 
     // Var: Fallback img in noscript-tag
-    $mis_noscriptTag = '<noscript><img class="levelThumb_img levelThumb_nojs" src="'.($mis_imgSize_noMq[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
+    $mis_noscriptTag = '<noscript><img class="levelThumb_img levelThumb_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
     // Var: Figcaption
     if(is_null($figcaption) || empty($figcaption)) {
@@ -201,7 +204,6 @@ function mis_wysiwyg_filter($content){
 
 if(mis_get_option_boolean('mis_shortcode')) {
     add_shortcode('Srcset-image', 'mis_shortcode');
-    add_filter('image_send_to_editor', 'mis_mlib_shortcode_gen', 10, 9);
 } else {
     add_shortcode( 'Srcset-image', '__return_false' );
 }
@@ -227,6 +229,10 @@ function mis_shortcode($atts){
     ob_end_clean();
 
     return $mis_shortcode;
+}
+
+if(mis_get_option_boolean('mis_shortcodeGen')) {
+    add_filter('image_send_to_editor', 'mis_mlib_shortcode_gen', 10, 9);
 }
 
 // Generate shortcode from media uploader, to editor
