@@ -120,7 +120,7 @@ $mis_filter_the_content = false){
     $mis_closeImgTag = '/>';
 
     // Var: Fallback img in noscript-tag
-    $mis_noscriptTag = '<noscript><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
+    $mis_noscriptTag = '<noscript class="mis_noscript"><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
     // Var: Figcaption
     if(is_null($figcaption) || empty($figcaption)) {
