@@ -77,13 +77,13 @@ $mis_filter_the_content = false){
 
     // Var: Parent container tag (if figcaption exists make it a figure-element)
     if(is_null($figcaption) || empty($figcaption)){
-        $mis_containerTag = '<div class="levelThumb_container levelThumb_div'.$mis_imgParent_cssClass.'">';
+        $mis_containerTag = '<div class="mis_container mis_div'.$mis_imgParent_cssClass.'">';
     } else {
-        $mis_containerTag = '<figure class="levelThumb_container levelThumb_figure'.$mis_imgParent_cssClass.'">';
+        $mis_containerTag = '<figure class="mis_container mis_figure'.$mis_imgParent_cssClass.'">';
     }
 
     // Var: Img tag
-    $mis_imgTag = '<img class="levelThumb_img levelThumb_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
+    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
     if($mis_imgSize_xs[3]) {
 
@@ -120,13 +120,13 @@ $mis_filter_the_content = false){
     $mis_closeImgTag = '/>';
 
     // Var: Fallback img in noscript-tag
-    $mis_noscriptTag = '<noscript><img class="levelThumb_img levelThumb_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
+    $mis_noscriptTag = '<noscript><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
     // Var: Figcaption
     if(is_null($figcaption) || empty($figcaption)) {
         $mis_figcaptionTag = '';
     } else {
-        $mis_figcaptionTag = '<figcaption class="levelThumb_figcaption">'.$figcaption.'</figcaption>';
+        $mis_figcaptionTag = '<figcaption class="mis_figcaption">'.$figcaption.'</figcaption>';
     }
 
     // Var: Endtag parent container
@@ -183,10 +183,10 @@ function mis_wysiwyg_filter($content){
             $img -> removeAttribute("width");
             $img -> removeAttribute("height");
             if(mis_get_option_boolean('lazyload')){
-                $img->setAttribute("class", "lazyload levelThumb_img levelThumb_filtered $mis_attachment_classes");
+                $img->setAttribute("class", "lazyload mis_img mis_filtered $mis_attachment_classes");
                 $img->setAttribute("data-srcset", $mis_srcset_attr_array[0]);
             } else {
-                $img->setAttribute("class", "levelThumb_img levelThumb_filtered $mis_attachment_classes");
+                $img->setAttribute("class", "mis_img mis_filtered $mis_attachment_classes");
                 $img->setAttribute("srcset", $mis_srcset_attr_array[0]);
             }
             $img->setAttribute("sizes", $mis_srcset_attr_array[1]);
@@ -249,6 +249,6 @@ if(mis_get_option_boolean('mis_preventDuplicates')){
 }
 
 function mis_nojs_style(){
-    $output="<style> .no-mis_enqueue_scripts .levelThumb_img.levelThumb_omitSrc{ display: none;} </style>";
+    $output="<style> .no-mis_enqueue_scripts .mis_img.mis_omitSrc{ display: none;} </style>";
     echo $output;
 }
