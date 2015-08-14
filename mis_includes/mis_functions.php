@@ -119,15 +119,15 @@ $mis_filter_the_content = false){
     // Var: Endtag img
     $mis_closeImgTag = '/>';
 
-    // Var: Fallback img in noscript-tag
-    $mis_noscriptTag = '<noscript class="mis_noscript"><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
-
     // Var: Figcaption
     if(is_null($figcaption) || empty($figcaption)) {
         $mis_figcaptionTag = '';
     } else {
         $mis_figcaptionTag = '<figcaption class="mis_figcaption">'.$figcaption.'</figcaption>';
     }
+
+    // Var: Fallback img in noscript-tag
+    $mis_noscriptTag = '<noscript class="mis_noscript"><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
     // Var: Endtag parent container
     if(is_null($figcaption) || empty($figcaption)) {
@@ -143,7 +143,7 @@ $mis_filter_the_content = false){
         return $mis_srcsetAttributes;
     } else {
         // Build HTML for template tag and shortcode
-        echo $mis_containerTag.$mis_imgTag.'"'.$mis_srcsetImages.'" sizes="'.$mis_srcsetSizes.'"'.$mis_closeImgTag.$mis_noscriptTag.$mis_figcaptionTag.$mis_closeImgContainer;
+        echo $mis_containerTag.$mis_imgTag.'"'.$mis_srcsetImages.'" sizes="'.$mis_srcsetSizes.'"'.$mis_closeImgTag.$mis_figcaptionTag.$mis_noscriptTag.$mis_closeImgContainer;
     }
 }
 
