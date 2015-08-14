@@ -12,7 +12,7 @@ add_action('admin_menu', 'mis_main_tab');
 function mis_plugin_menu() { ?>
 	<div class="wrap">
 		<div id="icon-plugins" class="icon32"></div>
-		<h2><?php _e('Make it Srcset', 'makeitsrcset'); ?></h2>
+		<h2><?php _e('Make it Srcset: Settings', 'makeitsrcset'); ?></h2>
 		<?php settings_errors(); ?>
 
 		<form method="post" action="options.php">
