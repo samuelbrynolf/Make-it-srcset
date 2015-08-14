@@ -237,7 +237,7 @@ if(mis_get_option_boolean('mis_shortcodeGen')) {
 
 // Generate shortcode from media uploader, to editor
 function mis_mlib_shortcode_gen($html, $id, $caption, $title, $align, $url) {
-    return "[Srcset-image image_id='$id' parent_css_class='' figcaption='']";
+    return "[Srcset-image image_id='$id' srcsetSize_noMq='' srcsetSize_firstMq='' srcsetSize_secondMq='' srcsetSize_thirdMq='' srcsetSize_fourthMq='' parent_css_class='' figcaption='']";
 }
 
 

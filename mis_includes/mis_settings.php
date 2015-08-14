@@ -139,7 +139,7 @@ function mis_plugin_initialize_options() {
 
 	add_settings_section(
 		'mis_mediaqueries',
-		__('2.1 Set images default mediaqueries', 'makeitsrcset'),
+		__('2.1 Srcset sizes &mdash; breakpoints', 'makeitsrcset'),
 		'mis_mediaqueries_callback',
 		'mis_plugin_options'
 	);
@@ -237,7 +237,7 @@ function mis_plugin_initialize_options() {
 
     add_settings_section(
         'mis_srcsetSizes',
-        __('2.2 Set images default relative widths &mdash; per mediaquery', 'makeitsrcset'),
+        __('2.2 Srcset sizes &mdash; image widths', 'makeitsrcset'),
         'mis_srcsetSizes_callback',
         'mis_plugin_options'
     );
@@ -245,7 +245,7 @@ function mis_plugin_initialize_options() {
     // Settings section callback ---------------------------------------
 
     function mis_srcsetSizes_callback() {
-        echo '<p>' . __( '<strong>Aka:</strong> What proportion of the screen does your images need, within each mediaquery set above?<br/><em>Use common screensizes if you are using fewer mediaqueries than four.</em>', 'makeitsrcset' ) . '</p>';
+        echo '<p>' . __( '<strong>Aka:</strong> What proportion of the screen does your images need, within each mediaquery?<br/><em>Use common screensizes if you are using fewer mediaqueries than four.</em>', 'makeitsrcset' ) . '</p>';
     }
 
     // Setting fields ---------------------------------------
@@ -380,7 +380,7 @@ function mis_plugin_initialize_options() {
 
     add_settings_field(
         'mis_shortcode',
-        '3.2 Enable shortcode:',
+        '3.2.1 Enable shortcode:',
         'mis_shortcode_callback',
         'mis_plugin_options',
         'mis_wysiwyg',
@@ -391,7 +391,7 @@ function mis_plugin_initialize_options() {
 
     add_settings_field(
         'mis_shortcodeGen',
-        '3.3 Enable shortcode generator:',
+        '3.2.2 Enable shortcode generator:',
         'mis_shortcodeGen_callback',
         'mis_plugin_options',
         'mis_wysiwyg',
