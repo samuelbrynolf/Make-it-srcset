@@ -68,7 +68,7 @@ $mis_filter_the_content = false){
         $filename = get_post_meta($mis_attachment_id, '_wp_attached_file', true);
 
     } else {
-        echo '<p>Hi! makeitSrcset() / [Srcset-image] - shortcode needs the attachment-ID for the image you want to show. Read up on <a href="#">Link</a></p>';
+        echo '<script>console.log("Hi! makeitSrcset() / [Srcset-image] - shortcode needs the attachment-ID for the image you want to show. Read up on: http://note-to-helf.com/wordpress-plugin-make-it-srcset");</script>';
         return;
     }
 
