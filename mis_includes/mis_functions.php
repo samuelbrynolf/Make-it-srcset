@@ -64,8 +64,10 @@ $mis_filter_the_content = false){
         $mis_imgSize_noMq_R = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_noMq_R');
         $mis_imgSize_noMq = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_noMq');
         $mis_imgSize_xs = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_xs');
-        $alt = get_post_meta($mis_attachment_id, '_wp_attachment_image_alt', true);
-        $filename = get_post_meta($mis_attachment_id, '_wp_attached_file', true);
+        $mis_alt = get_post_meta($mis_attachment_id, '_wp_attachment_image_alt', true);
+        $mis_img = get_post($mis_attachment_id);
+        $mis_caption = $mis_img->post_excerpt;
+        $mis_filename = $mis_img->post_name;
 
     } else {
         echo '<script>console.log("Hi! makeitSrcset() / [makeitSrcset]- shortcode needs the attachment-ID for the image you want to show. Read up on: http://note-to-helf.com/wordpress-plugin-make-it-srcset");</script>';
@@ -83,7 +85,7 @@ $mis_filter_the_content = false){
     }
 
     // Var: Img tag
-    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').'"'.($alt ? ' alt="'.$alt.'"' : ' alt="'.$filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
+    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
     if($mis_imgSize_xs[3]) {
 
@@ -127,7 +129,7 @@ $mis_filter_the_content = false){
     }
 
     // Var: Fallback img in noscript-tag
-    $mis_noscriptTag = '<noscript class="mis_noscript"><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
+    $mis_noscriptTag = '<noscript class="mis_noscript"><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').'/></noscript>';
 
     // Var: Endtag parent container
     if(is_null($mis_figcaption) || empty($mis_figcaption)) {
