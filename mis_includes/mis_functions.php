@@ -38,21 +38,21 @@ add_action('after_setup_theme', 'mis_imageInit');
 
 function makeitSrcset(
 $mis_attachment_id = null, // get_post_thumbnail_id($post->ID)
-$srcsetSize_noMq = null,
-$srcsetSize_firstMq = null,
-$srcsetSize_secondMq = null,
-$srcsetSize_thirdMq = null,
-$srcsetSize_fourthMq = null,
-$cssClass = null,
-$figcaption = null,
+$mis_srcsetSize_noMq = null,
+$mis_srcsetSize_firstMq = null,
+$mis_srcsetSize_secondMq = null,
+$mis_srcsetSize_thirdMq = null,
+$mis_srcsetSize_fourthMq = null,
+$mis_cssClass = null,
+$mis_figcaption = null,
 $mis_filter_the_content = false){
 
     // Vars: Set srcset sizes
-    $srcsetSize_noMq = (is_null($srcsetSize_noMq) || empty($srcsetSize_noMq)) ? mis_get_option_integer('mis_srcsetSize_noMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_noMq);
-    $srcsetSize_firstMq = (is_null($srcsetSize_firstMq) || empty($srcsetSize_firstMq)) ? mis_get_option_integer('mis_srcsetSize_firstMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_firstMq);
-    $srcsetSize_secondMq = (is_null($srcsetSize_secondMq) || empty($srcsetSize_secondMq)) ? mis_get_option_integer('mis_srcsetSize_secondMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_secondMq);
-    $srcsetSize_thirdMq = (is_null($srcsetSize_thirdMq) || empty($srcsetSize_thirdMq)) ? mis_get_option_integer('mis_srcsetSize_thirdMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_thirdMq);
-    $srcsetSize_fourthMq = (is_null($srcsetSize_fourthMq) || empty($srcsetSize_fourthMq)) ? mis_get_option_integer('mis_srcsetSize_fourthMq') : preg_replace('/[^0-9]+/', '', $srcsetSize_fourthMq);
+    $mis_srcsetSize_noMq = (is_null($mis_srcsetSize_noMq) || empty($mis_srcsetSize_noMq)) ? mis_get_option_integer('mis_srcsetSize_noMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_noMq);
+    $mis_srcsetSize_firstMq = (is_null($mis_srcsetSize_firstMq) || empty($mis_srcsetSize_firstMq)) ? mis_get_option_integer('mis_srcsetSize_firstMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_firstMq);
+    $mis_srcsetSize_secondMq = (is_null($mis_srcsetSize_secondMq) || empty($mis_srcsetSize_secondMq)) ? mis_get_option_integer('mis_srcsetSize_secondMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_secondMq);
+    $mis_srcsetSize_thirdMq = (is_null($mis_srcsetSize_thirdMq) || empty($mis_srcsetSize_thirdMq)) ? mis_get_option_integer('mis_srcsetSize_thirdMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_thirdMq);
+    $mis_srcsetSize_fourthMq = (is_null($mis_srcsetSize_fourthMq) || empty($mis_srcsetSize_fourthMq)) ? mis_get_option_integer('mis_srcsetSize_fourthMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_fourthMq);
 
     // Vars: Set imageformats IF there is an attachment ID passed as an integer and if that attachment is an image. If not give a link to documentation
     if (is_numeric($mis_attachment_id) && isset($mis_attachment_id) && wp_attachment_is_image($mis_attachment_id)) {
@@ -73,10 +73,10 @@ $mis_filter_the_content = false){
     }
 
     // Var: Css-classes for srcset parent element
-    $mis_imgParent_cssClass = (is_null($cssClass) || empty($cssClass) ? '' : ' '.$cssClass);
+    $mis_imgParent_cssClass = (is_null($mis_cssClass) || empty($mis_cssClass) ? '' : ' '.$mis_cssClass);
 
     // Var: Parent container tag (if figcaption exists make it a figure-element)
-    if(is_null($figcaption) || empty($figcaption)){
+    if(is_null($mis_figcaption) || empty($mis_figcaption)){
         $mis_containerTag = '<div class="mis_container mis_div'.$mis_imgParent_cssClass.'">';
     } else {
         $mis_containerTag = '<figure class="mis_container mis_figure'.$mis_imgParent_cssClass.'">';
@@ -114,23 +114,23 @@ $mis_filter_the_content = false){
     }
 
     // Var: Srcset-sizes and Srcset-mediaqueries
-    $mis_srcsetSizes = '(min-width: '.$mis_imgSize_fourthMq[1].'px) '.$srcsetSize_fourthMq.'vw, (min-width: '.$mis_imgSize_thirdMq[1].'px) '.$srcsetSize_thirdMq.'vw, (min-width: '.$mis_imgSize_secondMq[1].'px) '.$srcsetSize_secondMq.'vw, (min-width: '.$mis_imgSize_firstMq[1].'px) '.$srcsetSize_firstMq.'vw, '. $srcsetSize_noMq.'vw';
+    $mis_srcsetSizes = '(min-width: '.$mis_imgSize_fourthMq[1].'px) '.$mis_srcsetSize_fourthMq.'vw, (min-width: '.$mis_imgSize_thirdMq[1].'px) '.$mis_srcsetSize_thirdMq.'vw, (min-width: '.$mis_imgSize_secondMq[1].'px) '.$mis_srcsetSize_secondMq.'vw, (min-width: '.$mis_imgSize_firstMq[1].'px) '.$mis_srcsetSize_firstMq.'vw, '. $mis_srcsetSize_noMq.'vw';
 
     // Var: Endtag img
     $mis_closeImgTag = '/>';
 
     // Var: Figcaption
-    if(is_null($figcaption) || empty($figcaption)) {
+    if(is_null($mis_figcaption) || empty($mis_figcaption)) {
         $mis_figcaptionTag = '';
     } else {
-        $mis_figcaptionTag = '<figcaption class="mis_figcaption">'.$figcaption.'</figcaption>';
+        $mis_figcaptionTag = '<figcaption class="mis_figcaption">'.$mis_figcaption.'</figcaption>';
     }
 
     // Var: Fallback img in noscript-tag
     $mis_noscriptTag = '<noscript class="mis_noscript"><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($alt ? ' alt="'.$alt.'"' : '').'/></noscript>';
 
     // Var: Endtag parent container
-    if(is_null($figcaption) || empty($figcaption)) {
+    if(is_null($mis_figcaption) || empty($mis_figcaption)) {
         $mis_closeImgContainer = '</div>';
     } else {
         $mis_closeImgContainer = '</figure>';
