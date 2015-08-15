@@ -43,7 +43,7 @@ $mis_srcsetSize_firstMq = null,
 $mis_srcsetSize_secondMq = null,
 $mis_srcsetSize_thirdMq = null,
 $mis_srcsetSize_fourthMq = null,
-$mis_cssClass = null,
+$mis_parent_css_class = null,
 $mis_figcaption = null,
 $mis_filter_the_content = false){
 
@@ -73,7 +73,7 @@ $mis_filter_the_content = false){
     }
 
     // Var: Css-classes for srcset parent element
-    $mis_imgParent_cssClass = (is_null($mis_cssClass) || empty($mis_cssClass) ? '' : ' '.$mis_cssClass);
+    $mis_imgParent_cssClass = (is_null($mis_parent_css_class) || empty($mis_parent_css_class) ? '' : ' '.$mis_parent_css_class);
 
     // Var: Parent container tag (if figcaption exists make it a figure-element)
     if(is_null($mis_figcaption) || empty($mis_figcaption)){
