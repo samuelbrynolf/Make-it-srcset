@@ -250,6 +250,6 @@ if(mis_get_option_boolean('mis_preventDuplicates')){
 }
 
 function mis_nojs_style(){
-    $output="<style> .no-mis_enqueue_scripts .mis_img.mis_omitSrc{ display: none;} </style>";
+    $output="<style>.no-js .mis_img.mis_omitSrc{display: none;}</style>";
     echo $output;
 }
