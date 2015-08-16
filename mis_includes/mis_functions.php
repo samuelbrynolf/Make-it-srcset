@@ -66,7 +66,6 @@ $mis_filter_the_content = false){
         $mis_imgSize_xs = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_xs');
         $mis_alt = get_post_meta($mis_attachment_id, '_wp_attachment_image_alt', true);
         $mis_img = get_post($mis_attachment_id);
-        $mis_caption = $mis_img->post_excerpt;
         $mis_filename = $mis_img->post_name;
 
     } else {
