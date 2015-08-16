@@ -12,7 +12,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)){
 	die('Invalid URL');
 }
 
-class makeitsrcset {
+class makeitSrcset {
 	public function __construct(){
 		add_action('plugins_loaded', array(&$this, 'mis_constants'), 1);
 		add_action('plugins_loaded', array(&$this, 'mis_includes'), 2);
@@ -73,4 +73,4 @@ class makeitsrcset {
 	}
 }
 
-new makeitsrcset();
+new makeitSrcset();
