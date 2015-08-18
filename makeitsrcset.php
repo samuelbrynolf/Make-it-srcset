@@ -36,12 +36,12 @@ class makeitSrcset {
             $mis_userpathLazyload = mis_get_option_url('mis_userpathLazyload');
 
             // If user want all built in scripts, enqueue a bundled version...
-            if(mis_get_option_boolean('mis_picturefill') && mis_get_option_boolean('mis_lazyload') && empty($mis_userpathPicturefill) && empty($mis_userpathLazyload)) {
+            if (mis_get_option_boolean('mis_picturefill') && mis_get_option_boolean('mis_lazyload') && empty($mis_userpathPicturefill) && empty($mis_userpathLazyload)) {
                 wp_enqueue_script('mis_bundled', plugins_url('/mis_scripts/mis_bundled.min.js#mis_asyncload', __FILE__), array(), null, false);
             } else {
 
                 // ...if not all built in scripts, check if they want picturefill at all...
-                if(mis_get_option_boolean('mis_picturefill')){
+                if (mis_get_option_boolean('mis_picturefill')) {
                     // ...yes? do they want their own / updated version?
                     if(empty($mis_userpathPicturefill)){
                         // ... no? Run built in picurefill
@@ -53,7 +53,7 @@ class makeitSrcset {
                 } // end Picturefill conditional
 
                 // ...if not all built in scripts, check if they want lazyload at all...
-                if(mis_get_option_boolean('mis_lazyload')){
+                if (mis_get_option_boolean('mis_lazyload')) {
                     // ...yes? do they want their own / updated version?
                     if(empty($mis_userpathLazyload)){
                         // ... no? Run built in Lazysizes
@@ -67,7 +67,7 @@ class makeitSrcset {
             } // end conditional for bundled vs custom paths
             add_filter('clean_url', 'mis_async_forscript', 11, 1);
         }
-        if(mis_get_option_boolean('mis_picturefill') || mis_get_option_boolean('mis_lazyload')) {
+        if (mis_get_option_boolean('mis_picturefill') || mis_get_option_boolean('mis_lazyload')) {
             add_action('wp_enqueue_scripts', 'mis_enqueue_scripts');
         }
 	}
