@@ -532,7 +532,7 @@ function mis_plugin_initialize_options() {
     // Settings section callback ---------------------------------------
 
     function mis_styles_callback() {
-        echo '<p>' . __( 'When a user have turned off javascript on a browser that have native support for srcset, the provided noscript-fallback will duplicate all srcset images. <strong>Why is this even an option? Just fix it!?</strong><br/><strong>1.</strong> This is a cornercase. Enqueued styles or extra kb for detection is just not worth it.<br/><strong>2.</strong> This bugfix puts inline css in your header and expects a no-js class on your html/body-tag to work. You might just copy this display-none-snippet into your theme-stylesheet. Or check the box below and save a minute.', 'makeitSrcset' ) . '</p>';
+        echo '<p>' . __( 'When a user have turned off javascript on a browser that have native support for srcset, the provided noscript-fallback will duplicate all srcset images. <strong>Why is this even an option? Just fix it!?</strong><br/><strong>1.</strong> This is a cornercase. Enqueued styles or extra kb for detection is just not worth it.<br/><strong>2.</strong> This bugfix puts inline css in your header and expects a no-js class on your html/body-tag to work. You might just copy <strong>.no-js .mis_img.mis_omitSrc{display:none}</strong> into your theme-stylesheet. Or check the box below and save a minute.', 'makeitSrcset' ) . '</p>';
     }
 
     // Setting fields ---------------------------------------

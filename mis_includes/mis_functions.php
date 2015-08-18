@@ -74,11 +74,6 @@ $mis_filter_the_content = false){
         return;
     }
 
-    if (!mis_get_option_boolean('mis_picturefill')) {
-        // Warning debug-msg for omitting srcset-polyfill
-        echo '<script>console.log("Hi there! Srcset images not working as expected? Enqueue Picturefill for cross browser support. Go to wp-admin > plugins > Make it Srcset > check 4.1.1. Thanks!");</script>';
-    }
-
     // Var: Css-classes for srcset parent element
     $mis_imgParent_cssClass = (is_null($mis_parent_css_class) || empty($mis_parent_css_class) ? '' : ' '.$mis_parent_css_class);
 
