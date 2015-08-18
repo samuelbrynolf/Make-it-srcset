@@ -211,8 +211,6 @@ function mis_wysiwyg_filter($content){
 
 if (mis_get_option_boolean('mis_shortcode')) {
     add_shortcode('makeitSrcset', 'mis_shortcode');
-} else {
-    add_shortcode( 'makeitSrcset', '__return_false' );
 }
 
 function mis_shortcode($atts){
