@@ -69,15 +69,21 @@ $mis_filter_the_content = false){
         $mis_filename = $mis_img->post_name;
 
     } else {
+        // Error msg for omitting attachment-ID
         echo '<script>console.log("Hi! makeitSrcset() / [makeitSrcset]- shortcode needs the attachment-ID for the image you want to show. Read up on: http://note-to-helf.com/wordpress-plugin-make-it-srcset");</script>';
         return;
+    }
+
+    if (mis_get_option_boolean('mis_picturefill')) {
+        // Warning debug-msg for omitting srcset-polyfill
+        echo '<script>console.log("Hi there! Srcset images not working as expected? Enqueue Picturefill for cross browser support. Go to wp-admin > plugins > Make it Srcset > check 4.1.1. Thanks!");</script>';
     }
 
     // Var: Css-classes for srcset parent element
     $mis_imgParent_cssClass = (is_null($mis_parent_css_class) || empty($mis_parent_css_class) ? '' : ' '.$mis_parent_css_class);
 
     // Var: Parent container tag (if figcaption exists make it a figure-element)
-    if(is_null($mis_figcaption) || empty($mis_figcaption)){
+    if (is_null($mis_figcaption) || empty($mis_figcaption)) {
         $mis_containerTag = '<div class="mis_container mis_div'.$mis_imgParent_cssClass.'">';
     } else {
         $mis_containerTag = '<figure class="mis_container mis_figure'.$mis_imgParent_cssClass.'">';
@@ -86,7 +92,7 @@ $mis_filter_the_content = false){
     // Var: Img tag
     $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
-    if($mis_imgSize_xs[3]) {
+    if ($mis_imgSize_xs[3]) {
 
         // Do attachment has needed imageformats? Use them
         $mis_srcsetImages =
@@ -121,7 +127,7 @@ $mis_filter_the_content = false){
     $mis_closeImgTag = '/>';
 
     // Var: Figcaption
-    if(is_null($mis_figcaption) || empty($mis_figcaption)) {
+    if (is_null($mis_figcaption) || empty($mis_figcaption)) {
         $mis_figcaptionTag = '';
     } else {
         $mis_figcaptionTag = '<figcaption class="mis_figcaption">'.$mis_figcaption.'</figcaption>';
@@ -131,14 +137,14 @@ $mis_filter_the_content = false){
     $mis_noscriptTag = '<noscript class="mis_noscript"><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').'/></noscript>';
 
     // Var: Endtag parent container
-    if(is_null($mis_figcaption) || empty($mis_figcaption)) {
+    if (is_null($mis_figcaption) || empty($mis_figcaption)) {
         $mis_closeImgContainer = '</div>';
     } else {
         $mis_closeImgContainer = '</figure>';
     }
 
     // BUILD HTML
-    if($mis_filter_the_content) {
+    if ($mis_filter_the_content) {
         // Return only srcset attributes in array needed by the_content filter
         $mis_srcsetAttributes = array($mis_srcsetImages, $mis_srcsetSizes);
         return $mis_srcsetAttributes;
@@ -152,7 +158,7 @@ $mis_filter_the_content = false){
 
 // Filter the_content with add_filter ------------------------------------------------------------------
 
-if(mis_get_option_boolean('mis_contentFilter')){
+if (mis_get_option_boolean('mis_contentFilter')) {
     add_filter('the_content', 'mis_wysiwyg_filter');
 }
 
@@ -203,7 +209,7 @@ function mis_wysiwyg_filter($content){
 
 // Shortcode ------------------------------------------------------------------
 
-if(mis_get_option_boolean('mis_shortcode')) {
+if (mis_get_option_boolean('mis_shortcode')) {
     add_shortcode('makeitSrcset', 'mis_shortcode');
 } else {
     add_shortcode( 'makeitSrcset', '__return_false' );
@@ -232,7 +238,7 @@ function mis_shortcode($atts){
     return $mis_shortcode;
 }
 
-if(mis_get_option_boolean('mis_shortcodeGen')) {
+if (mis_get_option_boolean('mis_shortcodeGen')) {
     add_filter('image_send_to_editor', 'mis_mlib_shortcode_gen', 10, 9);
 }
 
@@ -245,7 +251,7 @@ function mis_mlib_shortcode_gen($html, $id, $caption, $title, $align, $url) {
 
 // Prevent duplicate images for browsers that support Srcset but have javascript turned off --------------------------
 
-if(mis_get_option_boolean('mis_preventDuplicates')){
+if (mis_get_option_boolean('mis_preventDuplicates')) {
     add_action('wp_head','mis_nojs_style');
 }
 
