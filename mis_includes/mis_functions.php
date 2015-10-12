@@ -1,17 +1,4 @@
-<?php
-
-// Add async attributes to mis_enqueue_scripts-files ------------------------------------------------------------------
-
-function mis_async_forscript($url){
-    if (strpos($url, '#mis_asyncload')===false)
-        return $url;
-    else if (is_admin())
-        return str_replace('#mis_asyncload', '', $url);
-    else
-        return str_replace('#mis_asyncload', '', $url)."' async='async";
-}
-
-// Add needed image formats ------------------------------------------------------------------
+<?php // Add needed image formats ------------------------------------------------------------------
 
 function mis_imageInit() {
     if (function_exists('add_theme_support')) {
@@ -255,9 +242,20 @@ function mis_nojs_style(){
 
 
 
+// Scripts -----------------------------------------------------------------------
 
-// Enqueue scripts logic --------------------------
+// Add async attributes to mis_enqueue_scripts-files
 
+function mis_async_forscript($url){
+    if (strpos($url, '#mis_asyncload')===false)
+        return $url;
+    else if (is_admin())
+        return str_replace('#mis_asyncload', '', $url);
+    else
+        return str_replace('#mis_asyncload', '', $url)."' async='async";
+}
+
+// Enqueue scripts
 
 function mis_enqueue_scripts(){
 
