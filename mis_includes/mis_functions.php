@@ -264,7 +264,7 @@ function mis_enqueue_scripts(){
 
     // If user want all built in scripts, enqueue a bundled version...
     if (mis_get_option_boolean('mis_picturefill') && mis_get_option_boolean('mis_lazyload') && empty($mis_userpathPicturefill) && empty($mis_userpathLazyload)) {
-        wp_enqueue_script('mis_bundled', plugins_url('/mis_includes/mis_vendor/mis_bundled.min.js#mis_asyncload', __FILE__), array(), null, false);
+        wp_enqueue_script('mis_bundled', plugins_url('/mis_vendor/mis_bundled.min.js#mis_asyncload', __FILE__), array(), null, false);
     } else {
 
         // ...if not all built in scripts, check if they want picturefill at all...
@@ -272,7 +272,7 @@ function mis_enqueue_scripts(){
             // ...yes? do they want their own / updated version?
             if(empty($mis_userpathPicturefill)){
                 // ... no? Run built in picurefill
-                wp_enqueue_script('mis_picturefill', plugins_url('/mis_includes/mis_vendor/mis_picturefill.min.js#mis_asyncload', __FILE__), array(), null, false);
+                wp_enqueue_script('mis_picturefill', plugins_url('/mis_vendor/mis_picturefill.min.js#mis_asyncload', __FILE__), array(), null, false);
             } else {
                 // ... Yes? Run picturefill user path
                 wp_enqueue_script('picturefill', $mis_userpathPicturefill.'#mis_asyncload', array(), null, false);
@@ -284,7 +284,7 @@ function mis_enqueue_scripts(){
             // ...yes? do they want their own / updated version?
             if(empty($mis_userpathLazyload)){
                 // ... no? Run built in Lazysizes
-                wp_enqueue_script('mis_lazysizes', plugins_url('/mis_includes/mis_vendor/mis_lazysizes.min.js#mis_asyncload', __FILE__), array(), null, false);
+                wp_enqueue_script('mis_lazysizes', plugins_url('/mis_vendor/mis_lazysizes.min.js#mis_asyncload', __FILE__), array(), null, false);
             } else {
                 // ... Yes? Run Lazysizes user path
                 wp_enqueue_script('lazysizes', $mis_userpathLazyload.'#mis_asyncload', array(), null, false);
