@@ -1,0 +1,29 @@
+#mis_overlay{
+    position: fixed;
+    visibility: hidden;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -500;
+    opacity: 0;
+    background-color: rgba(0,0,0,0.75);
+    pointer-events: none;
+}
+
+#mis_overlay.s-is-visible{
+    visibility: visible;
+    z-index: 500;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mis_img.is-cloned{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 550;
+    transform: translate(-50%, -50%);
+    width: 96%;
+    max-width: 1280px;
+}

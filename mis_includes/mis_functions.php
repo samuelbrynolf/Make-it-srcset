@@ -72,7 +72,7 @@ $mis_filter_the_content = false){
     }
 
     // Var: Img tag
-    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
+    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
     if ($mis_imgSize_xs[3]) {
 
@@ -258,7 +258,6 @@ function mis_async_forscript($url){
 // Enqueue scripts
 
 function mis_enqueue_scripts(){
-
     $mis_userpathPicturefill = mis_get_option_url('mis_userpathPicturefill');
     $mis_userpathLazyload = mis_get_option_url('mis_userpathLazyload');
 
@@ -290,7 +289,10 @@ function mis_enqueue_scripts(){
                 wp_enqueue_script('lazysizes', $mis_userpathLazyload.'#mis_asyncload', array(), null, false);
             }
         } // end lazyload conditional
-
     } // end conditional for bundled vs custom paths
+
+    wp_enqueue_style( 'mis_popup_style', plugins_url('/mis_styles/mis_popup.css', __FILE__), array(), null, 'all' );
+    wp_enqueue_script('mis_popup_script', plugins_url('/mis_scripts/mis_popup.js', __FILE__), array('jquery'), null, true);
+
     add_filter('clean_url', 'mis_async_forscript', 11, 1);
 }
