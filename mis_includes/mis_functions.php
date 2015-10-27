@@ -73,7 +73,7 @@ $mis_filter_the_content = false){
     }
 
     // Var: Img tag
-    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').(is_null($mis_enablepopup) || empty($mis_enablepopup) ? '' : ' mis_popup').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
+    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('mis_lazyload') ? ' lazyload' : '').(is_null($mis_enablepopup) || empty($mis_enablepopup) ? '' : ' mis_popup').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('mis_lazyload') ? ' data-srcset':' srcset').'=';
 
     if ($mis_imgSize_xs[3]) {
 
