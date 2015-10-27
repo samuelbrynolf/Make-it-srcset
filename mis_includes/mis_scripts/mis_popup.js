@@ -3,7 +3,7 @@
 
 (function($, document) {
 
-    var popup_src = $('.mis_img'),
+    var popup_src = $('.mis_popup'),
         body = $('body'),
         overlay_ID = 'mis_overlay',
         clones_exist = false,

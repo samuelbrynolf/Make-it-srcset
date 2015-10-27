@@ -32,6 +32,7 @@ $mis_srcsetSize_thirdMq = null,
 $mis_srcsetSize_fourthMq = null,
 $mis_parent_css_class = null,
 $mis_figcaption = null,
+$mis_enablepopup = null,
 $mis_filter_the_content = false){
 
     // Vars: Set srcset sizes
@@ -72,7 +73,7 @@ $mis_filter_the_content = false){
     }
 
     // Var: Img tag
-    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
+    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('lazyload') ? ' lazyload' : '').(is_null($mis_enablepopup) || empty($mis_enablepopup) ? '' : ' mis_popup').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('lazyload') ? ' data-srcset':' srcset').'=';
 
     if ($mis_imgSize_xs[3]) {
 
@@ -166,7 +167,7 @@ function mis_wysiwyg_filter($content){
 
         // Make sure fetched ID is an attachement-ID
         if(wp_attachment_is_image($mis_attachment_id) || !empty($mis_attachment_id)){
-            $mis_srcset_attr_array = makeitSrcset($mis_attachment_id, null, null, null, null, null, null, null, true);
+            $mis_srcset_attr_array = makeitSrcset($mis_attachment_id, null, null, null, null, null, null, null, null, true);
 
             // Manipulate images with classes and set srcset-attributes
             $img -> removeAttribute("width");
@@ -205,13 +206,14 @@ function mis_shortcode($atts){
             'srcsetSize_thirdMq' => null,
             'srcsetSize_fourthMq' => null,
             'parent_css_class' => null,
-            'figcaption' => null
+            'figcaption' => null,
+            'popup' => null
         ), $atts));
 
     // https://wordpress.org/support/topic/plugin-called-via-shortcode-appears-at-the-wrong-place-on-post?replies=5
 
     ob_start();
-        makeitSrcset($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $parent_css_class, $figcaption);
+        makeitSrcset($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $parent_css_class, $figcaption, $popup);
         $mis_shortcode = ob_get_contents();
     ob_end_clean();
 
@@ -224,7 +226,7 @@ if (mis_get_option_boolean('mis_shortcodeGen')) {
 
 // Generate shortcode from media uploader, to editor
 function mis_mlib_shortcode_gen($html, $id, $caption, $title, $align, $url) {
-    return "[makeitSrcset image_id='$id' srcsetSize_noMq='' srcsetSize_firstMq='' srcsetSize_secondMq='' srcsetSize_thirdMq='' srcsetSize_fourthMq='' parent_css_class='' figcaption='']";
+    return "[makeitSrcset image_id='$id' srcsetSize_noMq='' srcsetSize_firstMq='' srcsetSize_secondMq='' srcsetSize_thirdMq='' srcsetSize_fourthMq='' parent_css_class='' figcaption='' popup='']";
 }
 
 

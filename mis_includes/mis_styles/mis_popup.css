@@ -2,7 +2,7 @@
 /* HIDDEN */
 
 #mis_overlay,
-.mis_img.is-cloned{
+.mis_popup.is-cloned{
     visibility: hidden;
     z-index: -500;
     opacity: 0;
@@ -18,8 +18,8 @@
     background-color: rgba(0,0,0,0.75);
 }
 
-.mis_img.is-cloned{
-    position: absolute;
+.mis_popup.is-cloned{
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -30,13 +30,13 @@
 /* VISIBLE */
 
 #mis_overlay.s-is-visible,
-.mis_img.is-cloned.s-is-visible{
+.mis_popup.is-cloned.s-is-visible{
     visibility: visible;
     z-index: 500;
     opacity: 1;
     pointer-events: auto;
 }
 
-.mis_img.is-cloned.s-is-visible{
+.mis_popup.is-cloned.s-is-visible{
     z-index: 550;
 }
