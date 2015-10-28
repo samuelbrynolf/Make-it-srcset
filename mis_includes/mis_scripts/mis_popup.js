@@ -1,65 +1,60 @@
-// Modal image, Version: 1.0
-// ---------------------------------------------
+(function( $, document ) {
+    $.fn.mis_popup = function(options) {
+        var settings = $.extend({
+            body : $('body'),
+            overlay_ID : 'mis_overlay',
+            imgcloned_class : 'mis_is-cloned',
+            show_class : 's-is-visible',
+            pop_sizes : '100vw'
+        }, options );
+
+        var popup_src = this;
+
+        if(popup_src.length){
+            var fragment = document.createDocumentFragment();
+            var overlay = $('<div />', {
+                click: function(){},
+                id: settings.overlay_ID
+            }).appendTo(fragment);
+
+            // Create popup-clones
+            popup_src.each(function(){
+                var $this = $(this);
+                var popped_id = $this.attr('data-misid');
+
+                $this.clone()
+                    .addClass(settings.imgcloned_class)
+                    .attr('sizes', settings.pop_sizes)
+                    .attr('id', popped_id).appendTo(fragment);
+            });
+
+            settings.body.append(fragment);
+            var popup_elems = $('.' + settings.imgcloned_class).add(overlay);
+
+            popup_src.on('click', function(e){
+                var $this = $(this);
+
+                overlay.addClass(settings.show_class);
+                $('#'+ $this.attr('data-misid')).addClass(settings.show_class);
+                e.stopPropagation();
+                e.preventDefault(e);
+            });
+
+            popup_elems.on('click', function(e){
+                popup_elems.removeClass(settings.show_class);
+                e.preventDefault();
+            });
+
+            return this;
+        }
+    };
+}( jQuery, document ));
+
 
 (function($, document) {
-
-    var popup_src = $('.mis_popup'),
-        body = $('body'),
-        overlay_ID = 'mis_overlay',
-        clones_exist = false,
-        imgcloned_class = 'is-cloned',
-        new_sizes_attr = '100vw',
-        show_class = 's-is-visible';
-
-    function create_popimg($this){
-        var popped_img = $this;
-        var popped_id = popped_img.attr('data-misid');
-
-        popped_img.clone()
-            .addClass(imgcloned_class)
-            .attr('sizes', new_sizes_attr)
-            .attr('id', popped_id).appendTo(body);
+    if($.fn.mis_popup) {
+        var popup_src = $('.mis_popup');
+        popup_src.mis_popup();
     }
-
-    if(popup_src.length){
-        // Create and append overlay
-        var overlay = document.createElement('div');
-        overlay.setAttribute('id', overlay_ID);
-        document.body.appendChild(overlay);
-        overlay = $('#'+overlay_ID); // Create jQuery object
-    }
-
-    popup_src.on('click', function(e){
-        var $this = $(this);
-        var popped_id = $this.attr('data-misid');
-
-        if(!clones_exist){
-            create_popimg($this);
-        }
-
-        overlay.addClass(show_class);
-        $('#'+popped_id).addClass(show_class);
-
-        e.preventDefault(e);
-    });
-
-    body.on('click', '#'+overlay_ID+', .'+imgcloned_class, function(e){
-
-        if(!clones_exist){
-            $('.'+imgcloned_class).remove();
-            popup_src.each(function(){
-                create_popimg($(this));
-                clones_exist = true;
-                clones = $('.'+imgcloned_class);
-            });
-        } else {
-            clones.removeClass(show_class);
-        }
-
-        overlay.removeClass(show_class);
-
-        e.stopPropagation();
-        e.preventDefault();
-    });
 
 })(jQuery, document);
