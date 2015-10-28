@@ -34,7 +34,7 @@
             popup_src.on('click', function(e){
                 var $this = $(this);
 
-                overlay.addClass(settings.show_class); // add below?
+                overlay.addClass(settings.show_class);
                 $('#'+ $this.attr('data-misid')).addClass(settings.show_class);
                 e.stopPropagation();
                 e.preventDefault(e);

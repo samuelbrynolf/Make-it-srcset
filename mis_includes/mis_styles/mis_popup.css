@@ -1,3 +1,7 @@
+.mis_popup{
+    cursor: pointer;
+}
+
 
 /* HIDDEN */
 
@@ -7,6 +11,10 @@
     z-index: -500;
     opacity: 0;
     pointer-events: none;
+    -webkit-transition: opacity 125ms ease-out;
+    -moz-transition: opacity 125ms ease-out;
+    -o-transition: opacity 125ms ease-out;
+    transition: opacity 125ms ease-out;
 }
 
 #mis_overlay{

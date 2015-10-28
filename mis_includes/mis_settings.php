@@ -430,7 +430,7 @@ function mis_plugin_initialize_options() {
 
     add_settings_section(
         'mis_jslib',
-        __('4. Javascript: Picturefill & Lazyload', 'makeitSrcset'),
+        __('4. Javascript: Picturefill, Lazyload & Popup / Lightbox', 'makeitSrcset'),
         'mis_jslib_callback',
         'mis_plugin_options'
     );
@@ -438,7 +438,7 @@ function mis_plugin_initialize_options() {
     // Settings section callback ---------------------------------------
 
     function mis_jslib_callback() {
-        echo '<p>' . __( '<strong>Picturefill:</strong> A srcset-polyfill for crossbrowser support.<br/><strong>Lazysizes:</strong> Javascript plugin to lazyload any content &mdash; your srcset images in this case.<br/><br/><em>There might be later versions of Picturefill and Lazysizes than the ones provided by Make it Srcset.<br/>Use 4.1.2 and 4.2.2 to enqueue your own up-to-date files.</em>', 'makeitSrcset' ) . '</p>';
+        echo '<p>' . __( '<strong>Picturefill:</strong> A srcset-polyfill for crossbrowser support.<br/><strong>Lazysizes:</strong> Javascript plugin to lazyload any content &mdash; your srcset images in this case.<br/><br/><em>There might be later versions of Picturefill and Lazysizes than the ones provided by Make it Srcset.<br/>Use 4.1.2 and 4.2.2 to enqueue your own up-to-date files.</em><br/><strong>Popup / Lightbox:</strong> Enqueue script and styles for popup. <a href="#">Usage -> See documentation</a>', 'makeitSrcset' ) . '</p>';
     }
 
     // Setting fields ---------------------------------------
@@ -487,6 +487,17 @@ function mis_plugin_initialize_options() {
         )
     );
 
+    add_settings_field(
+        'mis_popup',
+        '4.2.3 Enqueue popup-scripts and styles:',
+        'mis_popup_callback',
+        'mis_plugin_options',
+        'mis_jslib',
+        array(        // The array of arguments to pass to the callback. In this case, just a description.
+            __( '', 'makeitSrcset' ),
+        )
+    );
+
     // Setting fields callbacks ---------------------------------------
 
     function mis_picturefill_callback($args) {
@@ -514,6 +525,13 @@ function mis_plugin_initialize_options() {
         $options = get_option('mis_plugin_options');
         $html = '<input type="text" id="mis_userpathLazyload" placeholder="http://" name="mis_plugin_options[mis_userpathLazyload]" value="' . esc_url_raw($options['mis_userpathLazyload']) . '" />';
         $html .= '<label for="mis_userpathLazyload">&nbsp;'  . $args[0] . '</label>';
+        echo $html;
+    }
+
+    function mis_popup_callback($args) {
+        $options = get_option('mis_plugin_options');
+        $html = '<input type="checkbox" id="mis_popup" name="mis_plugin_options[mis_popup]" value="1" ' . checked(1, isset($options['mis_popup']) ? $options['mis_popup'] : 0, false) . '/>';
+        $html .= '<label for="mis_popup">&nbsp;'  . $args[0] . '</label>';
         echo $html;
     }
 

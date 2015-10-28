@@ -293,8 +293,10 @@ function mis_enqueue_scripts(){
         } // end lazyload conditional
     } // end conditional for bundled vs custom paths
 
-    wp_enqueue_style( 'mis_popup_style', plugins_url('/mis_styles/mis_popup.css', __FILE__), array(), null, 'all' );
-    wp_enqueue_script('mis_popup_script', plugins_url('/mis_scripts/mis_popup.js', __FILE__), array('jquery'), null, true);
+    if(mis_get_option_boolean('mis_popup')){
+        wp_enqueue_style( 'mis_popup_style', plugins_url('/mis_styles/mis_popup.css', __FILE__), array(), null, 'all' );
+        wp_enqueue_script('mis_popup_script', plugins_url('/mis_scripts/mis_popup.js', __FILE__), array('jquery'), null, true);
+    }
 
     add_filter('clean_url', 'mis_async_forscript', 11, 1);
 }
