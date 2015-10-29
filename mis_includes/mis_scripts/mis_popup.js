@@ -46,7 +46,15 @@
 
                 overlay.addClass(settings.show_class);
                 thisclone.addClass(settings.show_class);
-                e.stopPropagation();
+
+                settings.body.one('keyup', function(e){
+                    if (e.keyCode == 27) {
+                        popup_elems.removeClass(settings.show_class);
+                        e.preventDefault(e);
+                    }
+                });
+
+                e.stopPropagation(e);
                 e.preventDefault(e);
             });
 
