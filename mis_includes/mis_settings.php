@@ -1,4 +1,10 @@
-<?php function mis_main_tab() {
+<?php
+
+/**
+ * Menu build
+ */
+
+function mis_main_tab() {
 	add_plugins_page(
 		'Make it Srcset',
 		'Make it Srcset',
@@ -24,7 +30,11 @@ function mis_plugin_menu() { ?>
 	</div>
 <?php }
 
-// --------------------------------------------------------------------------------------------------------------------------------
+
+
+/** Default options
+ * @return mixed|void
+ */
 
 function mis_plugin_default_options() {
 	$defaults = array(
@@ -46,7 +56,11 @@ function mis_plugin_default_options() {
 	return apply_filters( 'mis_plugin_default_options', $defaults );
 }
 
-// INIT -----------------------------------------------------------------------------------------------------------------------------
+
+
+/**
+ * INIT
+ */
 
 function mis_plugin_initialize_options() {
 	if(false == get_option('mis_plugin_options')) {
@@ -55,8 +69,10 @@ function mis_plugin_initialize_options() {
 
 
 
-    // Screen extremes options -------------------------------------------------------------------------------------------------------------------------
-    // Settings section ---------------------------------------
+
+    /** Screen extremes options -------------------------------------------------------------------------------------------------------------------------
+     * Settings section for mis_imagewidths
+     */
 
     add_settings_section(
         'mis_imagewidths',
@@ -65,13 +81,17 @@ function mis_plugin_initialize_options() {
         'mis_plugin_options'
     );
 
-    // Settings section callback ---------------------------------------
+    /**
+     * Settings section callback for mis_imagewidths
+     */
 
     function mis_imagewidths_callback() {
         echo '<p>' . __( '<strong>Aka:</strong> What are the needs in pixels for your smallest / fatests screens?<br/><br/><strong>Width</strong> refers the physical width of the screen.<br/><strong>Hires-image-width</strong> refers to what size the image needs to stay sharp on hi-res screens, such as retina.', 'makeitSrcset' ) . '</p>';
     }
 
-    // Setting fields ---------------------------------------
+    /**
+     * Setting fields for mis_imagewidths
+     */
 
     add_settings_field(
         'mis_imgWidth_noMq',
@@ -79,7 +99,7 @@ function mis_plugin_initialize_options() {
         'mis_imgWidth_noMq_callback',
         'mis_plugin_options',
         'mis_imagewidths',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __('px', 'makeitSrcset'),
         )
     );
@@ -90,7 +110,7 @@ function mis_plugin_initialize_options() {
         'mis_imgWidth_noMq_R_callback',
         'mis_plugin_options',
         'mis_imagewidths',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __('px <em>(Should be at least 1.5 times the value set in 1.1.1)</em>', 'makeitSrcset'),
         )
     );
@@ -101,12 +121,14 @@ function mis_plugin_initialize_options() {
         'mis_imgWidth_fatscreen_callback',
         'mis_plugin_options',
         'mis_imagewidths',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __('px', 'makeitSrcset'),
         )
     );
 
-    // Setting fields callbacks ---------------------------------------
+    /** Setting fields callbacks for mis_imagewidths
+     * @param $args
+     */
 
     function mis_imgWidth_noMq_callback($args) {
         $options = get_option( 'mis_plugin_options' );
@@ -124,18 +146,21 @@ function mis_plugin_initialize_options() {
         echo $html;
     }
 
-    function mis_imgWidth_fatscreen_callback($args) {
-        $options = get_option( 'mis_plugin_options' );
+    function mis_imgWidth_fatscreen_callback($args)
+    {
+        $options = get_option('mis_plugin_options');
         $mis_imgWidth_fatscreen = $options['mis_imgWidth_fatscreen'];
-        $html = '<input type="text" id="mis_imgWidth_fatscreen" name="mis_plugin_options[mis_imgWidth_fatscreen]" value="' . preg_replace('/[^0-9]+/', '', $mis_imgWidth_fatscreen ) . '" />';
-        $html .= '<label for="mis_imgWidth_fatscreen">&nbsp;'  . $args[0] . '</label>';
+        $html = '<input type="text" id="mis_imgWidth_fatscreen" name="mis_plugin_options[mis_imgWidth_fatscreen]" value="' . preg_replace('/[^0-9]+/', '', $mis_imgWidth_fatscreen) . '" />';
+        $html .= '<label for="mis_imgWidth_fatscreen">&nbsp;' . $args[0] . '</label>';
         echo $html;
     }
 
 
 
-	// Mediaqueries options -------------------------------------------------------------------------------------------------------------------------
-    // Settings section ---------------------------------------
+
+    /** Mediaqueries options -------------------------------------------------------------------------------------------------------------------------
+     * Settings section for mis_mediaqueries
+     */
 
 	add_settings_section(
 		'mis_mediaqueries',
@@ -144,13 +169,17 @@ function mis_plugin_initialize_options() {
 		'mis_plugin_options'
 	);
 
-    // Settings section callback ---------------------------------------
+    /**
+     * Settings section callback for mis_mediaqueries
+     */
 
     function mis_mediaqueries_callback() {
         echo '<p>' . __( '<strong>Make it Srcset</strong> uses four min-width mediaqueries, <em>within the sizes-attribute for each image</em>. Add your default values in ascending order.<br/><strong>Tip:</strong> Use the same breakpoints as your themes layout do if you are using min-width mediaqueries. If you are using fewer media queries in your layout than four &mdash; <em>enter common screensizes (higher than your final breakpoint) to fill the blanks.</em>', 'makeitSrcset' ) . '</p>';
     }
 
-    // Setting fields ---------------------------------------
+    /**
+     * Settings fields for mis_mediaqueries
+     */
 
 	add_settings_field(
 		'mis_imgWidth_firstMq',
@@ -158,7 +187,7 @@ function mis_plugin_initialize_options() {
 		'mis_imgSizeFirstMq_callback',
 		'mis_plugin_options',
 		'mis_mediaqueries',
-		array(        // The array of arguments to pass to the callback. In this case, just a description.
+		array(        
 			__('px', 'makeitSrcset'),
 		)
 	);
@@ -169,7 +198,7 @@ function mis_plugin_initialize_options() {
 		'mis_imgSizeSecondMq_callback',
 		'mis_plugin_options',
 		'mis_mediaqueries',
-		array(        // The array of arguments to pass to the callback. In this case, just a description.
+		array(        
 			__('px', 'makeitSrcset'),
 		)
 	);
@@ -180,7 +209,7 @@ function mis_plugin_initialize_options() {
 		'mis_imgSizeThirdMq_callback',
 		'mis_plugin_options',
 		'mis_mediaqueries',
-		array(        // The array of arguments to pass to the callback. In this case, just a description.
+		array(        
 			__('px', 'makeitSrcset'),
 		)
 	);
@@ -191,12 +220,14 @@ function mis_plugin_initialize_options() {
 		'mis_imgSizeFourthMq_callback',
 		'mis_plugin_options',
 		'mis_mediaqueries',
-		array(        // The array of arguments to pass to the callback. In this case, just a description.
+		array(        
 			__('px', 'makeitSrcset'),
 		)
 	);
 
-    // Setting fields callbacks ---------------------------------------
+    /** Setting fields callbacks for mis_mediaqueries
+     * @param $args
+     */
 
     function mis_imgSizeFirstMq_callback($args) {
         $options = get_option( 'mis_plugin_options' );
@@ -232,8 +263,9 @@ function mis_plugin_initialize_options() {
 
 
 
-    // Settings section for srcset-sizes -------------------------------------------------------------------------------------------------------------------------
-    // Settings section ---------------------------------------
+    /** Settings section for srcset-sizes -------------------------------------------------------------------------------------------------------------------------
+     * Settings section for mis_srcsetSizes
+     */
 
     add_settings_section(
         'mis_srcsetSizes',
@@ -242,13 +274,17 @@ function mis_plugin_initialize_options() {
         'mis_plugin_options'
     );
 
-    // Settings section callback ---------------------------------------
+    /**
+     * Settings section callback for mis_srcsetSizes
+     */
 
     function mis_srcsetSizes_callback() {
         echo '<p>' . __( '<strong>Aka:</strong> What proportion of the screen does your images need, within each mediaquery?<br/><em>Use common screensizes if you are using fewer mediaqueries than four.</em>', 'makeitSrcset' ) . '</p>';
     }
 
-    // Setting fields ---------------------------------------
+    /**
+     * Setting fields for mis_srcsetSizes
+     */
 
     add_settings_field(
         'mis_srcsetSize_noMq',
@@ -256,7 +292,7 @@ function mis_plugin_initialize_options() {
         'mis_srcsetsize_one_callback',
         'mis_plugin_options',
         'mis_srcsetSizes',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __('vw', 'makeitSrcset'),
         )
     );
@@ -267,7 +303,7 @@ function mis_plugin_initialize_options() {
         'mis_srcsetsize_two_callback',
         'mis_plugin_options',
         'mis_srcsetSizes',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __('vw', 'makeitSrcset'),
         )
     );
@@ -278,7 +314,7 @@ function mis_plugin_initialize_options() {
         'mis_srcsetsize_three_callback',
         'mis_plugin_options',
         'mis_srcsetSizes',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __('vw', 'makeitSrcset'),
         )
     );
@@ -289,7 +325,7 @@ function mis_plugin_initialize_options() {
         'mis_srcsetsize_four_callback',
         'mis_plugin_options',
         'mis_srcsetSizes',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __('vw', 'makeitSrcset'),
         )
     );
@@ -300,12 +336,14 @@ function mis_plugin_initialize_options() {
         'mis_srcsetsize_five_callback',
         'mis_plugin_options',
         'mis_srcsetSizes',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __('vw', 'makeitSrcset'),
         )
     );
 
-    // Setting fields callbacks ---------------------------------------
+    /** Setting fields callbacks for mis_srcsetSizes
+     * @param $args
+     */
 
     function mis_srcsetsize_one_callback($args) {
         $options = get_option( 'mis_plugin_options' );
@@ -349,8 +387,9 @@ function mis_plugin_initialize_options() {
 
 
 
-    // Settings section for images pulled by WYSIWYG-editor -------------------------------------------------------------------------------------------------------------------------
-    // Settings section ---------------------------------------
+    /** Settings section for images pulled by WYSIWYG-editor -------------------------------------------------------------------------------------------------------------------------
+     * Settings section for mis_wysiwyg
+     */
 
     add_settings_section(
         'mis_wysiwyg',
@@ -359,13 +398,17 @@ function mis_plugin_initialize_options() {
         'mis_plugin_options'
     );
 
-    // Settings section callback ---------------------------------------
+    /**
+     * Settings section callback for mis_wysiwyg
+     */
 
     function mis_wysiwyg_callback() {
         echo '<p>' . __( '<strong>Filter:</strong> Apply srcset attributes to all images. Uses the default values set in 2.1 and 2.2. <br/><strong>Shortcode:</strong> Enables [Srcset-image image_id="ID"] to handle images from wysiwyg-editor.<br/><strong>Shortcode generator:</strong> Pull generated shortcodes instead of images to wysiwyg-editor from the mediagallery.', 'makeitSrcset' ) . '</p>';
     }
 
-    // Setting fields ---------------------------------------
+    /**
+     * Setting fields for mis_wysiwyg
+     */
 
     add_settings_field(
         'mis_contentFilter',
@@ -373,7 +416,7 @@ function mis_plugin_initialize_options() {
         'mis_contentFilter_callback',
         'mis_plugin_options',
         'mis_wysiwyg',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __( '', 'makeitSrcset' ),
         )
     );
@@ -384,7 +427,7 @@ function mis_plugin_initialize_options() {
         'mis_shortcode_callback',
         'mis_plugin_options',
         'mis_wysiwyg',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __( '', 'makeitSrcset' ),
         )
     );
@@ -395,12 +438,14 @@ function mis_plugin_initialize_options() {
         'mis_shortcodeGen_callback',
         'mis_plugin_options',
         'mis_wysiwyg',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __( '', 'makeitSrcset' ),
         )
     );
 
-    // Setting fields callbacks ---------------------------------------
+    /** Setting fields callbacks for mis_wysiwyg
+     * @param $args
+     */
 
     function mis_contentFilter_callback($args) {
         $options = get_option('mis_plugin_options');
@@ -425,8 +470,9 @@ function mis_plugin_initialize_options() {
 
 
 
-    // Settings section for JS-libraries -------------------------------------------------------------------------------------------------------------------------
-    // Settings section ---------------------------------------
+    /** Settings section for JS-libraries -------------------------------------------------------------------------------------------------------------------------
+     * Settings section for mis_jslib
+     */
 
     add_settings_section(
         'mis_jslib',
@@ -435,13 +481,17 @@ function mis_plugin_initialize_options() {
         'mis_plugin_options'
     );
 
-    // Settings section callback ---------------------------------------
+    /**
+     * Settings section callback for mis_jslib
+     */
 
     function mis_jslib_callback() {
         echo '<p>' . __( '<strong>Picturefill:</strong> A srcset-polyfill for crossbrowser support.<br/><strong>Lazysizes:</strong> Javascript plugin to lazyload any content &mdash; your srcset images in this case.<br/><br/><em>There might be later versions of Picturefill and Lazysizes than the ones provided by Make it Srcset.<br/>Use 4.1.2 and 4.2.2 to enqueue your own up-to-date files.</em><br/><strong>Popup / Lightbox:</strong> Enqueue script and styles for popup. <a href="#">Usage -> See documentation</a>', 'makeitSrcset' ) . '</p>';
     }
 
-    // Setting fields ---------------------------------------
+    /**
+     * Setting fields for mis_jslib
+     */
 
     add_settings_field(
         'mis_picturefill',
@@ -449,7 +499,7 @@ function mis_plugin_initialize_options() {
         'mis_picturefill_callback',
         'mis_plugin_options',
         'mis_jslib',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __( '', 'makeitSrcset' ),
         )
     );
@@ -460,7 +510,7 @@ function mis_plugin_initialize_options() {
         'mis_userpathPicturefill_callback',
         'mis_plugin_options',
         'mis_jslib',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __( 'Replace the provided v2.3.1 with a later version. Expects a full path.', 'makeitSrcset' ),
         )
     );
@@ -471,7 +521,7 @@ function mis_plugin_initialize_options() {
         'mis_lazyload_callback',
         'mis_plugin_options',
         'mis_jslib',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __( '', 'makeitSrcset' ),
         )
     );
@@ -482,7 +532,7 @@ function mis_plugin_initialize_options() {
         'mis_userpathLazyload_callback',
         'mis_plugin_options',
         'mis_jslib',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __( 'Replace the provided v1.1.3 with a later version. Expects a full path.', 'makeitSrcset' ),
         )
     );
@@ -493,12 +543,14 @@ function mis_plugin_initialize_options() {
         'mis_popup_callback',
         'mis_plugin_options',
         'mis_jslib',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __( '', 'makeitSrcset' ),
         )
     );
 
-    // Setting fields callbacks ---------------------------------------
+    /** Setting fields callbacks for mis_jslib
+     * @param $args
+     */
 
     function mis_picturefill_callback($args) {
         $options = get_option('mis_plugin_options');
@@ -537,8 +589,9 @@ function mis_plugin_initialize_options() {
 
 
 
-    // Settings section for Styles -------------------------------------------------------------------------------------------------------------------------
-    // Settings section ---------------------------------------
+    /** Settings section for Styles -------------------------------------------------------------------------------------------------------------------------
+     * Settings section for mis_styles
+     */
 
     add_settings_section(
         'mis_styles',
@@ -547,13 +600,18 @@ function mis_plugin_initialize_options() {
         'mis_plugin_options'
     );
 
-    // Settings section callback ---------------------------------------
+
+    /**
+     * Settings section callback for mis_styles
+     */
 
     function mis_styles_callback() {
         echo '<p>' . __( 'When a user have turned off javascript on a browser that have native support for srcset, the provided noscript-fallback will duplicate all srcset images. <strong>Why is this even an option? Just fix it!?</strong><br/><strong>1.</strong> This is a cornercase. Enqueued styles or extra kb for detection is just not worth it.<br/><strong>2.</strong> This bugfix puts inline css in your header and expects a no-js class on your html/body-tag to work. You might just copy <strong>.no-js .mis_img.mis_omitSrc{display:none}</strong> into your theme-stylesheet. Or check the box below and save a minute.', 'makeitSrcset' ) . '</p>';
     }
 
-    // Setting fields ---------------------------------------
+    /**
+     * Setting fields for mis_styles
+     */
 
     add_settings_field(
         'mis_preventDuplicates',
@@ -561,12 +619,14 @@ function mis_plugin_initialize_options() {
         'mis_mis_preventDuplicates_callback',
         'mis_plugin_options',
         'mis_styles',
-        array(        // The array of arguments to pass to the callback. In this case, just a description.
+        array(        
             __( '<em>Do not tell Aaron.</em>', 'makeitSrcset' ),
         )
     );
 
-    // Setting fields callbacks ---------------------------------------
+    /** Setting fields callbacks for mis_styles
+     * @param $args
+     */
 
     function mis_mis_preventDuplicates_callback($args) {
         $options = get_option('mis_plugin_options');
@@ -577,7 +637,9 @@ function mis_plugin_initialize_options() {
 
 
 
-    // Register and sanitize -------------------------------------------------------------------------------------------------------------------------
+    /**
+     * Register and sanitize -------------------------------------------------------------------------------------------------------------------------
+     */
 
 	register_setting(
 		'mis_plugin_options',
@@ -588,10 +650,6 @@ function mis_plugin_initialize_options() {
 
 add_action( 'admin_init', 'mis_plugin_initialize_options' );
 
-
-
-//-----------------------------------------------------------------------------------------------------------------------------------
-
 function mis_validate_sanitize_input($input) {
 	$output = array();
 	foreach($input as $key => $value){
@@ -601,6 +659,12 @@ function mis_validate_sanitize_input($input) {
 	}
 	return apply_filters('mis_validate_sanitize_input', $output, $input);
 }
+
+
+
+/**
+ * Helpfunctions -------------------------------------------------------------------------------------------------------------------------
+ */
 
 function mis_get_option_integer($fieldID){
     $options = get_option('mis_plugin_options');
