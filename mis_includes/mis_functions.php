@@ -1,4 +1,8 @@
-<?php // Add needed image formats ------------------------------------------------------------------
+<?php
+
+/**
+ * Add needed image formats
+ */
 
 function mis_imageInit() {
     if (function_exists('add_theme_support')) {
@@ -21,10 +25,22 @@ add_action('after_setup_theme', 'mis_imageInit');
 
 
 
-// Srcset HTML-builder (for shortcodes and add_filter for the_content) / Template tag ------------------------------------------------------------------
+/** Srcset HTML-builder (for shortcodes and add_filter for the_content) / Template tag
+ * @param null $mis_attachment_id
+ * @param null $mis_srcsetSize_noMq
+ * @param null $mis_srcsetSize_firstMq
+ * @param null $mis_srcsetSize_secondMq
+ * @param null $mis_srcsetSize_thirdMq
+ * @param null $mis_srcsetSize_fourthMq
+ * @param null $mis_parent_css_class
+ * @param null $mis_figcaption
+ * @param null $mis_enablepopup
+ * @param bool $mis_filter_the_content
+ * @return array
+ */
 
 function makeitSrcset(
-$mis_attachment_id = null, // get_post_thumbnail_id($post->ID)
+$mis_attachment_id = null,
 $mis_srcsetSize_noMq = null,
 $mis_srcsetSize_firstMq = null,
 $mis_srcsetSize_secondMq = null,
@@ -35,14 +51,20 @@ $mis_figcaption = null,
 $mis_enablepopup = null,
 $mis_filter_the_content = false){
 
-    // Vars: Set srcset sizes
+    /**
+     * Vars: Set srcset sizes
+     */
+
     $mis_srcsetSize_noMq = (is_null($mis_srcsetSize_noMq) || empty($mis_srcsetSize_noMq)) ? mis_get_option_integer('mis_srcsetSize_noMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_noMq);
     $mis_srcsetSize_firstMq = (is_null($mis_srcsetSize_firstMq) || empty($mis_srcsetSize_firstMq)) ? mis_get_option_integer('mis_srcsetSize_firstMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_firstMq);
     $mis_srcsetSize_secondMq = (is_null($mis_srcsetSize_secondMq) || empty($mis_srcsetSize_secondMq)) ? mis_get_option_integer('mis_srcsetSize_secondMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_secondMq);
     $mis_srcsetSize_thirdMq = (is_null($mis_srcsetSize_thirdMq) || empty($mis_srcsetSize_thirdMq)) ? mis_get_option_integer('mis_srcsetSize_thirdMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_thirdMq);
     $mis_srcsetSize_fourthMq = (is_null($mis_srcsetSize_fourthMq) || empty($mis_srcsetSize_fourthMq)) ? mis_get_option_integer('mis_srcsetSize_fourthMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_fourthMq);
 
-    // Vars: Set imageformats IF there is an attachment ID passed as an integer and if that attachment is an image. If not give a link to documentation
+    /**
+     * Vars: Set imageformats IF there is an attachment ID passed as an integer and if that attachment is an image. If not give a link to documentation
+     */
+
     if (is_numeric($mis_attachment_id) && isset($mis_attachment_id) && wp_attachment_is_image($mis_attachment_id)) {
         $mis_imgSize_fatscreen = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_fatscreen');
         $mis_imgSize_fourthMq = wp_get_attachment_image_src($mis_attachment_id, 'mis_imgSize_fourthMq');
@@ -57,27 +79,43 @@ $mis_filter_the_content = false){
         $mis_filename = $mis_img->post_name;
 
     } else {
-        // Error msg for omitting attachment-ID
+
+        /**
+         * Error msg for omitting attachment-ID
+         */
+
         echo '<script>console.log("Hi! makeitSrcset() / [makeitSrcset]- shortcode needs the attachment-ID for the image you want to show. Read up on: http://note-to-helf.com/wordpress-plugin-make-it-srcset");</script>';
         return;
     }
 
-    // Var: Css-classes for srcset parent element
+    /**
+     * Var: Css-classes for srcset parent element
+     */
+
     $mis_imgParent_cssClass = (is_null($mis_parent_css_class) || empty($mis_parent_css_class) ? '' : ' '.$mis_parent_css_class);
 
-    // Var: Parent container tag (if figcaption exists make it a figure-element)
+    /**
+     * Var: Parent container tag (if figcaption exists make it a figure-element)
+     */
+
     if (is_null($mis_figcaption) || empty($mis_figcaption)) {
         $mis_containerTag = '<div class="mis_container mis_div'.$mis_imgParent_cssClass.'">';
     } else {
         $mis_containerTag = '<figure class="mis_container mis_figure'.$mis_imgParent_cssClass.'">';
     }
 
-    // Var: Img tag
+    /**
+     * Var: Img tag
+     */
+
     $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('mis_lazyload') ? ' lazyload' : '').(is_null($mis_enablepopup) || empty($mis_enablepopup) ? '' : ' mis_popup').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('mis_lazyload') ? ' data-srcset':' srcset').'=';
 
     if ($mis_imgSize_xs[3]) {
 
-        // Do attachment has needed imageformats? Use them
+        /**
+         * Do attachment has needed imageformats? Use them
+         */
+
         $mis_srcsetImages =
             $mis_imgSize_fatscreen[0] . ' ' . $mis_imgSize_fatscreen[1] . 'w, ' .
             $mis_imgSize_fourthMq[0] . ' ' . $mis_imgSize_fourthMq[1] . 'w, ' .
@@ -90,7 +128,10 @@ $mis_filter_the_content = false){
 
     } else {
 
-        // Attachment has not needed imageformats (aka uploaded before plugin was active) - use built in wp-formats
+        /**
+         * Attachment has not needed imageformats (aka uploaded before plugin was active) - use built in wp-formats
+         */
+
         $mis_imgSize_fatscreen = wp_get_attachment_image_src($mis_attachment_id, 'full');
         $mis_img_defaultLarge = wp_get_attachment_image_src($mis_attachment_id, 'large');
         $mis_img_defaultMedium = wp_get_attachment_image_src($mis_attachment_id, 'medium');
@@ -103,43 +144,71 @@ $mis_filter_the_content = false){
             $mis_img_defaultThumb[0] . ' ' . $mis_img_defaultThumb[1] . 'w';
     }
 
-    // Var: Srcset-sizes and Srcset-mediaqueries
+    /**
+     * Var: Srcset-sizes and Srcset-mediaqueries
+     */
+
     $mis_srcsetSizes = '(min-width: '.$mis_imgSize_fourthMq[1].'px) '.$mis_srcsetSize_fourthMq.'vw, (min-width: '.$mis_imgSize_thirdMq[1].'px) '.$mis_srcsetSize_thirdMq.'vw, (min-width: '.$mis_imgSize_secondMq[1].'px) '.$mis_srcsetSize_secondMq.'vw, (min-width: '.$mis_imgSize_firstMq[1].'px) '.$mis_srcsetSize_firstMq.'vw, '. $mis_srcsetSize_noMq.'vw';
 
-    // Var: Endtag img
+    /**
+     * Var: Endtag img
+     */
+
     $mis_closeImgTag = '/>';
 
-    // Var: Figcaption
+    /**
+     * Var: Figcaption
+     */
+
     if (is_null($mis_figcaption) || empty($mis_figcaption)) {
         $mis_figcaptionTag = '';
     } else {
         $mis_figcaptionTag = '<figcaption class="mis_figcaption">'.$mis_figcaption.'</figcaption>';
     }
 
-    // Var: Fallback img in noscript-tag
+    /**
+     * Var: Fallback img in noscript-tag
+     */
+
     $mis_noscriptTag = '<noscript class="mis_noscript"><img class="mis_img mis_nojs" src="'.($mis_imgSize_xs[3] ? $mis_imgSize_secondMq[0] : $mis_img_defaultLarge[0]).'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').'/></noscript>';
 
-    // Var: Endtag parent container
+    /**
+     * Var: Endtag parent container
+     */
+
     if (is_null($mis_figcaption) || empty($mis_figcaption)) {
         $mis_closeImgContainer = '</div>';
     } else {
         $mis_closeImgContainer = '</figure>';
     }
 
-    // BUILD HTML
+    /**
+     * BUILD HTML
+     */
+
     if ($mis_filter_the_content) {
-        // Return only srcset attributes in array needed by the_content filter
+
+        /**
+         * Return only srcset attributes in array needed by the_content filter
+         */
+
         $mis_srcsetAttributes = array($mis_srcsetImages, $mis_srcsetSizes);
         return $mis_srcsetAttributes;
     } else {
-        // Build HTML for template tag and shortcode
+
+        /**
+         * Build HTML for template tag and shortcode
+         */
+
         echo $mis_containerTag.$mis_imgTag.'"'.$mis_srcsetImages.'" sizes="'.$mis_srcsetSizes.'"'.$mis_closeImgTag.$mis_figcaptionTag.$mis_noscriptTag.$mis_closeImgContainer;
     }
 }
 
 
 
-// Filter the_content with add_filter ------------------------------------------------------------------
+/**
+ * Filter the_content with add_filter
+ */
 
 if (mis_get_option_boolean('mis_contentFilter')) {
     add_filter('the_content', 'mis_wysiwyg_filter');
@@ -147,12 +216,18 @@ if (mis_get_option_boolean('mis_contentFilter')) {
 
 function mis_wysiwyg_filter($content){
 
-    // No content? Quit.
+    /**
+     * No content? Quit.
+     */
+
     if(!$content){
         return;
     }
 
-    // Build a new DOMDocument and set needed vars
+    /**
+     * Build a new DOMDocument and set needed vars
+     */
+
     $content = mb_convert_encoding($content, 'HTML-ENTITIES', "UTF-8");
     $document = new DOMDocument();
     libxml_use_internal_errors(true);
@@ -161,15 +236,24 @@ function mis_wysiwyg_filter($content){
 
     foreach($imgs as $img){
 
-        // Loop each image in new DOMDocument. Save wp-standard classes, attachment ID to get needed srcset strings. Save those strings.
+        /**
+         * Loop each image in new DOMDocument. Save wp-standard classes, attachment ID to get needed srcset strings. Save those strings.
+         */
+
         $mis_attachment_classes = $img->getAttribute("class");
         $mis_attachment_id = preg_replace("/[^0-9]/","",$mis_attachment_classes);
 
-        // Make sure fetched ID is an attachement-ID
+        /**
+         * Make sure fetched ID is an attachement-ID
+         */
+
         if(wp_attachment_is_image($mis_attachment_id) || !empty($mis_attachment_id)){
             $mis_srcset_attr_array = makeitSrcset($mis_attachment_id, null, null, null, null, null, null, null, null, true);
 
-            // Manipulate images with classes and set srcset-attributes
+            /**
+             * Manipulate images with classes and set srcset-attributes
+             */
+
             $img -> removeAttribute("width");
             $img -> removeAttribute("height");
             if(mis_get_option_boolean('lazyload')){
@@ -183,14 +267,19 @@ function mis_wysiwyg_filter($content){
         }
     }
 
-    // No need for additional html / body-tags (quick and dirty preg_replace). Save it and set it as document
+    /**
+     * No need for additional html / body-tags (quick and dirty preg_replace). Save it and set it as document
+     */
+
     $mis_filtered_html = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $document->saveHTML()));
     return $mis_filtered_html;
 }
 
 
 
-// Shortcode ------------------------------------------------------------------
+/**
+ * Shortcode
+ */
 
 if (mis_get_option_boolean('mis_shortcode')) {
     add_shortcode('makeitSrcset', 'mis_shortcode');
@@ -210,7 +299,9 @@ function mis_shortcode($atts){
             'popup' => null
         ), $atts));
 
-    // https://wordpress.org/support/topic/plugin-called-via-shortcode-appears-at-the-wrong-place-on-post?replies=5
+    /**
+     * Reference og_get_contents: https://wordpress.org/support/topic/plugin-called-via-shortcode-appears-at-the-wrong-place-on-post?replies=5
+     */
 
     ob_start();
         makeitSrcset($image_id, $srcsetSize_noMq, $srcsetSize_firstMq, $srcsetSize_secondMq, $srcsetSize_thirdMq, $srcsetSize_fourthMq, $parent_css_class, $figcaption, $popup);
@@ -224,14 +315,25 @@ if (mis_get_option_boolean('mis_shortcodeGen')) {
     add_filter('image_send_to_editor', 'mis_mlib_shortcode_gen', 10, 9);
 }
 
-// Generate shortcode from media uploader, to editor
+
+/** Generate shortcode from media uploader, to editor
+ * @param $html
+ * @param $id
+ * @param $caption
+ * @param $title
+ * @param $align
+ * @param $url
+ * @return string
+ */
+
 function mis_mlib_shortcode_gen($html, $id, $caption, $title, $align, $url) {
     return "[makeitSrcset image_id='$id' srcsetSize_noMq='' srcsetSize_firstMq='' srcsetSize_secondMq='' srcsetSize_thirdMq='' srcsetSize_fourthMq='' parent_css_class='' figcaption='' popup='']";
 }
 
 
-
-// Prevent duplicate images for browsers that support Srcset but have javascript turned off --------------------------
+/**
+ * Prevent duplicate images for browsers that support Srcset but have javascript turned off
+ */
 
 if (mis_get_option_boolean('mis_preventDuplicates')) {
     add_action('wp_head','mis_nojs_style');
@@ -244,9 +346,10 @@ function mis_nojs_style(){
 
 
 
-// Scripts -----------------------------------------------------------------------
-
-// Add async attributes to mis_enqueue_scripts-files
+/** Add async attributes to mis_enqueue_scripts-files
+ * @param $url
+ * @return mixed|string
+ */
 
 function mis_async_forscript($url){
     if (strpos($url, '#mis_asyncload')===false)
@@ -257,41 +360,78 @@ function mis_async_forscript($url){
         return str_replace('#mis_asyncload', '', $url)."' async='async";
 }
 
-// Enqueue scripts
+
+
+/**
+ * Enqueue scripts
+ */
 
 function mis_enqueue_scripts(){
     $mis_userpathPicturefill = mis_get_option_url('mis_userpathPicturefill');
     $mis_userpathLazyload = mis_get_option_url('mis_userpathLazyload');
 
-    // If user want all built in scripts, enqueue a bundled version...
+    /**
+     * If user want all built in scripts, enqueue a bundled version...
+     */
+
     if (mis_get_option_boolean('mis_picturefill') && mis_get_option_boolean('mis_lazyload') && empty($mis_userpathPicturefill) && empty($mis_userpathLazyload)) {
         wp_enqueue_script('mis_bundled', plugins_url('/mis_vendor/mis_bundled.min.js#mis_asyncload', __FILE__), array(), null, false);
     } else {
 
-        // ...if not all built in scripts, check if they want picturefill at all...
+        /**
+         * ...if not all built in scripts, check if they want picturefill at all...
+         */
+
         if (mis_get_option_boolean('mis_picturefill')) {
-            // ...yes? do they want their own / updated version?
+
+            /**
+             * ...yes? do they want their own / updated version?
+             */
+
             if(empty($mis_userpathPicturefill)){
-                // ... no? Run built in picurefill
+
+                /**
+                 * ... no? Run built in picurefill
+                 */
+
                 wp_enqueue_script('mis_picturefill', plugins_url('/mis_vendor/mis_picturefill.min.js#mis_asyncload', __FILE__), array(), null, false);
             } else {
-                // ... Yes? Run picturefill user path
+
+                /**
+                 * ... Yes? Run picturefill user path
+                 */
+
                 wp_enqueue_script('picturefill', $mis_userpathPicturefill.'#mis_asyncload', array(), null, false);
             }
-        } // end Picturefill conditional
+        }
 
-        // ...if not all built in scripts, check if they want lazyload at all...
+        /**
+         * ...if not all built in scripts, check if they want lazyload at all...
+         */
+
         if (mis_get_option_boolean('mis_lazyload')) {
-            // ...yes? do they want their own / updated version?
+
+            /**
+             * ...yes? do they want their own / updated version?
+             */
+
             if(empty($mis_userpathLazyload)){
-                // ... no? Run built in Lazysizes
+
+                /**
+                 * ... no? Run built in Lazysizes
+                 */
+
                 wp_enqueue_script('mis_lazysizes', plugins_url('/mis_vendor/mis_lazysizes.min.js#mis_asyncload', __FILE__), array(), null, false);
             } else {
-                // ... Yes? Run Lazysizes user path
+
+                /**
+                 * ... Yes? Run Lazysizes user path
+                 */
+
                 wp_enqueue_script('lazysizes', $mis_userpathLazyload.'#mis_asyncload', array(), null, false);
             }
-        } // end lazyload conditional
-    } // end conditional for bundled vs custom paths
+        }
+    }
 
     if(mis_get_option_boolean('mis_popup')){
         wp_enqueue_style( 'mis_popup_style', plugins_url('/mis_styles/mis_popup.css', __FILE__), array(), null, 'all' );
