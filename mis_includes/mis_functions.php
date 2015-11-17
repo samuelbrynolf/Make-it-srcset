@@ -111,7 +111,7 @@ $mis_filter_the_content = false){
     $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('mis_lazyload') ? ' lazyload' : '').(is_null($mis_enablepopup) || empty($mis_enablepopup) ? '' : ' mis_popup').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('mis_lazyload') ? ' data-srcset':' srcset').'=';
 
     /**
-     * Do attachment has needed imageformats? Use them
+     * Var: Srcset-src
      */
 
     $mis_fatscreenSize_attr = $mis_imgSize_fatscreen[0] . ' ' . $mis_imgSize_fatscreen[1] . 'w, ';
