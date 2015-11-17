@@ -155,16 +155,6 @@ $mis_filter_the_content = false){
             $mis_img_defaultThumb[0] . ' ' . $mis_img_defaultThumb[1] . 'w';
     }
 
-//        $mis_srcsetImages =
-//            $mis_imgSize_fatscreen[0] . ' ' . $mis_imgSize_fatscreen[1] . 'w, ' .
-//            $mis_imgSize_fourthMq[0] . ' ' . $mis_imgSize_fourthMq[1] . 'w, ' .
-//            $mis_imgSize_thirdMq[0] . ' ' . $mis_imgSize_thirdMq[1] . 'w, ' .
-//            $mis_imgSize_secondMq[0] . ' ' . $mis_imgSize_secondMq[1] . 'w, ' .
-//            $mis_imgSize_firstMq[0] . ' ' . $mis_imgSize_firstMq[1] . 'w, ' .
-//            $mis_imgSize_noMq_R[0] . ' ' . $mis_imgSize_noMq_R[1] . 'w, ' .
-//            $mis_imgSize_noMq[0] . ' ' . $mis_imgSize_noMq[1] . 'w, ' .
-//            $mis_imgSize_xs[0] . ' ' . $mis_imgSize_xs[1] . 'w';
-
     /**
      * Var: Srcset-sizes and Srcset-mediaqueries
      */
