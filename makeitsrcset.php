@@ -36,7 +36,6 @@ class makeitSrcset {
         }
 
         if (!mis_get_option_boolean('mis_picturefill') && !is_admin()) {
-            // Warning debug-msg for omitting srcset-polyfill
             echo '<script>console.log("Hi! Srcset images not working as expected? Enqueue Picturefill for cross browser support. Go to wp-admin > plugins > Make it Srcset > check 4.1.1. Thanks!");</script>';
         }
     }
