@@ -110,22 +110,33 @@ $mis_filter_the_content = false){
 
     $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('mis_lazyload') ? ' lazyload' : '').(is_null($mis_enablepopup) || empty($mis_enablepopup) ? '' : ' mis_popup').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('mis_lazyload') ? ' data-srcset':' srcset').'=';
 
-    if ($mis_imgSize_xs[3]) {
+    /**
+     * Do attachment has needed imageformats? Use them
+     */
 
-        /**
-         * Do attachment has needed imageformats? Use them
-         */
+    $mis_fatscreenSize_attr = $mis_imgSize_fatscreen[0] . ' ' . $mis_imgSize_fatscreen[1] . 'w, ';
+    $mis_fourthMqSize_attr = $mis_imgSize_fourthMq[0] . ' ' . $mis_imgSize_fourthMq[1] . 'w, ';
+    $mis_thirdhMqSize_attr = $mis_imgSize_thirdMq[0] . ' ' . $mis_imgSize_thirdMq[1] . 'w, ';
+    $mis_secondMqSize_attr = $mis_imgSize_secondMq[0] . ' ' . $mis_imgSize_secondMq[1] . 'w, ';
+    $mis_firstMqSize_attr = $mis_imgSize_firstMq[0] . ' ' . $mis_imgSize_firstMq[1] . 'w, ';
+    $mis_noMq_RSize_attr = $mis_imgSize_noMq_R[0] . ' ' . $mis_imgSize_noMq_R[1] . 'w, ';
+    $mis_noMqSize_attr = $mis_imgSize_noMq[0] . ' ' . $mis_imgSize_noMq[1] . 'w, ';
+    $mis_xsSize_attr = $mis_imgSize_xs[0] . ' ' . $mis_imgSize_xs[1] . 'w';
 
-        $mis_srcsetImages =
-            $mis_imgSize_fatscreen[0] . ' ' . $mis_imgSize_fatscreen[1] . 'w, ' .
-            $mis_imgSize_fourthMq[0] . ' ' . $mis_imgSize_fourthMq[1] . 'w, ' .
-            $mis_imgSize_thirdMq[0] . ' ' . $mis_imgSize_thirdMq[1] . 'w, ' .
-            $mis_imgSize_secondMq[0] . ' ' . $mis_imgSize_secondMq[1] . 'w, ' .
-            $mis_imgSize_firstMq[0] . ' ' . $mis_imgSize_firstMq[1] . 'w, ' .
-            $mis_imgSize_noMq_R[0] . ' ' . $mis_imgSize_noMq_R[1] . 'w, ' .
-            $mis_imgSize_noMq[0] . ' ' . $mis_imgSize_noMq[1] . 'w, ' .
-            $mis_imgSize_xs[0] . ' ' . $mis_imgSize_xs[1] . 'w';
-
+    if($mis_imgSize_fatscreen[3]){
+        $mis_srcsetImages = $mis_fatscreenSize_attr . $mis_fourthMqSize_attr . $mis_thirdhMqSize_attr . $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+    } elseif($mis_imgSize_fourthMq[3]){
+        $mis_srcsetImages = $mis_fourthMqSize_attr . $mis_thirdhMqSize_attr . $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+    } elseif($mis_imgSize_thirdMq[3]){
+        $mis_srcsetImages = $mis_thirdhMqSize_attr . $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+    } elseif($mis_imgSize_secondMq[3]){
+        $mis_srcsetImages = $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+    } elseif($mis_imgSize_firstMq[3]){
+        $mis_srcsetImages = $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+    } elseif($mis_imgSize_noMq_R[3]){
+        $mis_srcsetImages = $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+    } elseif($mis_imgSize_noMq[3]){
+        $mis_srcsetImages = $mis_noMqSize_attr . $mis_xsSize_attr;
     } else {
 
         /**
@@ -143,6 +154,16 @@ $mis_filter_the_content = false){
             $mis_img_defaultMedium[0] . ' ' . $mis_img_defaultMedium[1] . 'w, ' .
             $mis_img_defaultThumb[0] . ' ' . $mis_img_defaultThumb[1] . 'w';
     }
+
+//        $mis_srcsetImages =
+//            $mis_imgSize_fatscreen[0] . ' ' . $mis_imgSize_fatscreen[1] . 'w, ' .
+//            $mis_imgSize_fourthMq[0] . ' ' . $mis_imgSize_fourthMq[1] . 'w, ' .
+//            $mis_imgSize_thirdMq[0] . ' ' . $mis_imgSize_thirdMq[1] . 'w, ' .
+//            $mis_imgSize_secondMq[0] . ' ' . $mis_imgSize_secondMq[1] . 'w, ' .
+//            $mis_imgSize_firstMq[0] . ' ' . $mis_imgSize_firstMq[1] . 'w, ' .
+//            $mis_imgSize_noMq_R[0] . ' ' . $mis_imgSize_noMq_R[1] . 'w, ' .
+//            $mis_imgSize_noMq[0] . ' ' . $mis_imgSize_noMq[1] . 'w, ' .
+//            $mis_imgSize_xs[0] . ' ' . $mis_imgSize_xs[1] . 'w';
 
     /**
      * Var: Srcset-sizes and Srcset-mediaqueries
@@ -194,6 +215,7 @@ $mis_filter_the_content = false){
 
         $mis_srcsetAttributes = array($mis_srcsetImages, $mis_srcsetSizes);
         return $mis_srcsetAttributes;
+
     } else {
 
         /**
