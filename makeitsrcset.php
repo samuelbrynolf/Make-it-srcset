@@ -34,10 +34,6 @@ class makeitSrcset {
         if (mis_get_option_boolean('mis_picturefill') || mis_get_option_boolean('mis_lazyload')) {
             add_action('wp_enqueue_scripts', 'mis_enqueue_scripts');
         }
-
-        if (!mis_get_option_boolean('mis_picturefill') && !is_admin()) {
-            echo '<script>console.log("Hi! Srcset images not working as expected? Enqueue Picturefill for cross browser support. Go to wp-admin > plugins > Make it Srcset > check 4.1.1. Thanks!");</script>';
-        }
     }
 }
 
