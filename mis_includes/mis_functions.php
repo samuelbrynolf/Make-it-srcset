@@ -4,7 +4,7 @@
  * Add needed image formats
  */
 
-function mis_imageInit() {
+function mis_new_imgsizes() {
     if (function_exists('add_theme_support')) {
         add_theme_support('post-thumbnails');
     }
@@ -21,7 +21,7 @@ function mis_imageInit() {
     }
 }
 
-add_action('after_setup_theme', 'mis_imageInit');
+add_action('after_setup_theme', 'mis_new_imgsizes');
 
 
 
@@ -62,7 +62,7 @@ $mis_filter_the_content = false){
     $mis_srcsetSize_fourthMq = (is_null($mis_srcsetSize_fourthMq) || empty($mis_srcsetSize_fourthMq)) ? mis_get_option_integer('mis_srcsetSize_fourthMq') : preg_replace('/[^0-9]+/', '', $mis_srcsetSize_fourthMq);
 
     /**
-     * Vars: Set imageformats IF there is an attachment ID passed as an integer and if that attachment is an image. If not give a link to documentation
+     * Vars: Set image-vars IF there is an attachment ID passed as an integer and if that attachment is an image. If not give a link to documentation
      */
 
     if (is_numeric($mis_attachment_id) && isset($mis_attachment_id) && wp_attachment_is_image($mis_attachment_id)) {
