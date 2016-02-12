@@ -403,27 +403,12 @@ function mis_plugin_initialize_options() {
      */
 
     function mis_wysiwyg_callback() {
-        echo '<p>' . __( '<strong>Filter:</strong> Apply srcset attributes to all images. Uses the default values set in 2.1 and 2.2. <br/><strong>Shortcode:</strong> Enables [Srcset-image image_id="ID"] to handle images from wysiwyg-editor.<br/><strong>Shortcode generator:</strong> Pull generated shortcodes instead of images to wysiwyg-editor from the mediagallery.', 'makeitSrcset' ) . '</p>';
+        echo '<p>' . __( '<strong>Shortcode:</strong> Enables [Srcset-image image_id="ID"] to handle images from wysiwyg-editor.<br/><strong>Shortcode generator:</strong> Pull generated shortcodes instead of images to wysiwyg-editor from the mediagallery.', 'makeitSrcset' ) . '</p>';
     }
-
-    /**
-     * Setting fields for mis_wysiwyg
-     */
-
-    add_settings_field(
-        'mis_contentFilter',
-        '3.1 Enable filter:',
-        'mis_contentFilter_callback',
-        'mis_plugin_options',
-        'mis_wysiwyg',
-        array(        
-            __( '', 'makeitSrcset' ),
-        )
-    );
 
     add_settings_field(
         'mis_shortcode',
-        '3.2.1 Enable shortcode:',
+        '3.1 Enable shortcode:',
         'mis_shortcode_callback',
         'mis_plugin_options',
         'mis_wysiwyg',
@@ -434,7 +419,7 @@ function mis_plugin_initialize_options() {
 
     add_settings_field(
         'mis_shortcodeGen',
-        '3.2.2 Enable shortcode generator:',
+        '3.2 Enable shortcode generator:',
         'mis_shortcodeGen_callback',
         'mis_plugin_options',
         'mis_wysiwyg',
@@ -446,13 +431,6 @@ function mis_plugin_initialize_options() {
     /** Setting fields callbacks for mis_wysiwyg
      * @param $args
      */
-
-    function mis_contentFilter_callback($args) {
-        $options = get_option('mis_plugin_options');
-        $html = '<input type="checkbox" id="mis_contentFilter" name="mis_plugin_options[mis_contentFilter]" value="1" ' . checked(1, isset($options['mis_contentFilter']) ? $options['mis_contentFilter'] : 0, false) . '/>';
-        $html .= '<label for="mis_contentFilter">&nbsp;'  . $args[0] . '</label>';
-        echo $html;
-    }
 
     function mis_shortcode_callback($args) {
         $options = get_option('mis_plugin_options');
@@ -543,7 +521,7 @@ function mis_plugin_initialize_options() {
         'mis_popup_callback',
         'mis_plugin_options',
         'mis_jslib',
-        array(        
+        array(
             __( '', 'makeitSrcset' ),
         )
     );
@@ -616,10 +594,10 @@ function mis_plugin_initialize_options() {
     add_settings_field(
         'mis_preventDuplicates',
         'Save a minute:',
-        'mis_mis_preventDuplicates_callback',
+        'mis_preventDuplicates_callback',
         'mis_plugin_options',
         'mis_styles',
-        array(        
+        array(
             __( '<em>Do not tell Aaron.</em>', 'makeitSrcset' ),
         )
     );
@@ -628,7 +606,7 @@ function mis_plugin_initialize_options() {
      * @param $args
      */
 
-    function mis_mis_preventDuplicates_callback($args) {
+    function mis_preventDuplicates_callback($args) {
         $options = get_option('mis_plugin_options');
         $html = '<input type="checkbox" id="mis_preventDuplicates" name="mis_plugin_options[mis_preventDuplicates]" value="1" ' . checked(1, isset($options['mis_preventDuplicates']) ? $options['mis_preventDuplicates'] : 0, false) . '/>';
         $html .= '<label for="mis_preventDuplicates">&nbsp;'  . $args[0] . '</label>';
