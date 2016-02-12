@@ -521,7 +521,7 @@ function mis_plugin_initialize_options() {
         'mis_popup_callback',
         'mis_plugin_options',
         'mis_jslib',
-        array(        
+        array(
             __( '', 'makeitSrcset' ),
         )
     );
@@ -594,10 +594,10 @@ function mis_plugin_initialize_options() {
     add_settings_field(
         'mis_preventDuplicates',
         'Save a minute:',
-        'mis_mis_preventDuplicates_callback',
+        'mis_preventDuplicates_callback',
         'mis_plugin_options',
         'mis_styles',
-        array(        
+        array(
             __( '<em>Do not tell Aaron.</em>', 'makeitSrcset' ),
         )
     );
@@ -606,7 +606,7 @@ function mis_plugin_initialize_options() {
      * @param $args
      */
 
-    function mis_mis_preventDuplicates_callback($args) {
+    function mis_preventDuplicates_callback($args) {
         $options = get_option('mis_plugin_options');
         $html = '<input type="checkbox" id="mis_preventDuplicates" name="mis_plugin_options[mis_preventDuplicates]" value="1" ' . checked(1, isset($options['mis_preventDuplicates']) ? $options['mis_preventDuplicates'] : 0, false) . '/>';
         $html .= '<label for="mis_preventDuplicates">&nbsp;'  . $args[0] . '</label>';

@@ -48,8 +48,7 @@ $mis_srcsetSize_thirdMq = null,
 $mis_srcsetSize_fourthMq = null,
 $mis_parent_css_class = null,
 $mis_figcaption = null,
-$mis_enablepopup = null,
-$mis_filter_the_content = false){
+$mis_enablepopup = null){
 
     /**
      * Vars: Set srcset sizes
