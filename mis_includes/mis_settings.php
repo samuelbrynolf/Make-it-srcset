@@ -393,7 +393,7 @@ function mis_plugin_initialize_options() {
 
     add_settings_section(
         'mis_wysiwyg',
-        __('3. Handle images pulled by the WYSIWYG-editor', 'makeitSrcset'),
+        __('3. Shortcodes', 'makeitSrcset'),
         'mis_wysiwyg_callback',
         'mis_plugin_options'
     );
@@ -484,12 +484,12 @@ function mis_plugin_initialize_options() {
 
     add_settings_field(
         'mis_userpathPicturefill',
-        '4.1.2 Enqueue Picturefill<br/>> <em>v.2.3.1</em>:',
+        '4.1.2 Enqueue Picturefill<br/>> <em>v.3.0.2</em>:',
         'mis_userpathPicturefill_callback',
         'mis_plugin_options',
         'mis_jslib',
         array(        
-            __( 'Replace the provided v2.3.1 with a later version. Expects a full path.', 'makeitSrcset' ),
+            __( 'Replace the provided v3.0.2 with another version. Expects a full path.', 'makeitSrcset' ),
         )
     );
 
@@ -506,12 +506,12 @@ function mis_plugin_initialize_options() {
 
     add_settings_field(
         'mis_userpathLazyload',
-        '4.2.2 Enqueue Lazysizes<br/>> <em>v1.1.3</em>:',
+        '4.2.2 Enqueue Lazysizes<br/>> <em>v1.5.0</em>:',
         'mis_userpathLazyload_callback',
         'mis_plugin_options',
         'mis_jslib',
         array(        
-            __( 'Replace the provided v1.1.3 with a later version. Expects a full path.', 'makeitSrcset' ),
+            __( 'Replace the provided v1.5.0 with another version. Expects a full path.', 'makeitSrcset' ),
         )
     );
 
