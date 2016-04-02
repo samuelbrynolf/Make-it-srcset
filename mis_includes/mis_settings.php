@@ -403,7 +403,7 @@ function mis_plugin_initialize_options() {
      */
 
     function mis_wysiwyg_callback() {
-        echo '<p>' . __( '<strong>Shortcode:</strong> Enables [Srcset-image image_id="ID"] to handle images from wysiwyg-editor.<br/><strong>Shortcode generator:</strong> Pull generated shortcodes instead of images to wysiwyg-editor from the mediagallery.', 'makeitSrcset' ) . '</p>';
+        echo '<p>' . __( '<strong>Shortcode:</strong> Enables [makeitSrcset] to handle images from wysiwyg-editor.<br/><strong>Shortcode generator:</strong> Pull generated shortcodes (instead of images) to wysiwyg-editor from the add media-button.', 'makeitSrcset' ) . '</p>';
     }
 
     add_settings_field(
@@ -464,7 +464,7 @@ function mis_plugin_initialize_options() {
      */
 
     function mis_jslib_callback() {
-        echo '<p>' . __( '<strong>Picturefill:</strong> A srcset-polyfill for crossbrowser support.<br/><strong>Lazysizes:</strong> Javascript plugin to lazyload any content &mdash; your srcset images in this case.<br/><br/><em>There might be later versions of Picturefill and Lazysizes than the ones provided by Make it Srcset.<br/>Use 4.1.2 and 4.2.2 to enqueue your own up-to-date files.</em><br/><strong>Popup / Lightbox:</strong> Enqueue script and styles for popup. <a href="#">Usage -> See documentation</a>', 'makeitSrcset' ) . '</p>';
+        echo '<p>' . __( '<strong>Picturefill:</strong> A srcset-polyfill for crossbrowser support.<br/><strong>Lazysizes:</strong> Javascript plugin to lazyload any content &mdash; your srcset images in this case.<br/><br/><em>There might be later versions of Picturefill and Lazysizes than the ones provided by Make it Srcset.<br/>Use 4.1.2 and 4.2.2 to enqueue your own up-to-date files.</em><br/><strong>Popup / Lightbox:</strong> Enqueue script and styles for popup. <a href="https://samuelbrynolf.se/2016/04/wordpress-plugin-make-it-srcset/">Usage -> See documentation</a>', 'makeitSrcset' ) . '</p>';
     }
 
     /**
