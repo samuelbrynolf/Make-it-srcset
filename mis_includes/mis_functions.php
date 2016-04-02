@@ -107,7 +107,7 @@ $mis_enablepopup = null){
      * Var: Img tag
      */
 
-    $mis_imgTag = '<img class="mis_img mis_omitSrc'.(mis_get_option_boolean('mis_lazyload') ? ' lazyload' : '').(is_null($mis_enablepopup) || empty($mis_enablepopup) ? '' : ' mis_popup').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('mis_lazyload') ? ' data-srcset':' srcset').'=';
+    $mis_imgTag = '<img class="mis_img'.(mis_get_option_boolean('mis_lazyload') ? ' lazyload' : '').(is_null($mis_enablepopup) || empty($mis_enablepopup) ? '' : ' mis_popup').'" data-misid="mis_img-'.$mis_attachment_id.'"'.($mis_alt ? ' alt="'.$mis_alt.'"' : ' alt="'.$mis_filename.'"').(mis_get_option_boolean('mis_lazyload') ? ' data-srcset':' srcset').'=';
 
     /**
      * Var: Srcset-src
@@ -264,7 +264,7 @@ if (mis_get_option_boolean('mis_preventDuplicates')) {
 }
 
 function mis_nojs_style(){
-    $output="<style>.no-js .mis_img.mis_omitSrc{display:none}</style>";
+    $output="<style>.no-js .mis_img.mis_nojs{display:none}</style>";
     echo $output;
 }
 
