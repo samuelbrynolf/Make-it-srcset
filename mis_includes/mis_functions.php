@@ -264,7 +264,7 @@ if (mis_get_option_boolean('mis_preventDuplicates')) {
 }
 
 function mis_nojs_style(){
-    $output="<style>.no-js .mis_img.mis_nojs{display:none}</style>";
+    $output="<style>.no-js .mis_container > .mis_img{display:none}</style>";
     echo $output;
 }
 
