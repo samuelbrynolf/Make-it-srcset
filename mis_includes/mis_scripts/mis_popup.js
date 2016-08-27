@@ -37,7 +37,7 @@
                 var thisclone_height = thisclone.height();
                 var viewport_height = $(window).height();
 
-                if(thisclone_height > thisclone_width){
+                if(thisclone_height > thisclone_width || thisclone_height > viewport_height){
                     thisclone.css({
                         'width' : 'auto',
                         'max-height' : (viewport_height - 100) + 'px'
@@ -66,11 +66,11 @@
             return this;
         }
     };
-}( jQuery, document ));
 
-if($.fn.mis_popup) {
-    var popup_src = $('.mis_popup');
-    if(popup_src.length){
-        popup_src.mis_popup();
+    if($.fn.mis_popup) {
+        var popup_src = $('.mis_popup');
+        if(popup_src.length){
+            popup_src.mis_popup();
+        }
     }
-}
+}( jQuery, document ));
