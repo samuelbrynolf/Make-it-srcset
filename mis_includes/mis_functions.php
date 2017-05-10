@@ -113,6 +113,8 @@ $mis_enablepopup = null){
      * Var: Srcset-src
      */
 
+	$mis_imgSize_original = wp_get_attachment_image_src($mis_attachment_id, 'full');
+    $mis_original_attr = $mis_imgSize_original[0] . ' ' . $mis_imgSize_original[1] . 'w, ';
     $mis_fatscreenSize_attr = $mis_imgSize_fatscreen[0] . ' ' . $mis_imgSize_fatscreen[1] . 'w, ';
     $mis_fourthMqSize_attr = $mis_imgSize_fourthMq[0] . ' ' . $mis_imgSize_fourthMq[1] . 'w, ';
     $mis_thirdhMqSize_attr = $mis_imgSize_thirdMq[0] . ' ' . $mis_imgSize_thirdMq[1] . 'w, ';
@@ -125,17 +127,17 @@ $mis_enablepopup = null){
     if($mis_imgSize_fatscreen[3]){
         $mis_srcsetImages = $mis_fatscreenSize_attr . $mis_fourthMqSize_attr . $mis_thirdhMqSize_attr . $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
     } elseif($mis_imgSize_fourthMq[3]){
-        $mis_srcsetImages = $mis_fourthMqSize_attr . $mis_thirdhMqSize_attr . $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+        $mis_srcsetImages = $mis_original_attr . $mis_fourthMqSize_attr . $mis_thirdhMqSize_attr . $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
     } elseif($mis_imgSize_thirdMq[3]){
-        $mis_srcsetImages = $mis_thirdhMqSize_attr . $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+        $mis_srcsetImages = $mis_original_attr . $mis_thirdhMqSize_attr . $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
     } elseif($mis_imgSize_secondMq[3]){
-        $mis_srcsetImages = $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+        $mis_srcsetImages = $mis_original_attr . $mis_secondMqSize_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
     } elseif($mis_imgSize_firstMq[3]){
-        $mis_srcsetImages = $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+        $mis_srcsetImages = $mis_original_attr . $mis_firstMqSize_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
     } elseif($mis_imgSize_noMq_R[3]){
-        $mis_srcsetImages = $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
+        $mis_srcsetImages = $mis_original_attr . $mis_noMq_RSize_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
     } elseif($mis_imgSize_noMq[3]){
-        $mis_srcsetImages = $mis_noMqSize_attr . $mis_xsSize_attr;
+        $mis_srcsetImages = $mis_original_attr . $mis_noMqSize_attr . $mis_xsSize_attr;
     } else {
 
         /**
